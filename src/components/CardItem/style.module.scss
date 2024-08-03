@@ -1,0 +1,215 @@
+.CardItem {
+  position: relative;
+  margin: 20px;
+  border: 1px solid #aaa;
+  border-radius: 2px;
+  width: 80px;
+  min-width: 80px;
+  max-width: 80px;
+  height: 100px;
+}
+
+$Red: red;
+$Green: green;
+$Yellow: yellow;
+$Blue: blue;
+$Black: black;
+
+.Black {
+  background-color: $Black !important;
+}
+.Red {
+  background-color: $Red !important;
+}
+.Green {
+  background-color: $Green !important;
+}
+.Yellow {
+  background-color: $Yellow !important;
+}
+.Blue {
+  background-color: $Blue !important;
+}
+
+.BlackC {
+  color: $Black !important;
+}
+.RedC {
+  color: $Red !important;
+}
+.GreenC {
+  color: $Green !important;
+}
+.YellowC {
+  color: $Yellow !important;
+}
+.BlueC {
+  color: $Blue !important;
+}
+
+.Center {
+  overflow: hidden;
+  $W: 62px;
+  $H: $W * 1.5;
+  width: $W;
+  height: $H;
+  background-color: #fff;
+  border-radius: #{$W / 2} / #{$H / 2};
+  transform: translate(9px, 5px) rotate(45deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .Content {
+    font-size: 50px;
+    font-weight: bold;
+    line-height: 1;
+    transform: rotate(-45deg);
+  }
+}
+
+.Top {
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 20px;
+  font-weight: bold;
+  color: #fff;
+  line-height: 1;
+}
+
+.Bottom {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  font-size: 20px;
+  font-weight: bold;
+  color: #fff;
+  line-height: 1;
+  transform: rotate(180deg);
+}
+
+.Num {
+  margin: 2px;
+}
+
+.Big {
+  transform: scale(2);
+}
+.Skip {
+  margin: 2px;
+  background-color: #fff;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  position: relative;
+  overflow: hidden;
+  .Circle {
+    margin: 4px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #fff;
+  }
+  .Line {
+    position: absolute;
+    left: 8px;
+    top: 0;
+    width: 4px;
+    height: 20px;
+    background-color: #fff;
+    transform: rotate(45deg);
+  }
+}
+.Turn {
+  margin-top: -2px;
+  margin-left: 2px;
+  display: flex;
+  transform: rotate(45deg);
+  .Arrow {
+    &:nth-child(2) {
+      transform: rotate(180deg);
+      margin-top: 14px;
+      margin-left: -6px;
+    }
+  }
+  .Tri {
+    width: 0;
+    height: 0;
+    border: 6px solid transparent;
+    border-bottom: 6px solid #fff;
+  }
+  .TriR {
+    border-bottom: 6px solid $Red;
+  }
+  .TriG {
+    border-bottom: 6px solid $Green;
+  }
+  .TriY {
+    border-bottom: 6px solid $Yellow;
+  }
+  .TriB {
+    border-bottom: 6px solid $Blue;
+  }
+  .Line {
+    width: 4px;
+    height: 16px;
+    margin-top: -2px;
+    margin-left: 4px;
+    background-color: #fff;
+    border-radius: 0 0 0 10px;
+  }
+}
+.ChangeCenter {
+  margin-left: -24px;
+  margin-top: -5px;
+  transform: scale(5) !important;
+}
+.Change {
+  margin-top: 4px;
+  margin-left: 6px;
+  $W: 15px;
+  $H: $W * 1.5;
+  width: $W;
+  height: $H;
+  background-color: #fff;
+  border-radius: #{$W / 2} / #{$H / 2};
+  transform: rotate(45deg);
+  display: flex;
+  flex-wrap: wrap;
+  overflow: hidden;
+
+  div {
+    flex: 1 1 50%;
+    height: 50%;
+    background-color: $Red;
+  }
+  div:nth-child(2) {
+    background-color: $Green;
+  }
+  div:nth-child(3) {
+    background-color: $Yellow;
+  }
+  div:nth-child(4) {
+    background-color: $Blue;
+  }
+}
+.AddNumCard {
+  width: 20px;
+  height: 26px;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+  transform: skewX(-15deg);
+  .AddNumCardInner {
+    margin: 3px;
+    width: 14px;
+    height: 20px;
+  }
+}
+
+.AddNumCardWrap {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
