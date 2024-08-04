@@ -1,4 +1,4 @@
-export enum EOrder {
+export enum ETurn {
   CW = 'clockwise', // 顺时针
   CCW = 'counterclockwise', // 逆时针
 }

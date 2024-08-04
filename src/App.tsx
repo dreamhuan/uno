@@ -1,14 +1,11 @@
-import CardItem from './components/CardItem'
 import styles from './App.module.scss'
 import cx from 'classnames'
 import Time from './components/Time'
-import { Card } from './core/entity/Card'
-import { ECardType, EColor, ENumber, EPattern } from './core/entity/common'
 import { Game } from './core/entity/Game'
 import { User } from './core/entity/User'
 import CardList from './components/CardList'
 
-const game = new Game(4, 1, 24)
+const game = new Game(4, 24)
 const user1 = new User('user1', 'xxx')
 const user2 = new User('user2', 'xxx')
 const user3 = new User('user3', 'xxx')

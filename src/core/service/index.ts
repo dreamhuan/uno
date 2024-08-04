@@ -1,9 +1,13 @@
 import { Card } from '../entity/Card'
 import { ECardType, EColor, ENumber, EPattern } from '../entity/common'
+import { Game } from '../entity/Game'
+import { User } from '../entity/User'
 import { traverseEnum } from '../utils'
 
+/**
+ * 生成一副牌
+ */
 export function genAGroupOfCard() {
-  //生成一副牌
   const cards: Card[] = []
   // 4种颜色
   traverseEnum(EColor, (color) => {
@@ -36,15 +40,19 @@ export function genAGroupOfCard() {
   return cards
 }
 
+/**
+ * 洗牌
+ */
 export function shuffleCard(cards: Card[]) {
-  // 洗牌
   for (let i = cards.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))
     ;[cards[i], cards[j]] = [cards[j], cards[i]]
   }
 }
 
-// 手牌排序
+/**
+ * 手牌排序
+ */
 export function sortCard(cards: Card[]) {
   const colorOrder = {
     [EColor.A]: 0,
@@ -79,6 +87,35 @@ export function sortCard(cards: Card[]) {
   })
 }
 
-export function checkSendCard() {}
-export function checkGetCard() {}
-export function checkUno() {}
+/**
+ * 检查是否可以出牌
+ */
+export function checkSendCard(game: Game, card: Card) {
+  // +4可以无脑出
+  if (card.pattern === EPattern.Four) {
+    return true
+  }
+  // 之前是+2
+  if (game.prevCard?.pattern === EPattern.Two) {
+    return card.pattern === EPattern.Two
+  }
+  // 之前是其他功能牌 或 数字牌
+  return (
+    card.color === game.currentColor ||
+    card.num === game.prevCard?.num ||
+    card.pattern === game.currentPattern
+  )
+}
+
+/**
+ * 检查是否UNO以及获胜
+ */
+export function checkUno(user: User) {
+  if (user.cards.length === 1) {
+    return 'UNO'
+  }
+  if (user.cards.length === 0) {
+    return 'WIN'
+  }
+  return false
+}

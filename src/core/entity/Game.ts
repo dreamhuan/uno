@@ -1,30 +1,35 @@
-import { EColor, EOrder, EPattern } from '../entity/common'
+import { EColor, ETurn, EPattern } from '../entity/common'
 import { genAGroupOfCard, shuffleCard } from '../service'
 import { Card } from './Card'
 import { User } from './User'
 
 export class Game {
   userNum!: number // 玩家数量
-  cardNum = 1 // 用几组牌，一组108张
-  startNum = 7 // 每个玩家初始手牌数量
-  order = EOrder.CCW
-  currentColor?: EColor
-  currentPattern?: EPattern
-  prevCard?: Card
+  cardGroupNum = 1 // 用几组牌，一组108张
+  beginNum = 7 // 每个玩家初始手牌数量
+
   users: User[] = []
   cards: Card[] = []
   usedCards: Card[] = []
 
-  constructor(userNum: number, cardNum: number, startNum: number) {
+  currentTurn = ETurn.CCW // 当前出牌顺序
+  currentColor?: EColor // 当前出牌颜色
+  currentPattern?: EPattern // 当前出牌图案
+  currentUser?: User // 当前出牌用户
+  prevCard?: Card // 上一个出牌
+  needAddCardNum = 0 // 累计的惩罚抽牌数
+
+  constructor(userNum: number, beginNum?: number, cardGroupNum?: number) {
     this.userNum = userNum
-    this.cardNum = cardNum
-    this.startNum = startNum
-    for (let i = 0; i < cardNum; i++) {
+    this.cardGroupNum = cardGroupNum || 1
+    this.beginNum = beginNum || 7
+    for (let i = 0; i < this.cardGroupNum; i++) {
       this.cards.push(...genAGroupOfCard())
     }
   }
 
   addUser(user: User) {
+    user.game = this
     this.users.push(user)
   }
 
@@ -32,7 +37,7 @@ export class Game {
     // 洗牌
     shuffleCard(this.cards)
     // 发牌
-    for (let i = 0; i < this.startNum; i++) {
+    for (let i = 0; i < this.beginNum; i++) {
       for (let j = 0; j < this.userNum; j++) {
         this.users[j].addCard(this.cards.pop()!)
       }
