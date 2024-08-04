@@ -1,3 +1,11 @@
 .CardList {
-  color: red;
+  display: flex;
+  flex-wrap: wrap;
+
+  // & > div {
+  //   &:nth-of-type(1) {
+  //     margin-left: 0;
+  //   }
+  //   margin-left: -50px;
+  // }
 }

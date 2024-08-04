@@ -1,7 +1,16 @@
+import { User } from '../../core/entity/User'
+import CardItem from '../CardItem'
 import styles from './style.module.scss'
 
-export default function CardList() {
+type TProps = {
+  user: User
+}
+export default function CardList({ user }: TProps) {
   return (
-    <div className={styles.CardList}>index</div>
+    <div className={styles.CardList}>
+      {user.cards.map((card) => (
+        <CardItem card={card} />
+      ))}
+    </div>
   )
 }

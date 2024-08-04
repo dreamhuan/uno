@@ -4,23 +4,26 @@ import cx from 'classnames'
 import Time from './components/Time'
 import { Card } from './core/entity/Card'
 import { ECardType, EColor, ENumber, EPattern } from './core/entity/common'
+import { Game } from './core/entity/Game'
+import { User } from './core/entity/User'
+import CardList from './components/CardList'
 
-const cards = [
-  new Card(ECardType.Num, EColor.R, ENumber._7),
-  new Card(ECardType.Func, EColor.Y, undefined, EPattern.Skip),
-  new Card(ECardType.Func, EColor.G, undefined, EPattern.Turn),
-  new Card(ECardType.Func, EColor.B, undefined, EPattern.Two),
-  new Card(ECardType.King, EColor.A, undefined, EPattern.Four),
-  new Card(ECardType.King, EColor.A, undefined, EPattern.Change),
-]
-
+const game = new Game(4, 1, 24)
+const user1 = new User('user1', 'xxx')
+const user2 = new User('user2', 'xxx')
+const user3 = new User('user3', 'xxx')
+const user4 = new User('user4', 'xxx')
+game.addUser(user1)
+game.addUser(user2)
+game.addUser(user3)
+game.addUser(user4)
+game.init()
+console.log(game)
 function App() {
   return (
     <div className={cx(styles.Game, styles.Container)}>
       <div>123</div>
-      {cards.map((card, index) => (
-        <CardItem key={index} card={card} />
-      ))}
+      <CardList user={game.users[0]} />
       <Time />
     </div>
   )
