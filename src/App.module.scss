@@ -8,7 +8,47 @@
 
 .Container {
   position: relative;
-  margin-top: 12px;
-  margin-left: 12px;
+  margin: 12px;
+  padding: 12px;
   color: blue;
+}
+
+.CardsOrder {
+  font-size: 18px;
+
+  & > span {
+    margin-right: 10px;
+  }
+
+}
+
+.topUser {
+  height: 100px;
+}
+
+.CurrentCard {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  & > div {
+    text-align: center;
+    width: 100%;
+    
+  }
+}
+
+.OperateBtns {
+  display: flex;
+  justify-content: center;
+  margin-top: 35px;
+
+}
+
+.UserCardList {
+  width: 100%;
+  position: absolute;
+  bottom: 15px;
+  display: flex;
+  justify-content: center;
 }

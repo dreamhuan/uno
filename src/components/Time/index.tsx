@@ -6,5 +6,5 @@ export default function Time() {
     console.log('end')
   })
   console.log('time', time)
-  return <div className={styles.Time}>{time}</div>
+  return <span className={styles.Time}>{time}</span>
 }
