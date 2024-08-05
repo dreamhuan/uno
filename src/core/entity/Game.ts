@@ -1,5 +1,5 @@
-import { EColor, ETurn, EPattern } from '../entity/common'
-import { genAGroupOfCard, shuffleCard } from '../service'
+import { EColor, ETurn, EPattern, ECardType, ENumber } from '../entity/common'
+import { checkUno, genAGroupOfCard, shuffleCard } from '../service'
 import { Card } from './Card'
 import { User } from './User'
 
@@ -15,6 +15,7 @@ export class Game {
   currentTurn = ETurn.CCW // 当前出牌顺序
   currentColor?: EColor // 当前出牌颜色
   currentPattern?: EPattern // 当前出牌图案
+  currentNum?: ENumber // 当前出牌数字
   currentUserIdx = 0 // 当前出牌用户下标
   prevCard?: Card // 上一个出牌
   needAddCardNum = 0 // 累计的惩罚抽牌数
@@ -47,7 +48,7 @@ export class Game {
   }
 
   // 抽牌，返回还需要抽几张牌（可能剩余不够了）
-  userGetCard(num = 1) {
+  userGetCard(num: number) {
     const currentUser = this.users[this.currentUserIdx]
     while (--num >= 0) {
       const card = this.cards.pop()
@@ -56,24 +57,67 @@ export class Game {
       }
       currentUser.addCard(card)
     }
+    this.needAddCardNum = 0
     return 0
   }
 
   nextTurn() {
+    console.log('game============', {
+      currentTurn: this.currentTurn,
+      currentColor: this.currentColor,
+      currentPattern: this.currentPattern,
+      currentNum: this.currentNum,
+      currentUserIdx: this.currentUserIdx,
+      prevCard: this.prevCard,
+      needAddCardNum: this.needAddCardNum,
+    })
     const currentUser = this.users[this.currentUserIdx]
     const card = currentUser.sendCard(0)
     console.log('card', card)
     if (card) {
+      this.alreadyCards.push(card)
       this.prevCard = card
       this.currentColor = card.color
       this.currentPattern = card.pattern
+      this.currentNum = card.num
+      // TODO： 黑色的牌暂定都换色为红
+      if (card.color === EColor.A) {
+        this.currentColor = EColor.R
+        this.currentPattern = undefined
+        this.currentNum = undefined
+      }
+      // 如果是+2，+4，需要累加抽牌
+      if (card.pattern === EPattern.Two) {
+        this.needAddCardNum += 2
+      } else if (card.pattern === EPattern.Four) {
+        this.needAddCardNum += 4
+      } else if (card.pattern === EPattern.Turn) {
+        // 换向
+        this.currentTurn = this.currentTurn === ETurn.CCW ? ETurn.CW : ETurn.CCW
+      } else if (card.pattern === EPattern.Skip) {
+        // 跳过
+        this.currentUserIdx =
+          this.currentTurn === ETurn.CCW
+            ? (this.currentUserIdx + 1) % this.userNum
+            : (this.currentUserIdx - 1 + this.userNum) % this.userNum
+      }
+      const unoStatus = checkUno(currentUser)
+      if (unoStatus === 'WIN') {
+        return 'WIN'
+      } else {
+        // 更换出牌用户下标
+        this.currentUserIdx =
+          this.currentTurn === ETurn.CCW
+            ? (this.currentUserIdx + 1) % this.userNum
+            : (this.currentUserIdx - 1 + this.userNum) % this.userNum
+        return unoStatus
+      }
+    } else {
+      this.userGetCard(this.needAddCardNum || 1)
       this.currentUserIdx =
         this.currentTurn === ETurn.CCW
           ? (this.currentUserIdx + 1) % this.userNum
           : (this.currentUserIdx - 1 + this.userNum) % this.userNum
-      this.alreadyCards.push(card)
-      return true
     }
-    return false
   }
 }

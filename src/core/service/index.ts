@@ -91,20 +91,24 @@ export function sortCard(cards: Card[]) {
  * 检查是否可以出牌
  */
 export function checkSendCard(game: Game, card: Card) {
-  // +4可以无脑出
-  if (card.pattern === EPattern.Four) {
+  // 之前是+4，并且需要加牌
+  if (game.prevCard?.pattern === EPattern.Four && game.needAddCardNum) {
+    return card.pattern === EPattern.Four
+  }
+  // 之前是+2，并且需要加牌
+  if (game.prevCard?.pattern === EPattern.Two && game.needAddCardNum) {
+    return card.pattern === EPattern.Two || card.pattern === EPattern.Four
+  }
+  // 万能牌
+  if (card.type === ECardType.King) {
     return true
   }
-  // 之前是+2
-  if (game.prevCard?.pattern === EPattern.Two) {
-    return card.pattern === EPattern.Two
-  }
-  // 之前是其他功能牌 或 数字牌
+  // 之前是其他功能牌 或 数字牌 或 已经加过牌了
   return (
     card.color === game.currentColor ||
-    card.num === game.prevCard?.num ||
-    card.pattern === game.currentPattern ||
-    (!game.currentColor && !game.currentPattern) // 第一次出牌，还没有设置颜色和图案
+    (card.num && card.num === game.currentNum) ||
+    (card.pattern && card.pattern === game.currentPattern) ||
+    (!game.currentColor && !game.currentNum && !game.currentPattern) // 第一次出牌，还没有设置颜色和图案
   )
 }
 
