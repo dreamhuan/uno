@@ -1,3 +1,29 @@
 .Operations {
   color: red;
+  width: 150px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.ColorBtn {
+  width: 45px;
+  height: 45px;
+  color: white;
+  margin-right: 10px;
+}
+
+.RedBtn {
+  background-color: red;
+}
+
+.BlueBtn {
+  background-color: #2156f3;
+}
+
+.GreenBtn {
+  background-color: green;
+}
+
+.YellowBtn {
+  background-color: #ffc107;
 }
