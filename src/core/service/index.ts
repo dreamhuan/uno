@@ -103,7 +103,8 @@ export function checkSendCard(game: Game, card: Card) {
   return (
     card.color === game.currentColor ||
     card.num === game.prevCard?.num ||
-    card.pattern === game.currentPattern
+    card.pattern === game.currentPattern ||
+    (!game.currentColor && !game.currentPattern) // 第一次出牌，还没有设置颜色和图案
   )
 }
 

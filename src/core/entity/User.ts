@@ -1,4 +1,4 @@
-import { sortCard } from '../service'
+import { checkSendCard, sortCard } from '../service'
 import { getRandomStr } from '../utils'
 import { Card } from './Card'
 import { Game } from './Game'
@@ -23,5 +23,15 @@ export class User {
 
   sortCards() {
     sortCard(this.cards)
+  }
+
+  sendCard(idx: number) {
+    const card = this.cards[idx]
+    const canSend = checkSendCard(this.game, card)
+    if (!canSend) {
+      return false
+    }
+    this.cards.splice(idx, 1)
+    return card
   }
 }
