@@ -12,18 +12,20 @@
   margin-right: 10px;
 }
 
-.RedBtn {
-  background-color: red;
-}
+$Red: red;
+$Green: green;
+$Yellow: #ffc107;
+$Blue: #2156f3;
 
-.BlueBtn {
-  background-color: #2156f3;
+.R {
+  background-color: $Red !important;
 }
-
-.GreenBtn {
-  background-color: green;
+.G {
+  background-color: $Green !important;
 }
-
-.YellowBtn {
-  background-color: #ffc107;
+.Y {
+  background-color: $Yellow !important;
+}
+.B {
+  background-color: $Blue !important;
 }

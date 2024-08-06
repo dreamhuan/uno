@@ -1,48 +1,40 @@
-import { useState } from 'react'
 import cx from 'classnames'
 import { Button, Popover } from 'antd'
 import styles from './style.module.scss'
+import { useContext } from 'react'
+import { GameContext } from '../../AppUI'
 
+const map = {
+  [styles.R]: '红色',
+  [styles.G]: '绿色',
+  [styles.B]: '蓝色',
+  [styles.Y]: '黄色',
+} as any
 const content = (
   <div>
-    <Button shape="circle" className={cx(styles.ColorBtn, styles.RedBtn)}>
-      红色
-    </Button>
-    <Button shape="circle" className={cx(styles.ColorBtn, styles.BlueBtn)}>
-      篮色
-    </Button>
-    <Button shape="circle" className={cx(styles.ColorBtn, styles.GreenBtn)}>
-      绿色
-    </Button>
-    <Button shape="circle" className={cx(styles.ColorBtn, styles.YellowBtn)}>
-      黄色
-    </Button>
+    {Object.keys(map).map((key) => {
+      return (
+        <Button shape="circle" className={cx(styles.ColorBtn, key)}>
+          {map[key]}
+        </Button>
+      )
+    })}
   </div>
 )
 
 export default function Operations() {
-  const [open, setOpen] = useState(false)
-
-  const handleOpenChange = (newOpen: boolean) => {
-    console.log((window as any).currentCard.type)
-    let currentCardType = (window as any).currentCard.type;
-    if(currentCardType === 'king') {
-      setOpen(newOpen)
-    }
-  }
+  const { currentCard } = useContext(GameContext)
 
   return (
     <div className={styles.Operations}>
       <Button>抓牌</Button>
-      <Popover
-        content={content}
-        title="选择颜色"
-        trigger="click"
-        open={open}
-        onOpenChange={handleOpenChange}
-      >
+      {currentCard?.type === 'king' ? (
+        <Popover content={content} title="选择颜色" trigger="click">
+          <Button>出牌</Button>
+        </Popover>
+      ) : (
         <Button>出牌</Button>
-      </Popover>
+      )}
     </div>
   )
 }
