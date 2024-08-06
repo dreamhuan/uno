@@ -1,6 +1,6 @@
 .Operations {
   color: red;
-  width: 150px;
+  width: 220px;
   display: flex;
   justify-content: space-between;
 }
@@ -17,15 +17,15 @@ $Green: green;
 $Yellow: #ffc107;
 $Blue: #2156f3;
 
-.R {
+.Red {
   background-color: $Red !important;
 }
-.G {
+.Green {
   background-color: $Green !important;
 }
-.Y {
+.Yellow {
   background-color: $Yellow !important;
 }
-.B {
+.Blue {
   background-color: $Blue !important;
 }

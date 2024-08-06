@@ -61,7 +61,8 @@ export class Game {
     return 0
   }
 
-  nextTurn() {
+  // cardIdx -1 则直接抽牌 ，否则出牌，颜色表示王牌选的色
+  nextTurn(cardIdx?: number, curColor: EColor = EColor.R) {
     console.log('game============', {
       currentTurn: this.currentTurn,
       currentColor: this.currentColor,
@@ -72,7 +73,7 @@ export class Game {
       needAddCardNum: this.needAddCardNum,
     })
     const currentUser = this.users[this.currentUserIdx]
-    const card = currentUser.sendCard(0)
+    const card = cardIdx === -1 ? null : currentUser.sendCard(cardIdx)
     console.log('card', card)
     if (card) {
       this.alreadyCards.push(card)
@@ -80,9 +81,8 @@ export class Game {
       this.currentColor = card.color
       this.currentPattern = card.pattern
       this.currentNum = card.num
-      // TODO： 黑色的牌暂定都换色为红
       if (card.color === EColor.A) {
-        this.currentColor = EColor.R
+        this.currentColor = curColor
         this.currentPattern = undefined
         this.currentNum = undefined
       }
