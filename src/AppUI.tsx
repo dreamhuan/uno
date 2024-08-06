@@ -5,6 +5,7 @@ import Time from './components/Time'
 import CardList from './components/CardList'
 import CardItem from './components/CardItem'
 import Operations from './components/Operations'
+import UserInfo from './components/UserInfo'
 import { Game } from './core/entity/Game'
 import { User } from './core/entity/User'
 import styles from './App.module.scss'
@@ -57,9 +58,17 @@ function App() {
             <Time />
           </div>
         </div>
-        <div className={styles.topUser}></div>
+        <div className={styles.topUser}>
+          <UserInfo></UserInfo>
+        </div>
+        <div className={styles.leftUser}>
+          <UserInfo></UserInfo>
+        </div>
+        <div className={styles.rightUser}>
+          <UserInfo></UserInfo>
+        </div>
         <div className={styles.CurrentCard}>
-          <div>当前出牌</div>
+          <div>上一轮出牌</div>
           <CardItem card={game.users[0].cards[0]} />
           <div>
             <span>累计惩罚抓牌数：</span>
@@ -70,7 +79,10 @@ function App() {
           <Operations />
         </div>
 
-        <div className={styles.UserCardList}>
+        <div className={styles.UserCardInfo}>
+          <div className={styles.MyUser}>
+            <UserInfo></UserInfo>
+          </div>
           <CardList user={game.users[0]} />
         </div>
       </div>

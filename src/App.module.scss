@@ -29,6 +29,28 @@
 
 .topUser {
   height: 100px;
+  display: flex;
+  justify-content: center;
+  margin-top: -25px;
+  margin-bottom: 35px;
+}
+
+.leftUser {
+  position: absolute;
+  left: 15px;
+  top: 190px;
+}
+
+.rightUser {
+  position: absolute;
+  right: 15px;
+  top: 190px;
+}
+
+.UserCard {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .CurrentCard {
@@ -50,10 +72,15 @@
 
 }
 
-.UserCardList {
+.UserCardInfo {
   width: 100%;
   position: absolute;
   bottom: 15px;
   display: flex;
   justify-content: center;
+  align-items: center;
+}
+.MyUser {
+  position: absolute;
+  left: 0;
 }
