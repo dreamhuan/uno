@@ -61,28 +61,28 @@ function App() {
             ) : (
               <RedoOutlined />
             )}
-            <div>颜色: {game.currentColor}</div>
+            <div>当前颜色: {game.currentColor}</div>
             <div>当前用户：{game.users[game.currentUserIdx].name}</div>
           </div>
-          <div>
+          {/* <div>
             <span>倒计时</span>
             <Time />
-          </div>
+          </div> */}
         </div>
         <div className={styles.topUser}>
-          <UserInfo></UserInfo>
+          <UserInfo imgIndex={2} isTurn={game.currentUserIdx === 2} user={game.users[2]}></UserInfo>
         </div>
         <div className={styles.leftUser}>
-          <UserInfo></UserInfo>
+          <UserInfo imgIndex={3} isTurn={game.currentUserIdx === 3} user={game.users[3]}></UserInfo>
         </div>
         <div className={styles.rightUser}>
-          <UserInfo></UserInfo>
+          <UserInfo imgIndex={1} isTurn={game.currentUserIdx === 1} user={game.users[1]}></UserInfo>
         </div>
         <div className={styles.CurrentCard}>
-          <div>当前出牌</div>
-          {game.prevCard && <CardItem card={game.prevCard} />}
+          <div>上一轮出牌</div>
+          {game.prevCard ? <CardItem card={game.prevCard} /> : <div className={styles.EmptyCard}></div>}
           <div>
-            <span>累计惩罚抓牌数：</span>
+            <span>累计惩罚抓牌数：{game.needAddCardNum}</span>
           </div>
         </div>
 
@@ -92,9 +92,11 @@ function App() {
 
         <div className={styles.UserCardInfo}>
           <div className={styles.MyUser}>
-            <UserInfo></UserInfo>
+            <UserInfo imgIndex={0} isTurn={game.currentUserIdx === 0} user={game.users[0]}></UserInfo>
           </div>
-          <CardList user={game.users[0]} />
+          <div className={styles.MyCardList}>
+            <CardList user={game.users[0]} />
+          </div>
         </div>
       </div>
 
