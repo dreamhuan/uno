@@ -9,7 +9,12 @@ export default function CardList({ user }: TProps) {
   return (
     <div className={styles.CardList}>
       {user.cards.map((card) => (
-        <CardItem card={card} />
+        <CardItem
+          card={card}
+          onClick={() => {
+            ;(window as any).currentCard = card
+          }}
+        />
       ))}
     </div>
   )

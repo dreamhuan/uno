@@ -7,13 +7,16 @@ import { ColorMapBgc, ColorMapC } from './constant'
 
 type IProps = {
   card: Card
+  onClick?: () => void
 }
 export default function CardItem(props: IProps) {
   const { card } = props
   const { type, color, num, pattern } = card
 
   return (
-    <div className={cx(styles.CardItem, ColorMapBgc[color])}>
+    <div className={cx(styles.CardItem, ColorMapBgc[color])} onClick={() => {
+      props.onClick?.()
+    }}>
       <div className={styles.Top}>
         {type === ECardType.Num ? (
           <div className={styles.Num}>{num}</div>

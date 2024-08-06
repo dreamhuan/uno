@@ -24,7 +24,11 @@ export default function Operations() {
   const [open, setOpen] = useState(false)
 
   const handleOpenChange = (newOpen: boolean) => {
-    setOpen(newOpen)
+    console.log((window as any).currentCard.type)
+    let currentCardType = (window as any).currentCard.type;
+    if(currentCardType === 'king') {
+      setOpen(newOpen)
+    }
   }
 
   return (
