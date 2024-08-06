@@ -26,14 +26,20 @@ console.log(GAME)
 
 export const GameContext = createContext<{
   game: Game
-  currentCard?: Card
   setGame: (game: Game) => void
-  setCurrentCard: (card: Card) => void
+  currentCard?: Card
+  setCurrentCard: (card?: Card) => void
+  currentCardIdx?: number
+  setCurrentCardIdx: (idx: number) => void
+  forceRender: () => void
 }>({} as any)
 
 function App() {
+  const [_, fRender] = useState(0)
+  const forceRender = () => fRender((prev) => prev + 1)
   const [game, setGame] = useState(GAME)
-  const [currentCard, setCurrentCard] = useState<Card>()
+  const [currentCard, setCurrentCard] = useState<Card | undefined>()
+  const [currentCardIdx, setCurrentCardIdx] = useState<number>(-1)
   return (
     <GameContext.Provider
       value={{
@@ -41,6 +47,9 @@ function App() {
         setGame,
         currentCard,
         setCurrentCard,
+        currentCardIdx,
+        setCurrentCardIdx,
+        forceRender,
       }}
     >
       <div className={cx(styles.Game, styles.Container)}>
@@ -52,6 +61,8 @@ function App() {
             ) : (
               <RedoOutlined />
             )}
+            <div>颜色: {game.currentColor}</div>
+            <div>当前用户：{game.users[game.currentUserIdx].name}</div>
           </div>
           <div>
             <span>倒计时</span>
@@ -68,8 +79,8 @@ function App() {
           <UserInfo></UserInfo>
         </div>
         <div className={styles.CurrentCard}>
-          <div>上一轮出牌</div>
-          <CardItem card={game.users[0].cards[0]} />
+          <div>当前出牌</div>
+          {game.prevCard && <CardItem card={game.prevCard} />}
           <div>
             <span>累计惩罚抓牌数：</span>
           </div>
@@ -85,6 +96,27 @@ function App() {
           </div>
           <CardList user={game.users[0]} />
         </div>
+      </div>
+
+      {game.users.map((user) => (
+        <div>
+          <div
+            style={{
+              color:
+                user.id === game.users[game.currentUserIdx].id
+                  ? 'red'
+                  : 'black',
+            }}
+          >
+            {user.name}
+          </div>
+          <CardList key={user.id} user={user} />
+        </div>
+      ))}
+      <div>已出牌列表：</div>
+      <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+        {game.alreadyCards &&
+          game.alreadyCards.map((card) => <CardItem card={card} />)}
       </div>
     </GameContext.Provider>
   )

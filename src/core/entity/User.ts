@@ -26,7 +26,7 @@ export class User {
   }
 
   sendCard(idx?: number) {
-    if (idx) {
+    if (typeof idx === 'number' && idx >= 0 && idx < this.cards.length) {
       const card = this.cards[idx]
       const canSend = checkSendCard(this.game, card)
       if (!canSend) {

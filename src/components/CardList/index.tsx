@@ -8,19 +8,18 @@ type TProps = {
   user: User
 }
 export default function CardList({ user }: TProps) {
-  const { setCurrentCard } = useContext(GameContext)
-  const [activeIndex, setActiveIndex] = useState(-1);
-
+  const { setCurrentCard, currentCardIdx, setCurrentCardIdx } =
+    useContext(GameContext)
 
   return (
     <div className={styles.CardList}>
       {user.cards.map((card, index) => (
         <CardItem
-          className={activeIndex === index ? styles.Active : ''}
+          className={currentCardIdx === index ? styles.Active : ''}
           card={card}
           onClick={() => {
             setCurrentCard(card)
-            setActiveIndex(index)
+            setCurrentCardIdx(index)
           }}
         />
       ))}
