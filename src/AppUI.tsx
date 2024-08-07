@@ -11,12 +11,16 @@ import { User } from './core/entity/User'
 import styles from './App.module.scss'
 import { EColor, ETurn } from './core/entity/common'
 import { Card } from './core/entity/Card'
+import user1Img from './assets/user1.jpg'
+import user2Img from './assets/user2.jpg'
+import user3Img from './assets/user3.jpg'
+import user4Img from './assets/user4.jpg'
 
 const GAME = new Game(4, 7)
-const user1 = new User('user1', 'xxx')
-const user2 = new User('user2', 'xxx')
-const user3 = new User('user3', 'xxx')
-const user4 = new User('user4', 'xxx')
+const user1 = new User('chy', user1Img)
+const user2 = new User('yz', user2Img)
+const user3 = new User('lyf', user3Img)
+const user4 = new User('fkq', user4Img)
 GAME.addUser(user1)
 GAME.addUser(user2)
 GAME.addUser(user3)
@@ -40,6 +44,7 @@ export const GameContext = createContext<{
   currentCardIdx?: number
   setCurrentCardIdx: (idx: number) => void
   forceRender: () => void
+  nextTurn: (cardIdx?: number, curColor?: EColor) => false | 'WIN' | 'UNO'
 }>({} as any)
 
 function App() {
@@ -55,6 +60,10 @@ function App() {
 
     return undefined;
   }, [game.currentColor])
+  const nextTurn = (cardIdx?: number, curColor?: EColor) => {
+    const res = game.nextTurn(cardIdx, curColor)
+    return res
+  }
 
   return (
     <GameContext.Provider
@@ -66,6 +75,7 @@ function App() {
         currentCardIdx,
         setCurrentCardIdx,
         forceRender,
+        nextTurn,
       }}
     >
       <div className={cx(styles.Game, styles.Container)}>
@@ -86,17 +96,41 @@ function App() {
           </div> */}
         </div>
         <div className={styles.topUser}>
-          <UserInfo imgIndex={2} isTurn={game.currentUserIdx === 2} user={game.users[2]}></UserInfo>
+          <UserInfo
+            placement="right"
+            imgSrc={user3Img}
+            isTurn={game.currentUserIdx === 2}
+            user={game.users[2]}
+          ></UserInfo>
         </div>
         <div className={styles.leftUser}>
-          <UserInfo imgIndex={3} isTurn={game.currentUserIdx === 3} user={game.users[3]}></UserInfo>
+          <UserInfo
+            placement="right"
+            imgSrc={user4Img}
+            isTurn={game.currentUserIdx === 3}
+            user={game.users[3]}
+          ></UserInfo>
         </div>
         <div className={styles.rightUser}>
-          <UserInfo imgIndex={1} isTurn={game.currentUserIdx === 1} user={game.users[1]}></UserInfo>
+          <UserInfo
+            placement="left"
+            imgSrc={user2Img}
+            isTurn={game.currentUserIdx === 1}
+            user={game.users[1]}
+          ></UserInfo>
         </div>
         <div className={styles.CurrentCard}>
-          <div>上一轮出牌</div>
-          {game.prevCard ? <CardItem card={game.prevCard} /> : <div className={styles.EmptyCard}></div>}
+          <div>已出牌</div>
+          {game.prevCard ? (
+            <div className={styles.AlreadyCards}>
+              {game.alreadyCards &&
+                game.alreadyCards
+                  .map((card) => <CardItem card={card} />)
+                  .slice(-4)}
+            </div>
+          ) : (
+            <div className={styles.EmptyCard}></div>
+          )}
           <div>
             <span>累计惩罚抓牌数：{game.needAddCardNum}</span>
           </div>
@@ -108,7 +142,11 @@ function App() {
 
         <div className={styles.UserCardInfo}>
           <div className={styles.MyUser}>
-            <UserInfo imgIndex={0} isTurn={game.currentUserIdx === 0} user={game.users[0]}></UserInfo>
+            <UserInfo
+              imgSrc={user1Img}
+              isTurn={game.currentUserIdx === 0}
+              user={game.users[0]}
+            ></UserInfo>
           </div>
           <div className={styles.MyCardList}>
             <CardList user={game.users[0]} />

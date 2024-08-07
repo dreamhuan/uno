@@ -17,8 +17,10 @@ export class Game {
   currentPattern?: EPattern // 当前出牌图案
   currentNum?: ENumber // 当前出牌数字
   currentUserIdx = 0 // 当前出牌用户下标
+  prevUser?: User // 上一个出牌用户
   prevCard?: Card // 上一个出牌
   needAddCardNum = 0 // 累计的惩罚抽牌数
+  isGetCard?: boolean // 是否抽牌
 
   constructor(userNum: number, beginNum?: number, cardGroupNum?: number) {
     this.userNum = userNum
@@ -49,6 +51,7 @@ export class Game {
 
   // 抽牌，返回还需要抽几张牌（可能剩余不够了）
   userGetCard(num: number) {
+    this.isGetCard = true
     const currentUser = this.users[this.currentUserIdx]
     while (--num >= 0) {
       const card = this.cards.pop()
@@ -76,6 +79,7 @@ export class Game {
     const card = cardIdx === -1 ? null : currentUser.sendCard(cardIdx)
     console.log('card', card)
     if (card) {
+      this.isGetCard = false
       this.alreadyCards.push(card)
       this.prevCard = card
       this.currentColor = card.color
@@ -86,6 +90,7 @@ export class Game {
         this.currentPattern = undefined
         this.currentNum = undefined
       }
+      let skipUser = null
       // 如果是+2，+4，需要累加抽牌
       if (card.pattern === EPattern.Two) {
         this.needAddCardNum += 2
@@ -96,6 +101,7 @@ export class Game {
         this.currentTurn = this.currentTurn === ETurn.CCW ? ETurn.CW : ETurn.CCW
       } else if (card.pattern === EPattern.Skip) {
         // 跳过
+        skipUser = this.users[this.currentUserIdx]
         this.currentUserIdx =
           this.currentTurn === ETurn.CCW
             ? (this.currentUserIdx + 1) % this.userNum
@@ -103,9 +109,11 @@ export class Game {
       }
       const unoStatus = checkUno(currentUser)
       if (unoStatus === 'WIN') {
+        this.prevUser = this.users[this.currentUserIdx]
         return 'WIN'
       } else {
         // 更换出牌用户下标
+        this.prevUser = skipUser ? skipUser : this.users[this.currentUserIdx]
         this.currentUserIdx =
           this.currentTurn === ETurn.CCW
             ? (this.currentUserIdx + 1) % this.userNum
@@ -114,10 +122,12 @@ export class Game {
       }
     } else {
       this.userGetCard(this.needAddCardNum || 1)
+      this.prevUser = this.users[this.currentUserIdx]
       this.currentUserIdx =
         this.currentTurn === ETurn.CCW
           ? (this.currentUserIdx + 1) % this.userNum
           : (this.currentUserIdx - 1 + this.userNum) % this.userNum
+      return false
     }
   }
 }
