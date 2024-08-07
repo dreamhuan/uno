@@ -10,8 +10,8 @@ export class User {
   cards: Card[] = []
   game!: Game
 
-  constructor(name: string, icon: string, cards?: Card[]) {
-    this.id = getRandomStr()
+  constructor(id: string, name: string, icon: string, cards?: Card[]) {
+    this.id = id || getRandomStr()
     this.name = name
     this.icon = icon
     this.cards = cards || []

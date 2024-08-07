@@ -25,7 +25,11 @@ const map = {
   },
 } as any
 
-export default function Operations() {
+export default function Operations({
+  hiddenNextTurn,
+}: {
+  hiddenNextTurn?: boolean
+}) {
   const {
     currentCard,
     currentCardIdx,
@@ -33,7 +37,7 @@ export default function Operations() {
     setCurrentCardIdx,
     game,
     forceRender,
-    nextTurn
+    nextTurn,
   } = useContext(GameContext)
   const [open, setOpen] = useState(false)
 
@@ -64,7 +68,7 @@ export default function Operations() {
   return (
     <div className={styles.Operations}>
       <Button
-        size='large'
+        size="large"
         onClick={() => {
           nextTurn(-1)
           setCurrentCardIdx(-1)
@@ -81,6 +85,7 @@ export default function Operations() {
               const { cls, color } = map[key]
               return (
                 <Button
+                  key={color}
                   shape="circle"
                   className={cx(styles.ColorBtn, cls)}
                   onClick={() => {
@@ -103,20 +108,24 @@ export default function Operations() {
         title="选择颜色"
         open={open}
       >
-        <Button size='large' onClick={palyFunc}>出牌</Button>
+        <Button size="large" onClick={palyFunc}>
+          出牌
+        </Button>
       </Popover>
-      <Button
-        size='large'
-        onClick={() => {
-          const status = nextTurn()
-          forceRender()
-          if (status) {
-            message.success(status)
-          }
-        }}
-      >
-        下一轮
-      </Button>
+      {!hiddenNextTurn && (
+        <Button
+          size="large"
+          onClick={() => {
+            const status = nextTurn()
+            forceRender()
+            if (status) {
+              message.success(status)
+            }
+          }}
+        >
+          下一轮
+        </Button>
+      )}
     </div>
   )
 }

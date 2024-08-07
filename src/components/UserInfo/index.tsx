@@ -27,14 +27,14 @@ export default function UserInfo({ user, isTurn, imgSrc, placement }: UProps) {
       [EColor.Y]: '黄',
     } as any
 
-    if(game.currentColor) {
+    if (game.currentColor) {
       currentColorText = mapColor[game.currentColor]
     }
     const mapPattern = {
-      [EPattern.Change]: '换'+ currentColorText +'色',
+      [EPattern.Change]: '换' + currentColorText + '色',
       [EPattern.Skip]: '禁',
       [EPattern.Turn]: currentColorText + '转',
-      [EPattern.Four]: '+4，换' + currentColorText +'色',
+      [EPattern.Four]: '+4，换' + currentColorText + '色',
       [EPattern.Two]: '+2',
     } as any
 
