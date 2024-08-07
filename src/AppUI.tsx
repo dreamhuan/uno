@@ -1,4 +1,4 @@
-import { createContext, useState } from 'react'
+import { createContext, useCallback, useMemo, useState } from 'react'
 import cx from 'classnames'
 import { RedoOutlined, UndoOutlined } from '@ant-design/icons'
 import Time from './components/Time'
@@ -9,7 +9,7 @@ import UserInfo from './components/UserInfo'
 import { Game } from './core/entity/Game'
 import { User } from './core/entity/User'
 import styles from './App.module.scss'
-import { ETurn } from './core/entity/common'
+import { EColor, ETurn } from './core/entity/common'
 import { Card } from './core/entity/Card'
 
 const GAME = new Game(4, 7)
@@ -23,6 +23,14 @@ GAME.addUser(user3)
 GAME.addUser(user4)
 GAME.init()
 console.log(GAME)
+
+const COLOR_MAP: Record<EColor, string> = {
+  [EColor.A]: '#000',
+  [EColor.R]: 'red',
+  [EColor.Y]: '#ffc107',
+  [EColor.B]: '#2156f3',
+  [EColor.G]: 'green',
+}
 
 export const GameContext = createContext<{
   game: Game
@@ -40,6 +48,14 @@ function App() {
   const [game, setGame] = useState(GAME)
   const [currentCard, setCurrentCard] = useState<Card | undefined>()
   const [currentCardIdx, setCurrentCardIdx] = useState<number>(-1)
+  const currentColorBlockStyle = useMemo(() => {
+    if (game.currentColor) {
+      return { backgroundColor: COLOR_MAP[game.currentColor] };
+    }
+
+    return undefined;
+  }, [game.currentColor])
+
   return (
     <GameContext.Provider
       value={{
@@ -61,7 +77,7 @@ function App() {
             ) : (
               <RedoOutlined />
             )}
-            <div>当前颜色: {game.currentColor}</div>
+            <div>当前颜色: <span className={styles.currentColorBlock} style={currentColorBlockStyle}>{game.currentColor}</span></div>
             <div>当前用户：{game.users[game.currentUserIdx].name}</div>
           </div>
           {/* <div>

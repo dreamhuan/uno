@@ -27,6 +27,12 @@
 
 }
 
+.currentColorBlock {
+  padding: 2px 4px;
+  line-height: 18px;
+  color: white;
+}
+
 .topUser {
   height: 124px;
   display: flex;
@@ -61,7 +67,7 @@
   & > div {
     text-align: center;
     width: 100%;
-    
+
   }
 }
 
