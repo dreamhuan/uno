@@ -33,6 +33,7 @@ export default function Operations() {
     setCurrentCardIdx,
     game,
     forceRender,
+    nextTurn
   } = useContext(GameContext)
   const [open, setOpen] = useState(false)
 
@@ -49,7 +50,7 @@ export default function Operations() {
     if (currentCard.type === ECardType.King) {
       setOpen(true)
     } else {
-      const status = game.nextTurn(currentCardIdx)
+      const status = nextTurn(currentCardIdx)
       setCurrentCardIdx(-1)
       setCurrentCard(undefined)
       if (status) {
@@ -65,7 +66,7 @@ export default function Operations() {
       <Button
         size='large'
         onClick={() => {
-          game.nextTurn(-1)
+          nextTurn(-1)
           setCurrentCardIdx(-1)
           setCurrentCard(undefined)
           forceRender()
@@ -83,7 +84,7 @@ export default function Operations() {
                   shape="circle"
                   className={cx(styles.ColorBtn, cls)}
                   onClick={() => {
-                    const status = game.nextTurn(currentCardIdx, key as EColor)
+                    const status = nextTurn(currentCardIdx, key as EColor)
                     if (status) {
                       message.success(status)
                     }
@@ -107,7 +108,7 @@ export default function Operations() {
       <Button
         size='large'
         onClick={() => {
-          const status = game.nextTurn()
+          const status = nextTurn()
           forceRender()
           if (status) {
             message.success(status)

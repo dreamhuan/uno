@@ -127,6 +127,7 @@ export class Game {
         this.currentTurn === ETurn.CCW
           ? (this.currentUserIdx + 1) % this.userNum
           : (this.currentUserIdx - 1 + this.userNum) % this.userNum
+      return false
     }
   }
 }

@@ -9,7 +9,7 @@ import UserInfo from './components/UserInfo'
 import { Game } from './core/entity/Game'
 import { User } from './core/entity/User'
 import styles from './App.module.scss'
-import { ETurn } from './core/entity/common'
+import { EColor, ETurn } from './core/entity/common'
 import { Card } from './core/entity/Card'
 import user1Img from './assets/user1.jpg'
 import user2Img from './assets/user2.jpg'
@@ -36,6 +36,7 @@ export const GameContext = createContext<{
   currentCardIdx?: number
   setCurrentCardIdx: (idx: number) => void
   forceRender: () => void
+  nextTurn: (cardIdx?: number, curColor?: EColor) => false | 'WIN' | 'UNO'
 }>({} as any)
 
 function App() {
@@ -44,6 +45,11 @@ function App() {
   const [game, setGame] = useState(GAME)
   const [currentCard, setCurrentCard] = useState<Card | undefined>()
   const [currentCardIdx, setCurrentCardIdx] = useState<number>(-1)
+
+  const nextTurn = (cardIdx?: number, curColor?: EColor) => {
+    const res = game.nextTurn(cardIdx, curColor)
+    return res
+  }
   return (
     <GameContext.Provider
       value={{
@@ -54,6 +60,7 @@ function App() {
         currentCardIdx,
         setCurrentCardIdx,
         forceRender,
+        nextTurn,
       }}
     >
       <div className={cx(styles.Game, styles.Container)}>
@@ -75,7 +82,7 @@ function App() {
         </div>
         <div className={styles.topUser}>
           <UserInfo
-            placement='right'
+            placement="right"
             imgSrc={user3Img}
             isTurn={game.currentUserIdx === 2}
             user={game.users[2]}
@@ -83,7 +90,7 @@ function App() {
         </div>
         <div className={styles.leftUser}>
           <UserInfo
-            placement='right'
+            placement="right"
             imgSrc={user4Img}
             isTurn={game.currentUserIdx === 3}
             user={game.users[3]}
@@ -91,7 +98,7 @@ function App() {
         </div>
         <div className={styles.rightUser}>
           <UserInfo
-            placement='left'
+            placement="left"
             imgSrc={user2Img}
             isTurn={game.currentUserIdx === 1}
             user={game.users[1]}
