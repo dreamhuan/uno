@@ -1,7 +1,6 @@
-import { createContext, useCallback, useMemo, useState } from 'react'
+import { createContext, useMemo, useState } from 'react'
 import cx from 'classnames'
 import { RedoOutlined, UndoOutlined } from '@ant-design/icons'
-import Time from './components/Time'
 import CardList from './components/CardList'
 import CardItem from './components/CardItem'
 import Operations from './components/Operations'
@@ -18,8 +17,8 @@ import user4Img from './assets/user4.jpg'
 
 const GAME = new Game(4, 7)
 const user1 = new User('chy', user1Img)
-const user2 = new User('yz', user2Img)
-const user3 = new User('lyf', user3Img)
+const user2 = new User('RiverTree', user2Img)
+const user3 = new User('health', user3Img)
 const user4 = new User('fkq', user4Img)
 GAME.addUser(user1)
 GAME.addUser(user2)
