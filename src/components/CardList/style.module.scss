@@ -1,10 +1,12 @@
 .CardList {
+  width: 740px;
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
 
   & > div {
     & {
-      margin-left: -50px;
+      margin-left: -55px;
     }
     &:nth-of-type(1) {
       margin-left: 0;

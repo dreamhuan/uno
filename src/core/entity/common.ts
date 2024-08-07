@@ -7,7 +7,7 @@ export enum EColor {
   R = 'red',
   Y = 'yellow',
   B = 'blue',
-  G = 'Green',
+  G = 'green',
 }
 export enum EPattern {
   Skip = 'Skip',

@@ -63,6 +63,7 @@ export default function Operations() {
   return (
     <div className={styles.Operations}>
       <Button
+        size='large'
         onClick={() => {
           game.nextTurn(-1)
           setCurrentCardIdx(-1)
@@ -101,9 +102,10 @@ export default function Operations() {
         title="选择颜色"
         open={open}
       >
-        <Button onClick={palyFunc}>出牌</Button>
+        <Button size='large' onClick={palyFunc}>出牌</Button>
       </Popover>
       <Button
+        size='large'
         onClick={() => {
           const status = game.nextTurn()
           forceRender()
