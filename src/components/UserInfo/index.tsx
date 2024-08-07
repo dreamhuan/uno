@@ -19,17 +19,22 @@ export default function UserInfo({ user, isTurn, imgSrc, placement }: UProps) {
   const curUser = game.prevUser
 
   const currentCardInfoFunc = (playCard: any, isGetCard: any) => {
+    let currentColorText = ''
     const mapColor = {
       [EColor.R]: '红',
       [EColor.G]: '绿',
       [EColor.B]: '蓝',
       [EColor.Y]: '黄',
     } as any
+
+    if(game.currentColor) {
+      currentColorText = mapColor[game.currentColor]
+    }
     const mapPattern = {
-      [EPattern.Change]: '变色',
+      [EPattern.Change]: '换'+ currentColorText +'色',
       [EPattern.Skip]: '禁',
-      [EPattern.Turn]: '转',
-      [EPattern.Four]: '+4',
+      [EPattern.Turn]: currentColorText + '转',
+      [EPattern.Four]: '+4，换' + currentColorText +'色',
       [EPattern.Two]: '+2',
     } as any
 
