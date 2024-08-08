@@ -8,4 +8,4 @@ export const COLOR_MAP: Record<EColor, string> = {
   [EColor.G]: 'green',
 }
 
-export const WEB_SOCKS_PORT = 3000;
+export const WEB_SOCKS_PORT = 3000

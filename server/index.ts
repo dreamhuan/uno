@@ -25,7 +25,7 @@ const startGame = () => {
   const GAME = new Game(4, 7)
   Object.keys(userMap).forEach((key) => {
     const userConf = userMap[key]
-    const imgIdx = Math.floor(Math.random() * 400)
+    const imgIdx = Math.floor(Math.random() * AvatarImgList.length)
     const user = new User(userConf.id, userConf.name, AvatarImgList[imgIdx])
     GAME.addUser(user)
   })
@@ -181,7 +181,7 @@ wss.on('connection', (ws: S) => {
   })
 })
 
-const port = 3000
-server.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`)
+export const SERVER_PORT = 3000
+server.listen(SERVER_PORT, () => {
+  console.log(`Server is running on http://localhost:${SERVER_PORT}`)
 })

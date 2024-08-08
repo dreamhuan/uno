@@ -68,7 +68,9 @@ function App() {
     return null
   }
 
-  const colorBgStyle = game.currentColor ? { backgroundColor: COLOR_MAP[game.currentColor] } : undefined;
+  const colorBgStyle = game.currentColor
+    ? { backgroundColor: COLOR_MAP[game.currentColor as EColor] }
+    : undefined
   const curUserIndex = game.users.findIndex((u: User) => u.id === game.userId)
 
   return (
@@ -92,7 +94,12 @@ function App() {
             ) : (
               <RedoOutlined />
             )}
-            <div>当前颜色: <span className={styles.currentColorBlock} style={colorBgStyle}>{game.currentColor}</span></div>
+            <div>
+              当前颜色:{' '}
+              <span className={styles.currentColorBlock} style={colorBgStyle}>
+                {game.currentColor}
+              </span>
+            </div>
             <div>当前用户：{game.users[game.currentUserIdx].name}</div>
           </div>
           {/* <div>
@@ -103,25 +110,25 @@ function App() {
         <div className={styles.topUser}>
           <UserInfo
             placement="right"
-            imgSrc={game.users[(curUserIndex+2) % 4].icon}
-            isTurn={game.currentUserIdx === (curUserIndex+2) % 4}
-            user={game.users[(curUserIndex+2) % 4]}
+            imgSrc={game.users[(curUserIndex + 2) % 4].icon}
+            isTurn={game.currentUserIdx === (curUserIndex + 2) % 4}
+            user={game.users[(curUserIndex + 2) % 4]}
           ></UserInfo>
         </div>
         <div className={styles.leftUser}>
           <UserInfo
             placement="right"
-            imgSrc={game.users[(curUserIndex+3) % 4].icon}
-            isTurn={game.currentUserIdx === (curUserIndex+3) % 4}
-            user={game.users[(curUserIndex+3) % 4]}
+            imgSrc={game.users[(curUserIndex + 3) % 4].icon}
+            isTurn={game.currentUserIdx === (curUserIndex + 3) % 4}
+            user={game.users[(curUserIndex + 3) % 4]}
           ></UserInfo>
         </div>
         <div className={styles.rightUser}>
           <UserInfo
             placement="left"
-            imgSrc={game.users[(curUserIndex+1) % 4].icon}
-            isTurn={game.currentUserIdx === (curUserIndex+1) % 4}
-            user={game.users[(curUserIndex+1) % 4]}
+            imgSrc={game.users[(curUserIndex + 1) % 4].icon}
+            isTurn={game.currentUserIdx === (curUserIndex + 1) % 4}
+            user={game.users[(curUserIndex + 1) % 4]}
           ></UserInfo>
         </div>
         <div className={styles.CurrentCard}>
