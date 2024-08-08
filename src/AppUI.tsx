@@ -1,4 +1,4 @@
-import { createContext, useMemo, useState } from 'react'
+import { createContext, useState } from 'react'
 import cx from 'classnames'
 import { RedoOutlined, UndoOutlined } from '@ant-design/icons'
 import CardList from './components/CardList'
@@ -14,6 +14,7 @@ import user1Img from './assets/user1.jpg'
 import user2Img from './assets/user2.jpg'
 import user3Img from './assets/user3.jpg'
 import user4Img from './assets/user4.jpg'
+import { COLOR_MAP } from './const.ts'
 
 const GAME = new Game(4, 7)
 const user1 = new User('', 'chy', user1Img)
@@ -27,14 +28,6 @@ GAME.addUser(user3)
 GAME.addUser(user4)
 GAME.init()
 console.log(GAME)
-
-const COLOR_MAP: Record<EColor, string> = {
-  [EColor.A]: '#000',
-  [EColor.R]: 'red',
-  [EColor.Y]: '#ffc107',
-  [EColor.B]: '#2156f3',
-  [EColor.G]: 'green',
-}
 
 export const GameContext = createContext<{
   game: Game
@@ -52,17 +45,11 @@ function App() {
   const [game, setGame] = useState(GAME)
   const [currentCard, setCurrentCard] = useState<Card | undefined>()
   const [currentCardIdx, setCurrentCardIdx] = useState<number>(-1)
-  const currentColorBlockStyle = useMemo(() => {
-    if (game.currentColor) {
-      return { backgroundColor: COLOR_MAP[game.currentColor] };
-    }
-
-    return undefined;
-  }, [game.currentColor])
   const nextTurn = (cardIdx?: number, curColor?: EColor) => {
     const res = game.nextTurn(cardIdx, curColor)
     return res
   }
+  const colorBgStyle = game.currentColor ? { backgroundColor: COLOR_MAP[game.currentColor] } : undefined;
 
   return (
     <GameContext.Provider
@@ -85,7 +72,7 @@ function App() {
             ) : (
               <RedoOutlined />
             )}
-            <div>当前颜色: <span className={styles.currentColorBlock} style={currentColorBlockStyle}>{game.currentColor}</span></div>
+            <div>当前颜色: <span className={styles.currentColorBlock} style={colorBgStyle}>{game.currentColor}</span></div>
             <div>当前用户：{game.users[game.currentUserIdx].name}</div>
           </div>
           {/* <div>

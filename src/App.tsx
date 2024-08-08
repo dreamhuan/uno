@@ -1,17 +1,16 @@
-import { createContext, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import cx from 'classnames'
 import { RedoOutlined, UndoOutlined } from '@ant-design/icons'
-import Time from './components/Time'
 import CardList from './components/CardList'
 import CardItem from './components/CardItem'
 import Operations from './components/Operations'
 import UserInfo from './components/UserInfo'
-import { Game } from './core/entity/Game'
 import { User } from './core/entity/User'
 import styles from './App.module.scss'
 import { EColor, ETurn } from './core/entity/common'
 import { Card } from './core/entity/Card'
 import { GameContext } from './AppUI'
+import { COLOR_MAP } from './const.ts'
 
 function App() {
   const [_, fRender] = useState(0)
@@ -67,7 +66,10 @@ function App() {
   if (!game) {
     return null
   }
+
+  const colorBgStyle = game.currentColor ? { backgroundColor: COLOR_MAP[game.currentColor] } : undefined;
   const curUserIndex = game.users.findIndex((u: User) => u.id === game.userId)
+
   return (
     <GameContext.Provider
       value={{
@@ -89,7 +91,7 @@ function App() {
             ) : (
               <RedoOutlined />
             )}
-            <div>当前颜色: {game.currentColor}</div>
+            <div>当前颜色: <span className={styles.currentColorBlock} style={colorBgStyle}>{game.currentColor}</span></div>
             <div>当前用户：{game.users[game.currentUserIdx].name}</div>
           </div>
           {/* <div>
