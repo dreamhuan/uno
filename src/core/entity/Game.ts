@@ -56,12 +56,16 @@ export class Game {
     while (--num >= 0) {
       const card = this.cards.pop()
       if (!card) {
-        return num + 1
+        // 牌不够了，重新洗牌
+        shuffleCard(this.alreadyCards)
+        this.cards.push(...this.alreadyCards)
+        const card = this.cards.pop()
+        currentUser.addCard(card!)
+        continue
       }
       currentUser.addCard(card)
     }
     this.needAddCardNum = 0
-    return 0
   }
 
   // cardIdx -1 则直接抽牌 ，否则出牌，颜色表示王牌选的色

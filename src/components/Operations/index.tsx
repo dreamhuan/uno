@@ -25,7 +25,11 @@ const map = {
   },
 } as any
 
-export default function Operations() {
+export default function Operations({
+  hiddenNextTurn,
+}: {
+  hiddenNextTurn?: boolean
+}) {
   const {
     currentCard,
     currentCardIdx,
@@ -33,7 +37,7 @@ export default function Operations() {
     setCurrentCardIdx,
     game,
     forceRender,
-    nextTurn
+    nextTurn,
   } = useContext(GameContext)
   const [open, setOpen] = useState(false)
 
@@ -61,10 +65,11 @@ export default function Operations() {
   }
 
   console.log('currentCard', currentCard)
+  const isFinished = game.users.some((p) => p.cards.length === 0) || location.search === '?r=0' // 游戏结束
   return (
     <div className={styles.Operations}>
       <Button
-        size='large'
+        size="large"
         onClick={() => {
           nextTurn(-1)
           setCurrentCardIdx(-1)
@@ -81,6 +86,7 @@ export default function Operations() {
               const { cls, color } = map[key]
               return (
                 <Button
+                  key={color}
                   shape="circle"
                   className={cx(styles.ColorBtn, cls)}
                   onClick={() => {
@@ -103,20 +109,38 @@ export default function Operations() {
         title="选择颜色"
         open={open}
       >
-        <Button size='large' onClick={palyFunc}>出牌</Button>
+        <Button size="large" onClick={palyFunc}>
+          出牌
+        </Button>
       </Popover>
-      <Button
-        size='large'
+      {!hiddenNextTurn && (
+        <Button
+          size="large"
+          onClick={() => {
+            const status = nextTurn()
+            forceRender()
+            if (status) {
+              message.success(status)
+            }
+          }}
+        >
+          下一轮
+        </Button>
+      )}
+      {isFinished && (
+        <Button
+        size="large"
         onClick={() => {
-          const status = nextTurn()
-          forceRender()
-          if (status) {
-            message.success(status)
-          }
+          window.socketSend({
+            type: 'restart',
+            data: {},
+          })
         }}
       >
-        下一轮
+        重开
       </Button>
+      )}
+      
     </div>
   )
 }

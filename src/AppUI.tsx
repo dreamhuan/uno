@@ -16,10 +16,11 @@ import user3Img from './assets/user3.jpg'
 import user4Img from './assets/user4.jpg'
 
 const GAME = new Game(4, 7)
-const user1 = new User('chy', user1Img)
-const user2 = new User('RiverTree', user2Img)
-const user3 = new User('health', user3Img)
-const user4 = new User('fkq', user4Img)
+const user1 = new User('', 'chy', user1Img)
+const user2 = new User('', 'RiverTree', user2Img)
+const user3 = new User('', 'health', user3Img)
+const user4 = new User('', 'fkq', user4Img)
+
 GAME.addUser(user1)
 GAME.addUser(user2)
 GAME.addUser(user3)
@@ -37,7 +38,6 @@ const COLOR_MAP: Record<EColor, string> = {
 
 export const GameContext = createContext<{
   game: Game
-  setGame: (game: Game) => void
   currentCard?: Card
   setCurrentCard: (card?: Card) => void
   currentCardIdx?: number
@@ -68,7 +68,6 @@ function App() {
     <GameContext.Provider
       value={{
         game,
-        setGame,
         currentCard,
         setCurrentCard,
         currentCardIdx,
@@ -124,7 +123,7 @@ function App() {
             <div className={styles.AlreadyCards}>
               {game.alreadyCards &&
                 game.alreadyCards
-                  .map((card) => <CardItem card={card} />)
+                  .map((card) => <CardItem key={card.id} card={card} />)
                   .slice(-4)}
             </div>
           ) : (
@@ -154,7 +153,7 @@ function App() {
       </div>
 
       {game.users.map((user) => (
-        <div>
+        <div key={user.id}>
           <div
             style={{
               color:
@@ -171,7 +170,9 @@ function App() {
       <div>已出牌列表：</div>
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         {game.alreadyCards &&
-          game.alreadyCards.map((card) => <CardItem card={card} />)}
+          game.alreadyCards.map((card) => (
+            <CardItem key={card.id} card={card} />
+          ))}
       </div>
     </GameContext.Provider>
   )

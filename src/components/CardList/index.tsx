@@ -15,6 +15,7 @@ export default function CardList({ user }: TProps) {
     <div className={styles.CardList}>
       {user.cards.map((card, index) => (
         <CardItem
+          key={card.id}
           className={currentCardIdx === index ? styles.Active : ''}
           card={card}
           onClick={() => {

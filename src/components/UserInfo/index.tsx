@@ -1,8 +1,8 @@
 import styles from './style.module.scss'
 import { User } from '../../core/entity/User'
 import cx from 'classnames'
-import { Popover } from 'antd'
-import { useContext } from 'react'
+import { Input, Modal, Popover } from 'antd'
+import { useContext, useRef } from 'react'
 import { GameContext } from '../../AppUI'
 import { ECardType, EColor, EPattern } from '../../core/entity/common'
 
@@ -15,6 +15,7 @@ type UProps = {
 
 export default function UserInfo({ user, isTurn, imgSrc, placement }: UProps) {
   const { game } = useContext(GameContext)
+  const ref = useRef<any>()
 
   const curUser = game.prevUser
 
@@ -27,14 +28,14 @@ export default function UserInfo({ user, isTurn, imgSrc, placement }: UProps) {
       [EColor.Y]: '黄',
     } as any
 
-    if(game.currentColor) {
+    if (game.currentColor) {
       currentColorText = mapColor[game.currentColor]
     }
     const mapPattern = {
-      [EPattern.Change]: '换'+ currentColorText +'色',
+      [EPattern.Change]: '换' + currentColorText + '色',
       [EPattern.Skip]: '禁',
       [EPattern.Turn]: currentColorText + '转',
-      [EPattern.Four]: '+4，换' + currentColorText +'色',
+      [EPattern.Four]: '+4，换' + currentColorText + '色',
       [EPattern.Two]: '+2',
     } as any
 
@@ -51,6 +52,26 @@ export default function UserInfo({ user, isTurn, imgSrc, placement }: UProps) {
     }
   }
 
+  const setInfo = () => {
+    Modal.confirm({
+      content: (
+        <div>
+          <Input placeholder="请输入昵称" ref={ref} />
+        </div>
+      ),
+      onOk: () => {
+        console.log(ref.current?.input?.value)
+        window.socketSend({
+          type: 'user',
+          data: {
+            id: user.id,
+            name: ref.current?.input?.value,
+          },
+        })
+      },
+    })
+  }
+
   return (
     <Popover
       placement={placement}
@@ -59,7 +80,7 @@ export default function UserInfo({ user, isTurn, imgSrc, placement }: UProps) {
     >
       <div className={cx(styles.UserInfo, isTurn ? styles.playTurnBg : '')}>
         <div className={styles.InfoBox}>
-          <div className={styles.headImgInfo}>
+          <div className={styles.headImgInfo} onClick={setInfo}>
             <img src={imgSrc} alt="" />
             <div>{user.name}</div>
           </div>
