@@ -1,6 +1,6 @@
 .Game {
   width: 1000px;
-  height: 500px;
+  height: 520px;
   border: 1px solid #aaa;
   border-radius: 4px;
   background-color: #f0f0f0;
@@ -26,6 +26,12 @@
     margin-right: 10px;
   }
 
+}
+
+.currentColorBlock {
+  padding: 2px 4px;
+  line-height: 18px;
+  color: white;
 }
 
 .topUser {
@@ -62,7 +68,7 @@
   & > div {
     text-align: center;
     width: 100%;
-    
+
   }
 }
 

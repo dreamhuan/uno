@@ -1,7 +1,6 @@
 import { createContext, useState } from 'react'
 import cx from 'classnames'
 import { RedoOutlined, UndoOutlined } from '@ant-design/icons'
-import Time from './components/Time'
 import CardList from './components/CardList'
 import CardItem from './components/CardItem'
 import Operations from './components/Operations'
@@ -15,12 +14,14 @@ import user1Img from './assets/user1.jpg'
 import user2Img from './assets/user2.jpg'
 import user3Img from './assets/user3.jpg'
 import user4Img from './assets/user4.jpg'
+import { COLOR_MAP } from './const.ts'
 
 const GAME = new Game(4, 7)
 const user1 = new User('', 'chy', user1Img)
-const user2 = new User('', 'yz', user2Img)
-const user3 = new User('', 'lyf', user3Img)
+const user2 = new User('', 'RiverTree', user2Img)
+const user3 = new User('', 'health', user3Img)
 const user4 = new User('', 'fkq', user4Img)
+
 GAME.addUser(user1)
 GAME.addUser(user2)
 GAME.addUser(user3)
@@ -44,15 +45,11 @@ function App() {
   const [game, setGame] = useState(GAME)
   const [currentCard, setCurrentCard] = useState<Card | undefined>()
   const [currentCardIdx, setCurrentCardIdx] = useState<number>(-1)
-
   const nextTurn = (cardIdx?: number, curColor?: EColor) => {
     const res = game.nextTurn(cardIdx, curColor)
     return res
   }
-
-  // const getCurrentUserIdx = () => {
-  //    return game.users.findIndex(u=>u.id===game.userId)
-  // }
+  const colorBgStyle = game.currentColor ? { backgroundColor: COLOR_MAP[game.currentColor] } : undefined;
 
   return (
     <GameContext.Provider
@@ -75,7 +72,7 @@ function App() {
             ) : (
               <RedoOutlined />
             )}
-            <div>当前颜色: {game.currentColor}</div>
+            <div>当前颜色: <span className={styles.currentColorBlock} style={colorBgStyle}>{game.currentColor}</span></div>
             <div>当前用户：{game.users[game.currentUserIdx].name}</div>
           </div>
           {/* <div>
