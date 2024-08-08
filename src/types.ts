@@ -8,10 +8,11 @@ declare global {
 }
 
 type TMessageSendData = {
-  type: 'open' | 'init' | 'action'
+  type: 'open' | 'init' | 'action' | 'user' | 'restart'
   data: {
     id?: string
     name?: string
+    icon?: string
     cardIdx?: number // -1表示抽排
     curColor?: EColor
   }

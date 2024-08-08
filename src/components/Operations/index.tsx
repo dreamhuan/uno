@@ -65,6 +65,7 @@ export default function Operations({
   }
 
   console.log('currentCard', currentCard)
+  const isFinished = game.users.some((p) => p.cards.length === 0) || location.search === '?r=0' // 游戏结束
   return (
     <div className={styles.Operations}>
       <Button
@@ -126,6 +127,20 @@ export default function Operations({
           下一轮
         </Button>
       )}
+      {isFinished && (
+        <Button
+        size="large"
+        onClick={() => {
+          window.socketSend({
+            type: 'restart',
+            data: {},
+          })
+        }}
+      >
+        重开
+      </Button>
+      )}
+      
     </div>
   )
 }

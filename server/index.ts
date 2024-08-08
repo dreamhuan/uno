@@ -6,6 +6,7 @@ import { WebSocket } from 'ws'
 import { router } from './router'
 import { Game } from '../src/core/entity/Game'
 import { User } from '../src/core/entity/User'
+import { AvatarImgList } from '../src/components/UserInfo/AvatarImgList'
 
 const app = new Koa()
 app
@@ -24,7 +25,8 @@ const startGame = () => {
   const GAME = new Game(4, 7)
   Object.keys(userMap).forEach((key) => {
     const userConf = userMap[key]
-    const user = new User(userConf.id, userConf.name, 'xxx')
+    const imgIdx = Math.floor(Math.random() * 400)
+    const user = new User(userConf.id, userConf.name, AvatarImgList[imgIdx])
     GAME.addUser(user)
   })
   GAME.init()
@@ -62,8 +64,8 @@ const getGameDataByUserId = (game?: Game, userId?: string) => {
         id: u.id,
         name: u.name,
         icon: u.icon,
-        // cards: u.id === user.id ? u.cards : [],
-        cards: u.cards,
+        cards:u.cards.map((card) => u.id === user.id ? card : 0),
+        // cards: u.cards,
       }
     }),
     alreadyCards: game?.alreadyCards,
@@ -137,6 +139,35 @@ wss.on('connection', (ws: S) => {
             )
           })
         }
+        break
+      }
+      case 'user': {
+        console.log(data)
+        const { id, name, icon } = data.data
+        const curUser = globalGame.users.find((u) => u.id === id)
+        if (!curUser) break
+        curUser.name = name
+        globalGame.users.forEach((user) => {
+          userMap[user.id].client.send(
+            JSON.stringify({
+              type: 'start',
+              data: getGameDataByUserId(globalGame, user.id),
+            })
+          )
+        })
+        break
+      }
+      case 'restart': {
+        game = startGame()
+        globalGame = game
+        game.users.forEach((user) => {
+          userMap[user.id].client.send(
+            JSON.stringify({
+              type: 'start',
+              data: getGameDataByUserId(game, user.id),
+            })
+          )
+        })
         break
       }
     }

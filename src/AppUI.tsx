@@ -49,6 +49,11 @@ function App() {
     const res = game.nextTurn(cardIdx, curColor)
     return res
   }
+
+  // const getCurrentUserIdx = () => {
+  //    return game.users.findIndex(u=>u.id===game.userId)
+  // }
+
   return (
     <GameContext.Provider
       value={{

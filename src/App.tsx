@@ -11,22 +11,7 @@ import { User } from './core/entity/User'
 import styles from './App.module.scss'
 import { EColor, ETurn } from './core/entity/common'
 import { Card } from './core/entity/Card'
-import user1Img from './assets/user1.jpg'
-import user2Img from './assets/user2.jpg'
-import user3Img from './assets/user3.jpg'
-import user4Img from './assets/user4.jpg'
 import { GameContext } from './AppUI'
-
-const GAME = new Game(4, 7)
-const user1 = new User('', 'chy', user1Img)
-const user2 = new User('', 'yz', user2Img)
-const user3 = new User('', 'lyf', user3Img)
-const user4 = new User('', 'fkq', user4Img)
-GAME.addUser(user1)
-GAME.addUser(user2)
-GAME.addUser(user3)
-GAME.addUser(user4)
-GAME.init()
 
 function App() {
   const [_, fRender] = useState(0)
@@ -82,7 +67,7 @@ function App() {
   if (!game) {
     return null
   }
-  const curUser = game.users.find((u: User) => u.id === game.userId)
+  const curUserIndex = game.users.findIndex((u: User) => u.id === game.userId)
   return (
     <GameContext.Provider
       value={{
@@ -115,25 +100,25 @@ function App() {
         <div className={styles.topUser}>
           <UserInfo
             placement="right"
-            imgSrc={user3Img}
-            isTurn={game.currentUserIdx === 2}
-            user={game.users[2]}
+            imgSrc={game.users[(curUserIndex+2) % 4].icon}
+            isTurn={game.currentUserIdx === (curUserIndex+2) % 4}
+            user={game.users[(curUserIndex+2) % 4]}
           ></UserInfo>
         </div>
         <div className={styles.leftUser}>
           <UserInfo
             placement="right"
-            imgSrc={user4Img}
-            isTurn={game.currentUserIdx === 3}
-            user={game.users[3]}
+            imgSrc={game.users[(curUserIndex+3) % 4].icon}
+            isTurn={game.currentUserIdx === (curUserIndex+3) % 4}
+            user={game.users[(curUserIndex+3) % 4]}
           ></UserInfo>
         </div>
         <div className={styles.rightUser}>
           <UserInfo
             placement="left"
-            imgSrc={user2Img}
-            isTurn={game.currentUserIdx === 1}
-            user={game.users[1]}
+            imgSrc={game.users[(curUserIndex+1) % 4].icon}
+            isTurn={game.currentUserIdx === (curUserIndex+1) % 4}
+            user={game.users[(curUserIndex+1) % 4]}
           ></UserInfo>
         </div>
         <div className={styles.CurrentCard}>
@@ -160,18 +145,18 @@ function App() {
         <div className={styles.UserCardInfo}>
           <div className={styles.MyUser}>
             <UserInfo
-              imgSrc={user1Img}
-              isTurn={game.currentUserIdx === 0}
-              user={curUser}
+              imgSrc={game.users[curUserIndex].icon}
+              isTurn={game.currentUserIdx === curUserIndex}
+              user={game.users[curUserIndex]}
             ></UserInfo>
           </div>
           <div className={styles.MyCardList}>
-            <CardList user={curUser} />
+            <CardList user={game.users[curUserIndex]} />
           </div>
         </div>
       </div>
 
-      {game.users.map((user: User) => (
+      {/* {game.users.map((user: User) => (
         <div key={user.id}>
           <div
             style={{
@@ -185,7 +170,7 @@ function App() {
           </div>
           <CardList key={user.id} user={user} />
         </div>
-      ))}
+      ))} */}
       <div>已出牌列表：</div>
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         {game.alreadyCards &&

@@ -4,7 +4,7 @@ import AppUI from './AppUI.tsx'
 import App from './App.tsx'
 import './index.css'
 
-const isRemote = location.search === '?remote=1'
+const isRemote = location.search.startsWith('?r')
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>{isRemote ? <App /> : <AppUI />}</React.StrictMode>
 )
