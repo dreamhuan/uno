@@ -2,17 +2,54 @@ import * as path from 'node:path'
 import * as http from 'node:http'
 import * as Koa from 'koa'
 import * as KoaStatic from 'koa-static'
+import * as cors from 'koa2-cors'
+import { koaBody } from 'koa-body'
+import * as Router from '@koa/router'
 import { WebSocket } from 'ws'
 import { historyApiFallback } from 'koa2-connect-history-api-fallback'
-import { router } from './router'
 import { Game } from '../src/core/entity/Game'
 import { User } from '../src/core/entity/User'
 import { AvatarImgList } from '../src/components/UserInfo/AvatarImgList'
 
+const DEFAULT_COUNT = 4
+let userCount = 0
+
+const router = new Router({
+  prefix: '/api',
+})
+router.get('/userCount', (ctx) => {
+  ctx.body = {
+    status: 0,
+    data: {
+      value: userCount,
+    },
+    msg: 'success',
+  }
+})
+router.post('/userCount', (ctx: any) => {
+  let body = {} as any
+  try {
+    body = JSON.parse(ctx.request.body)
+  } catch (e) {
+    console.error(e)
+  }
+  userCount = Number(body?.userCount) || DEFAULT_COUNT
+  console.log('/userCount', { body, userCount })
+  ctx.body = {
+    status: 0,
+    data: {
+      value: userCount,
+    },
+    msg: 'success',
+  }
+})
+
 const app = new Koa()
 app
+  .use(cors())
   .use(historyApiFallback({ whiteList: ['/api'] }))
   .use(KoaStatic(path.join(__dirname, 'public')))
+  .use(koaBody())
   .use(router.routes())
   .use(router.allowedMethods())
 
@@ -24,7 +61,7 @@ let userMap = {} as Record<string, any>
 
 let globalGame: Game | null = null
 const startGame = () => {
-  const GAME = new Game(4, 7)
+  const GAME = new Game(userCount || DEFAULT_COUNT, 7)
   Object.keys(userMap).forEach((key) => {
     const userConf = userMap[key]
     const imgIdx = Math.floor(Math.random() * AvatarImgList.length)
@@ -88,7 +125,7 @@ wss.on('connection', (ws: S) => {
         } else {
           userMap[ws.id].client = ws
         }
-        if (userList.length >= 4) {
+        if (userList.length >= (userCount || DEFAULT_COUNT)) {
           game = globalGame || startGame()
           game.users.forEach((user) => {
             userMap[user.id].client.send(
@@ -145,7 +182,7 @@ wss.on('connection', (ws: S) => {
         break
       }
       case 'restart': {
-        if (userList.length >= 4) {
+        if (userList.length >= (userCount || DEFAULT_COUNT)) {
           game = startGame()
           globalGame = game
           game.users.forEach((user) => {
@@ -163,6 +200,7 @@ wss.on('connection', (ws: S) => {
         userList = []
         userMap = {}
         globalGame = null
+        userCount = 0
         break
       }
     }

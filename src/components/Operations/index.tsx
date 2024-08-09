@@ -128,10 +128,6 @@ export default function Operations({
         </div>
       )}
 
-      {isMyTurn && !isNoGrab && !isShowGrab && (
-        <div style={{ width: '100%' }}>存在他人可抢牌情况 请稍候</div>
-      )}
-
       {!hiddenNextTurn && (
         <Button
           size="large"
@@ -159,6 +155,11 @@ export default function Operations({
           重开
         </Button>
       )}
+
+      {isMyTurn && !isNoGrab && !isShowGrab && !isFinished && (
+        <div style={{ width: '100%' }}>存在他人可抢牌情况 请稍候</div>
+      )}
+
       {isShowGrab && (
         <div className={styles.Operations}>
           <Button

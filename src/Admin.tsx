@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button } from 'antd'
 import { WEB_SOCKS_PORT } from './const'
 
 export default function Admin() {
+  const [game, setGame] = useState<any>()
   useEffect(() => {
     async function main() {
       const currentURL = new URL(window.origin)
@@ -24,6 +25,9 @@ export default function Admin() {
         console.log('ws onmessage')
         const data = JSON.parse(e.data)
         console.log(data)
+        if (data.type === 'start') {
+          setGame?.(data.data)
+        }
       }
     }
     main()
@@ -51,6 +55,17 @@ export default function Admin() {
       >
         重置数据
       </Button>
+      {/* <Button size="large" onClick={() => {}}>
+        设置用户id
+      </Button> */}
+      <div>
+        <div>内部数据</div>
+        <div>当前用户id: {sessionStorage.getItem('randomId')}</div>
+        <div>
+          game 内部数据
+          <pre>{JSON.stringify(game, null, 2)}</pre>
+        </div>
+      </div>
     </div>
   )
 }
