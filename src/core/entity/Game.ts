@@ -21,6 +21,7 @@ export class Game {
   userId = '' // 当前游戏用户id，仅联机用到
   prevUser?: User // 上一个出牌用户
   prevCard?: Card // 上一个出牌
+  needAddCardList: Card[] = [] // 累计的+2+4
   needAddCardNum = 0 // 累计的惩罚抽牌数
   isGetCard?: boolean // 是否抽牌
   playFirstId = '' // 可以抢出牌的用户id，仅联机用到
@@ -70,6 +71,7 @@ export class Game {
       currentUser.addCard(card)
     }
     this.needAddCardNum = 0
+    this.needAddCardList = []
   }
 
   // 抢牌逻辑
@@ -195,8 +197,10 @@ export class Game {
       // 如果是+2，+4，需要累加抽牌
       if (card.pattern === EPattern.Two) {
         this.needAddCardNum += 2
+        this.needAddCardList.push(card)
       } else if (card.pattern === EPattern.Four) {
         this.needAddCardNum += 4
+        this.needAddCardList.push(card)
       } else if (card.pattern === EPattern.Turn) {
         // 换向
         this.currentTurn = this.currentTurn === ETurn.CCW ? ETurn.CW : ETurn.CCW
