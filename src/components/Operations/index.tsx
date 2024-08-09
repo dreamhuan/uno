@@ -40,7 +40,6 @@ export default function Operations({
     nextTurn,
   } = useContext(GameContext)
   const [open, setOpen] = useState(false)
-
   const palyFunc = () => {
     if (!currentCard) {
       message.error('请选择要出的牌')
@@ -65,54 +64,75 @@ export default function Operations({
   }
 
   console.log('currentCard', currentCard)
-  const isFinished = game.users.some((p) => p.cards.length === 0) || location.search === '?r=0' // 游戏结束
+  const isFinished =
+    game.users.some((p) => p.cards.length === 0) || location.search === '?r=0' // 游戏结束
+  const isNoGrab = game.playFirstId === '' //是否无抢牌人
+  const isMyTurn = game.currentUserId === game.userId // 是否轮到我出牌
+  const isCanDraw = isMyTurn && isNoGrab && !isFinished // 是否可以抓牌(轮到且无人抢且游戏未结束)
+  let isCanPlay = false
+  if (currentCard) {
+    const canPlay = checkSendCard(game, currentCard)
+    isCanPlay = isCanDraw && canPlay // 是否可以出牌(轮到且无人抢且选中的牌可出且游戏未结束)
+  }
+  const isShowGrab = game.playFirstId === game.userId && !isFinished // 是否显示抓牌按钮(游戏未结束)
+
   return (
     <div className={styles.Operations}>
-      <Button
-        size="large"
-        onClick={() => {
-          nextTurn(-1)
-          setCurrentCardIdx(-1)
-          setCurrentCard(undefined)
-          forceRender()
-        }}
-      >
-        抓牌
-      </Button>
-      <Popover
-        content={
-          <div>
-            {Object.keys(map).map((key) => {
-              const { cls, color } = map[key]
-              return (
-                <Button
-                  key={color}
-                  shape="circle"
-                  className={cx(styles.ColorBtn, cls)}
-                  onClick={() => {
-                    const status = nextTurn(currentCardIdx, key as EColor)
-                    if (status) {
-                      message.success(status)
-                    }
-                    setOpen(false)
-                    setCurrentCardIdx(-1)
-                    setCurrentCard(undefined)
-                    forceRender()
-                  }}
-                >
-                  {color}
-                </Button>
-              )
-            })}
-          </div>
-        }
-        title="选择颜色"
-        open={open}
-      >
-        <Button size="large" onClick={palyFunc}>
-          出牌
-        </Button>
-      </Popover>
+      {!isShowGrab && (
+        <div className={styles.Operations}>
+          <Button
+            size="large"
+            disabled={!isCanDraw}
+            onClick={() => {
+              nextTurn(-1)
+              setCurrentCardIdx(-1)
+              setCurrentCard(undefined)
+              forceRender()
+            }}
+          >
+            抓牌
+          </Button>
+          <Popover
+            content={
+              <div>
+                {Object.keys(map).map((key) => {
+                  const { cls, color } = map[key]
+                  return (
+                    <Button
+                      key={color}
+                      shape="circle"
+                      className={cx(styles.ColorBtn, cls)}
+                      onClick={() => {
+                        const status = nextTurn(currentCardIdx, key as EColor)
+                        if (status) {
+                          message.success(status)
+                        }
+                        setOpen(false)
+                        setCurrentCardIdx(-1)
+                        setCurrentCard(undefined)
+                        forceRender()
+                      }}
+                    >
+                      {color}
+                    </Button>
+                  )
+                })}
+              </div>
+            }
+            title="选择颜色"
+            open={open}
+          >
+            <Button size="large" onClick={palyFunc} disabled={!isCanPlay}>
+              出牌
+            </Button>
+          </Popover>
+        </div>
+      )}
+
+      {isMyTurn && !isNoGrab && !isShowGrab && (
+        <div style={{ width: '100%' }}>存在他人可抢牌情况 请稍候</div>
+      )}
+
       {!hiddenNextTurn && (
         <Button
           size="large"
@@ -129,18 +149,43 @@ export default function Operations({
       )}
       {isFinished && (
         <Button
-        size="large"
-        onClick={() => {
-          window.socketSend({
-            type: 'restart',
-            data: {},
-          })
-        }}
-      >
-        重开
-      </Button>
+          size="large"
+          onClick={() => {
+            window.socketSend({
+              type: 'restart',
+              data: {},
+            })
+          }}
+        >
+          重开
+        </Button>
       )}
-      
+      {isShowGrab && (
+        <div className={styles.Operations}>
+          <Button
+            size="large"
+            onClick={() => {
+              nextTurn(-2)
+              setCurrentCardIdx(-1)
+              setCurrentCard(undefined)
+              forceRender()
+            }}
+          >
+            抢牌
+          </Button>
+          <Button
+            size="large"
+            onClick={() => {
+              nextTurn(-3)
+              setCurrentCardIdx(-1)
+              setCurrentCard(undefined)
+              forceRender()
+            }}
+          >
+            取消
+          </Button>
+        </div>
+      )}
     </div>
   )
 }

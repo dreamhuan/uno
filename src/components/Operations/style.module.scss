@@ -1,8 +1,10 @@
 .Operations {
   color: red;
-  width: 250px;
+  width: 300px;
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
+  text-align: center;
 }
 
 .ColorBtn {

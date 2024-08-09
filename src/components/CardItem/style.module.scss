@@ -9,6 +9,7 @@
   height: 100px;
   cursor: pointer;
   user-select: none;
+  transform: scale(1.3);
 }
 
 $Red: red;
@@ -78,6 +79,7 @@ $Black: black;
   font-weight: bold;
   color: #fff;
   line-height: 1;
+  padding: 1px;
 }
 
 .Bottom {

@@ -3,9 +3,9 @@
   align-items: center;
 }
 
-.InfoBox {
-  text-align: center;
-}
+// .InfoBox {
+//   text-align: center;
+// }
 
 .playTurnBg {
   background-color: #ffe4c4;
@@ -13,9 +13,8 @@
 }
 
 .headImgInfo {
-  width: 120px;
-  height: 85px;
-  padding-top: 9px;
+  width: 150px;
+  margin: 10px 0 5px;
   text-align: center;
 
   & > img {

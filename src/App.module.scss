@@ -35,23 +35,22 @@
 }
 
 .topUser {
-  height: 124px;
   display: flex;
   justify-content: center;
-  margin-top: -80px;
-  margin-bottom: 15px;
+  margin-top: -90px;
+  margin-bottom: 10px;
 }
 
 .leftUser {
   position: absolute;
   left: 15px;
-  top: 180px;
+  top: 170px;
 }
 
 .rightUser {
   position: absolute;
   right: 15px;
-  top: 180px;
+  top: 170px;
 }
 
 .UserCard {
@@ -76,11 +75,11 @@
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  margin: 5px 0;
+  margin: 20px 0;
 
   & > div {
     & {
-      margin-left: -55px;
+      margin-left: -47px;
     }
     &:nth-of-type(1) {
       margin-left: 0;
@@ -90,14 +89,14 @@
 
 .EmptyCard {
   width: 82px;
-  height: 102px;
+  height: 144px;
   margin: 6px;
 }
 
 .OperateBtns {
   display: flex;
   justify-content: center;
-  margin-top: 15px;
+  margin-top: 10px;
 }
 
 .UserCardInfo {
@@ -111,7 +110,4 @@
 .MyUser {
   position: absolute;
   left: 0;
-}
-.MyCardList {
-  height: 115px;
 }

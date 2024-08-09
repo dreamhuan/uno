@@ -79,12 +79,11 @@ export default function UserInfo({ user, isTurn, imgSrc, placement }: UProps) {
       open={curUser?.id === user.id}
     >
       <div className={cx(styles.UserInfo, isTurn ? styles.playTurnBg : '')}>
-        <div className={styles.InfoBox}>
-          <div className={styles.headImgInfo} onClick={setInfo}>
-            <img src={imgSrc} alt="" />
-            <div>{user.name}</div>
+        <div className={styles.headImgInfo} onClick={setInfo}>
+          <img src={imgSrc} alt="" />
+          <div>
+            {user.name}({user.cards.length})
           </div>
-          <div>剩余牌数： {user.cards.length}</div>
         </div>
       </div>
     </Popover>
