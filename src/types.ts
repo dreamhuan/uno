@@ -8,27 +8,12 @@ declare global {
 }
 
 type TMessageSendData = {
-  type: 'open' | 'init' | 'action' | 'user' | 'restart'
+  type: 'open' | 'action' | 'user' | 'restart'
   data: {
     id?: string
     name?: string
     icon?: string
     cardIdx?: number // -1表示抽排
     curColor?: EColor
-  }
-}
-
-type TMessageReceiveData = {
-  type: 'init' | 'start'
-  data: {
-    cardList?: Card[]
-    currentTurn: ETurn // 当前出牌顺序
-    currentColor?: EColor // 当前出牌颜色
-    currentPattern?: EPattern // 当前出牌图案
-    currentNum?: ENumber // 当前出牌数字
-    userIdList?: number[] // 出牌顺序
-    currentUserId: number // 当前出牌用户id
-    prevCard?: Card // 上一个出牌
-    needAddCardNum: number // 累计的惩罚抽牌数
   }
 }

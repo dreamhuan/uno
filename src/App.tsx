@@ -11,11 +11,12 @@ import { EColor, ETurn } from './core/entity/common'
 import { Card } from './core/entity/Card'
 import { GameContext } from './AppUI'
 import { COLOR_MAP, WEB_SOCKS_PORT } from './const.ts'
+import { Game } from './core/entity/Game.ts'
 
 function App() {
   const [_, fRender] = useState(0)
   const forceRender = () => fRender((prev) => prev + 1)
-  const [game, setGame] = useState<any>()
+  const [game, setGame] = useState<Game>()
   const [nextTurn, setNextTurn] = useState<any>()
   const [currentCard, setCurrentCard] = useState<Card | undefined>()
   const [currentCardIdx, setCurrentCardIdx] = useState<number>(-1)
@@ -31,7 +32,12 @@ function App() {
           randomId = Math.random().toString(36).substring(2, 15)
           sessionStorage.setItem('randomId', randomId)
         }
-        ws.send(JSON.stringify({ type: 'open', id: randomId }))
+
+        if (location.search === '?r=999') {
+          ws.send(JSON.stringify({ type: 'reset' }))
+        } else {
+          ws.send(JSON.stringify({ type: 'open', id: randomId }))
+        }
 
         window.socketSend = (data) => {
           const str = JSON.stringify(data)
@@ -65,7 +71,7 @@ function App() {
 
   console.log('game', game)
   if (!game) {
-    return null
+    return <div>waiting...</div>
   }
 
   const colorBgStyle = game.currentColor

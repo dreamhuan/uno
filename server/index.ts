@@ -17,10 +17,10 @@ app
 const server = http.createServer(app.callback())
 const wss = new WebSocket.Server({ server })
 
-const userList = [] as string[]
-const userMap = {} as Record<string, any>
+let userList = [] as string[]
+let userMap = {} as Record<string, any>
 
-let globalGame: Game
+let globalGame: Game | null = null
 const startGame = () => {
   const GAME = new Game(4, 7)
   Object.keys(userMap).forEach((key) => {
@@ -35,7 +35,7 @@ const startGame = () => {
   return GAME
 }
 
-const getGameDataByUserId = (game?: Game, userId?: string) => {
+const getGameDataByUserId = (game: Game | null, userId?: string) => {
   const user = game?.users.find((user) => user.id === userId)
   if (!user) return null
   let prevUser
@@ -48,29 +48,19 @@ const getGameDataByUserId = (game?: Game, userId?: string) => {
     }
   }
   return {
+    ...game,
     userId: user.id,
-    userList,
-    cardList: user.cards,
-    currentTurn: game?.currentTurn,
-    currentColor: game?.currentColor,
-    currentPattern: game?.currentPattern,
-    currentNum: game?.currentNum,
-    currentUserIdx: game?.currentUserIdx,
     currentUserId: game?.users[game?.currentUserIdx].id,
-    prevCard: game?.prevCard,
-    needAddCardNum: game?.needAddCardNum,
+    prevUser,
     users: game?.users.map((u) => {
       return {
         id: u.id,
         name: u.name,
         icon: u.icon,
-        cards:u.cards.map((card) => u.id === user.id ? card : 0),
+        cards: u.cards.map((card) => (u.id === user.id ? card : 0)),
         // cards: u.cards,
       }
     }),
-    alreadyCards: game?.alreadyCards,
-    prevUser,
-    isGetCard: game?.isGetCard,
   }
 }
 type S = WebSocket & { id: string }
@@ -96,7 +86,7 @@ wss.on('connection', (ws: S) => {
         } else {
           userMap[ws.id].client = ws
         }
-        if (userList.length === 4) {
+        if (userList.length >= 4) {
           game = globalGame || startGame()
           game.users.forEach((user) => {
             userMap[user.id].client.send(
@@ -109,27 +99,20 @@ wss.on('connection', (ws: S) => {
         }
         break
       }
-      case 'init':
-        userMap[ws.id].name = data.name
-        wss.clients.forEach((client) => {
-          if (client.readyState === WebSocket.OPEN) {
-            client.send(
-              JSON.stringify({
-                type: 'init',
-                data: {
-                  userIdList: userList,
-                },
-              })
-            )
-          }
-        })
-        break
       case 'action': {
         console.log(data)
+        if (!globalGame) break
         const { userId, cardIdx, curColor } = data.data
         const curUser = globalGame.users[globalGame.currentUserIdx]
-        if (curUser.id === userId) {
-          globalGame.nextTurn(cardIdx, curColor)
+        // -2 抢，-3 过
+        if (curUser.id === userId || [-2, -3].includes(cardIdx)) {
+          if (cardIdx === -2) {
+            globalGame.playFirst(userId)
+          } else if (cardIdx === -3) {
+            globalGame.skipPlayFirst()
+          } else {
+            globalGame.nextTurn(cardIdx, curColor)
+          }
           globalGame.users.forEach((user) => {
             userMap[user.id].client.send(
               JSON.stringify({
@@ -143,10 +126,12 @@ wss.on('connection', (ws: S) => {
       }
       case 'user': {
         console.log(data)
-        const { id, name, icon } = data.data
+        if (!globalGame) break
+        const { id, name } = data.data
         const curUser = globalGame.users.find((u) => u.id === id)
         if (!curUser) break
         curUser.name = name
+        userMap[id].name = name
         globalGame.users.forEach((user) => {
           userMap[user.id].client.send(
             JSON.stringify({
@@ -170,10 +155,16 @@ wss.on('connection', (ws: S) => {
         })
         break
       }
+      case 'reset': {
+        userList = []
+        userMap = {}
+        globalGame = null
+        break
+      }
     }
 
     // console.log(userMap)
-    // console.log(userList)
+    console.log(userList)
   })
 
   ws.on('close', () => {

@@ -17,10 +17,14 @@ export class Game {
   currentPattern?: EPattern // 当前出牌图案
   currentNum?: ENumber // 当前出牌数字
   currentUserIdx = 0 // 当前出牌用户下标
+  currentUserId = '' // 当前出牌用户id，仅联机用到
+  userId = '' // 当前游戏用户id，仅联机用到
   prevUser?: User // 上一个出牌用户
   prevCard?: Card // 上一个出牌
   needAddCardNum = 0 // 累计的惩罚抽牌数
   isGetCard?: boolean // 是否抽牌
+  playFirstId = '' // 可以抢出牌的用户id，仅联机用到
+  playFirstCardId = '' // 可以抢出牌的牌的id，仅联机用到
 
   constructor(userNum: number, beginNum?: number, cardGroupNum?: number) {
     this.userNum = userNum
@@ -68,6 +72,99 @@ export class Game {
     this.needAddCardNum = 0
   }
 
+  // 抢牌逻辑
+  checkPlayFirst(card: Card) {
+    this.playFirstId = ''
+    this.playFirstCardId = ''
+    if (card.type === ECardType.Num) {
+      this.users.some((user) => {
+        const theSameCard = user.cards.find(
+          (c) => c.num === card.num && c.color === card.color
+        )
+        if (theSameCard) {
+          this.playFirstId = user.id
+          this.playFirstCardId = theSameCard.id
+          return true
+        }
+      })
+    }
+  }
+
+  playFirst(userId: string) {
+    if (this.playFirstId !== userId) {
+      return
+    }
+    let currentUser: User | undefined
+    let currentUserIdx: number | undefined
+    let cardIdx: number | undefined
+    this.users.forEach((user, i) => {
+      if (user.id === userId) {
+        currentUser = user
+        currentUserIdx = i
+        user.cards.forEach((card, j) => {
+          if (card.id === this.playFirstCardId) {
+            cardIdx = j
+          }
+        })
+      }
+    })
+    this.playFirstId = ''
+    this.playFirstCardId = ''
+    console.log('playFirst', currentUser, currentUserIdx, cardIdx)
+    if (
+      currentUser === undefined ||
+      currentUserIdx === undefined ||
+      cardIdx === undefined
+    ) {
+      return
+    }
+    this.currentUserIdx = currentUserIdx
+    this.currentUserId = currentUser.id
+    console.log('game============', {
+      currentTurn: this.currentTurn,
+      currentColor: this.currentColor,
+      currentPattern: this.currentPattern,
+      currentNum: this.currentNum,
+      currentUserIdx: this.currentUserIdx,
+      prevCard: this.prevCard,
+      needAddCardNum: this.needAddCardNum,
+    })
+    const card = currentUser.sendCard(cardIdx)
+    console.log('card', card)
+    if (card) {
+      this.isGetCard = false
+      this.alreadyCards.push(card)
+      this.prevCard = card
+      this.currentColor = card.color
+      this.currentPattern = card.pattern
+      this.currentNum = card.num
+
+      const unoStatus = checkUno(currentUser)
+      this.prevUser = this.users[this.currentUserIdx]
+      if (unoStatus === 'WIN') {
+        if (card.type === ECardType.Num) {
+          return 'WIN'
+        } else {
+          // 最后一张不是数字牌要再抓一张
+          this.userGetCard(1)
+          return 'UNO'
+        }
+      } else {
+        // 更换出牌用户下标
+        this.currentUserIdx =
+          this.currentTurn === ETurn.CCW
+            ? (this.currentUserIdx + 1) % this.userNum
+            : (this.currentUserIdx - 1 + this.userNum) % this.userNum
+        return unoStatus
+      }
+    }
+  }
+
+  skipPlayFirst() {
+    this.playFirstId = ''
+    this.playFirstCardId = ''
+  }
+
   // cardIdx -1 则直接抽牌 ，否则出牌，颜色表示王牌选的色
   nextTurn(cardIdx?: number, curColor: EColor = EColor.R) {
     console.log('game============', {
@@ -111,10 +208,18 @@ export class Game {
             ? (this.currentUserIdx + 1) % this.userNum
             : (this.currentUserIdx - 1 + this.userNum) % this.userNum
       }
+      // 抢牌逻辑判断
+      this.checkPlayFirst(card)
       const unoStatus = checkUno(currentUser)
       if (unoStatus === 'WIN') {
         this.prevUser = this.users[this.currentUserIdx]
-        return 'WIN'
+        if (card.type === ECardType.Num) {
+          return 'WIN'
+        } else {
+          // 最后一张不是数字牌要再抓一张
+          this.userGetCard(1)
+          return 'UNO'
+        }
       } else {
         // 更换出牌用户下标
         this.prevUser = skipUser ? skipUser : this.users[this.currentUserIdx]
