@@ -32,13 +32,7 @@ function App() {
           randomId = Math.random().toString(36).substring(2, 15)
           sessionStorage.setItem('randomId', randomId)
         }
-
-        if (location.search === '?r=999') {
-          ws.send(JSON.stringify({ type: 'reset' }))
-        } else {
-          ws.send(JSON.stringify({ type: 'open', id: randomId }))
-        }
-
+        ws.send(JSON.stringify({ type: 'open', id: randomId }))
         window.socketSend = (data) => {
           const str = JSON.stringify(data)
           ws.send(str)

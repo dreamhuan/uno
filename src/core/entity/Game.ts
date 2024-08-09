@@ -221,7 +221,16 @@ export class Game {
           return 'WIN'
         } else {
           // 最后一张不是数字牌要再抓一张
-          this.userGetCard(1)
+          const card = this.cards.pop()
+          if (!card) {
+            // 牌不够了，重新洗牌
+            shuffleCard(this.alreadyCards)
+            this.cards.push(...this.alreadyCards)
+            const card = this.cards.pop()
+            currentUser.addCard(card!)
+          } else {
+            currentUser.addCard(card)
+          }
           return 'UNO'
         }
       } else {

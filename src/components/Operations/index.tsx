@@ -64,8 +64,7 @@ export default function Operations({
   }
 
   console.log('currentCard', currentCard)
-  const isFinished =
-    game.users.some((p) => p.cards.length === 0) || location.search === '?r=0' // 游戏结束
+  const isFinished = game.users.some((p) => p.cards.length === 0) // 游戏结束
   const isNoGrab = game.playFirstId === '' //是否无抢牌人
   const isMyTurn = game.currentUserId === game.userId // 是否轮到我出牌
   const isCanDraw = isMyTurn && isNoGrab && !isFinished // 是否可以抓牌(轮到且无人抢且游戏未结束)

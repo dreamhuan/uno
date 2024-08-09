@@ -3,6 +3,7 @@ import * as http from 'node:http'
 import * as Koa from 'koa'
 import * as KoaStatic from 'koa-static'
 import { WebSocket } from 'ws'
+import { historyApiFallback } from 'koa2-connect-history-api-fallback'
 import { router } from './router'
 import { Game } from '../src/core/entity/Game'
 import { User } from '../src/core/entity/User'
@@ -10,6 +11,7 @@ import { AvatarImgList } from '../src/components/UserInfo/AvatarImgList'
 
 const app = new Koa()
 app
+  .use(historyApiFallback({ whiteList: ['/api'] }))
   .use(KoaStatic(path.join(__dirname, 'public')))
   .use(router.routes())
   .use(router.allowedMethods())
@@ -143,16 +145,18 @@ wss.on('connection', (ws: S) => {
         break
       }
       case 'restart': {
-        game = startGame()
-        globalGame = game
-        game.users.forEach((user) => {
-          userMap[user.id].client.send(
-            JSON.stringify({
-              type: 'start',
-              data: getGameDataByUserId(game, user.id),
-            })
-          )
-        })
+        if (userList.length >= 4) {
+          game = startGame()
+          globalGame = game
+          game.users.forEach((user) => {
+            userMap[user.id].client.send(
+              JSON.stringify({
+                type: 'start',
+                data: getGameDataByUserId(game, user.id),
+              })
+            )
+          })
+        }
         break
       }
       case 'reset': {

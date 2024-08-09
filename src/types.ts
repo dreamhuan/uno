@@ -8,7 +8,7 @@ declare global {
 }
 
 type TMessageSendData = {
-  type: 'open' | 'action' | 'user' | 'restart'
+  type: 'open' | 'action' | 'user' | 'restart' | 'reset'
   data: {
     id?: string
     name?: string

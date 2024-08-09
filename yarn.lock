@@ -505,6 +505,10 @@
     rc-resize-observer "^1.3.1"
     rc-util "^5.38.0"
 
+"@remix-run/router@1.19.0":
+  version "1.19.0"
+  resolved "https://registry.npmmirror.com/@remix-run/router/-/router-1.19.0.tgz#745dbffbce67f05386d57ca22c51dfd85c979593"
+
 "@rollup/rollup-android-arm-eabi@4.20.0":
   version "4.20.0"
   resolved "https://registry.npmmirror.com/@rollup/rollup-android-arm-eabi/-/rollup-android-arm-eabi-4.20.0.tgz#c3f5660f67030c493a981ac1d34ee9dfe1d8ec0f"
@@ -1668,6 +1672,10 @@ koa-static@^5.0.0:
     debug "^3.1.0"
     koa-send "^5.0.0"
 
+koa2-connect-history-api-fallback@^0.1.3:
+  version "0.1.3"
+  resolved "https://registry.npmmirror.com/koa2-connect-history-api-fallback/-/koa2-connect-history-api-fallback-0.1.3.tgz#dd07b6183ab111d48a6e14f0896d39397c2b879b"
+
 koa@^2.15.3:
   version "2.15.3"
   resolved "https://registry.npmmirror.com/koa/-/koa-2.15.3.tgz#062809266ee75ce0c75f6510a005b0e38f8c519a"
@@ -2246,6 +2254,19 @@ react-refresh@^0.14.2:
   version "0.14.2"
   resolved "https://registry.npmmirror.com/react-refresh/-/react-refresh-0.14.2.tgz#3833da01ce32da470f1f936b9d477da5c7028bf9"
 
+react-router-dom@^6.26.0:
+  version "6.26.0"
+  resolved "https://registry.npmmirror.com/react-router-dom/-/react-router-dom-6.26.0.tgz#8debe13295c58605c04f93018d659a763245e58c"
+  dependencies:
+    "@remix-run/router" "1.19.0"
+    react-router "6.26.0"
+
+react-router@6.26.0:
+  version "6.26.0"
+  resolved "https://registry.npmmirror.com/react-router/-/react-router-6.26.0.tgz#d5af4c46835b202348ef2b7ddacd32a2db539fde"
+  dependencies:
+    "@remix-run/router" "1.19.0"
+
 react@^18.3.1:
   version "18.3.1"
   resolved "https://registry.npmmirror.com/react/-/react-18.3.1.tgz#49ab892009c53933625bd16b2533fc754cab2891"
@@ -2517,6 +2538,10 @@ uri-js@^4.2.2:
   dependencies:
     punycode "^2.1.0"
 
+use-sync-external-store@1.2.0:
+  version "1.2.0"
+  resolved "https://registry.npmmirror.com/use-sync-external-store/-/use-sync-external-store-1.2.0.tgz#7dbefd6ef3fe4e767a0cf5d7287aacfb5846928a"
+
 v8-compile-cache-lib@^3.0.1:
   version "3.0.1"
   resolved "https://registry.npmmirror.com/v8-compile-cache-lib/-/v8-compile-cache-lib-3.0.1.tgz#6336e8d71965cb3d35a1bbb7868445a7c05264bf"
@@ -2568,3 +2593,9 @@ yn@3.1.1:
 yocto-queue@^0.1.0:
   version "0.1.0"
   resolved "https://registry.npmmirror.com/yocto-queue/-/yocto-queue-0.1.0.tgz#0294eb3dee05028d31ee1a5fa2c556a6aaf10a1b"
+
+zustand@^4.5.4:
+  version "4.5.4"
+  resolved "https://registry.npmmirror.com/zustand/-/zustand-4.5.4.tgz#63abdd81edfb190bc61e0bbae045cc4d52158a05"
+  dependencies:
+    use-sync-external-store "1.2.0"
