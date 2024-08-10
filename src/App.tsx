@@ -10,7 +10,7 @@ import styles from './App.module.scss'
 import { EColor, ETurn } from './core/entity/common'
 import { Card } from './core/entity/Card'
 import { GameContext } from './AppUI'
-import { COLOR_MAP, WEB_SOCKS_PORT } from './const.ts'
+import { COLOR_MAP, WS_SERVER_URL } from './const.ts'
 import { Game } from './core/entity/Game.ts'
 
 function App() {
@@ -23,8 +23,7 @@ function App() {
 
   useEffect(() => {
     async function main() {
-      const currentURL = new URL(window.origin)
-      const ws = new WebSocket(`ws://${currentURL.hostname}:${WEB_SOCKS_PORT}`)
+      const ws = new WebSocket(WS_SERVER_URL)
       ws.onopen = function () {
         console.log('ws onopen')
         let randomId = sessionStorage.getItem('randomId')

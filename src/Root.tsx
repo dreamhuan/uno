@@ -1,14 +1,11 @@
 import { Button, Input, message, Modal } from 'antd'
 import { useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { WEB_SOCKS_PORT } from './const'
+import { WS_SERVER_HOST } from './const.ts'
 
 export default function Root() {
   const navigate = useNavigate()
   const ref = useRef<any>()
-
-  const currentURL = new URL(window.origin)
-  const prefix = `//${currentURL.hostname}:${WEB_SOCKS_PORT}`
 
   return (
     <div>
@@ -22,7 +19,7 @@ export default function Root() {
       </Button>
       <Button
         onClick={async () => {
-          const resp = await fetch(`${prefix}/api/userCount`)
+          const resp = await fetch(`//${WS_SERVER_HOST}/api/userCount`)
           const res = await resp.json()
           console.log(res)
           if (res?.data?.value) {
@@ -42,7 +39,7 @@ export default function Root() {
                 message.error('人数必须为4-8的数字（包含4,8）')
                 return
               }
-              const resp = await fetch(`${prefix}/api/userCount`, {
+              const resp = await fetch(`//${WS_SERVER_HOST}/api/userCount`, {
                 method: 'POST',
                 body: JSON.stringify({ userCount: value || 4 }),
               })

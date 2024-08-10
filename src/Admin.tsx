@@ -1,20 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Button, Input, message, Modal } from 'antd'
 import ReactJson from 'react-json-view'
-import { WEB_SOCKS_PORT } from './const'
+import { WS_SERVER_HOST, WS_SERVER_URL } from './const.ts'
 
 export default function Admin() {
   const [game, setGame] = useState<any>()
   const refNum = useRef<any>()
   const refId = useRef<any>()
 
-  const currentURL = new URL(window.origin)
-  const prefix = `//${currentURL.hostname}:${WEB_SOCKS_PORT}`
-
   useEffect(() => {
     async function main() {
-      const currentURL = new URL(window.origin)
-      const ws = new WebSocket(`ws://${currentURL.hostname}:${WEB_SOCKS_PORT}`)
+      const ws = new WebSocket(WS_SERVER_URL)
       ws.onopen = function () {
         console.log('ws onopen')
         let randomId = sessionStorage.getItem('randomId')
@@ -77,7 +73,7 @@ export default function Admin() {
                 message.error('人数必须为4-8的数字（包含4,8）')
                 return
               }
-              const resp = await fetch(`${prefix}/api/userCount`, {
+              const resp = await fetch(`//${WS_SERVER_HOST}/api/userCount`, {
                 method: 'POST',
                 body: JSON.stringify({ userCount: value }),
               })

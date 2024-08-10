@@ -214,7 +214,9 @@ wss.on('connection', (ws: S) => {
   })
 })
 
-export const SERVER_PORT = 3000
-server.listen(SERVER_PORT, () => {
-  console.log(`Server is running on http://localhost:${SERVER_PORT}`)
+const SERVER_PORT = 3000
+const HOSTNAME = 'localhost';
+
+server.listen(SERVER_PORT, HOSTNAME, () => {
+  console.log(`Server is running on http://${HOSTNAME}:${SERVER_PORT}`)
 })
