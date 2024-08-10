@@ -73,7 +73,10 @@ export default function Operations({
     const canPlay = checkSendCard(game, currentCard)
     isCanPlay = isCanDraw && canPlay // 是否可以出牌(轮到且无人抢且选中的牌可出且游戏未结束)
   }
-  const isShowGrab = game.playFirstId === game.userId && !isFinished // 是否显示抓牌按钮(游戏未结束)
+  let isShowGrab = false
+  if (game.playFirstCardId && game.userId) {
+    isShowGrab = game.playFirstId === game.userId && !isFinished // 是否显示抢牌按钮(游戏未结束)
+  }
 
   return (
     <div className={styles.Operations}>
@@ -125,35 +128,34 @@ export default function Operations({
               出牌
             </Button>
           </Popover>
+          {isFinished && (
+            <Button
+              size="large"
+              onClick={() => {
+                window.socketSend({
+                  type: 'restart',
+                  data: {},
+                })
+              }}
+            >
+              重开
+            </Button>
+          )}
+          {!hiddenNextTurn && (
+            <Button
+              size="large"
+              onClick={() => {
+                const status = nextTurn()
+                forceRender()
+                if (status) {
+                  message.success(status)
+                }
+              }}
+            >
+              下一轮
+            </Button>
+          )}
         </div>
-      )}
-
-      {!hiddenNextTurn && (
-        <Button
-          size="large"
-          onClick={() => {
-            const status = nextTurn()
-            forceRender()
-            if (status) {
-              message.success(status)
-            }
-          }}
-        >
-          下一轮
-        </Button>
-      )}
-      {isFinished && (
-        <Button
-          size="large"
-          onClick={() => {
-            window.socketSend({
-              type: 'restart',
-              data: {},
-            })
-          }}
-        >
-          重开
-        </Button>
       )}
 
       {isMyTurn && !isNoGrab && !isShowGrab && !isFinished && (
