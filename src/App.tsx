@@ -73,6 +73,45 @@ function App() {
     : undefined
   const curUserIndex = game.users.findIndex((u: User) => u.id === game.userId)
 
+  const userNum = game.users.length
+  // 屏幕右上左三方的用户下标
+  let userPartArr = [] as any
+  switch (userNum) {
+    case 4:
+      userPartArr = [[1], [2], [3]]
+      break
+    case 5:
+      userPartArr = [[1], [2, 3], [4]]
+      break
+    case 6:
+      userPartArr = [[1, 2], [3, 4], [5]]
+      break
+    case 7:
+      userPartArr = [
+        [1, 2],
+        [3, 4],
+        [5, 6],
+      ]
+      break
+    case 8:
+      userPartArr = [
+        [1, 2],
+        [3, 4, 5],
+        [6, 7],
+      ]
+      break
+  }
+  userPartArr.forEach((arr: any) => {
+    arr.forEach((item: number, i: number) => {
+      arr[i] = (item + curUserIndex) % userNum
+    })
+  })
+
+  console.log({
+    userNum,
+    userPartArr,
+  })
+
   return (
     <GameContext.Provider
       value={{
@@ -108,37 +147,60 @@ function App() {
           </div> */}
         </div>
         <div className={styles.topUser}>
-          <UserInfo
+          {/* <UserInfo
             placement="right"
             imgSrc={game.users[(curUserIndex + 2) % 4].icon}
             isTurn={game.currentUserIdx === (curUserIndex + 2) % 4}
             user={game.users[(curUserIndex + 2) % 4]}
-          ></UserInfo>
+          ></UserInfo> */}
+          {userPartArr[1].reverse().map((userIdx: number) => (
+            <UserInfo
+              placement="right"
+              imgSrc={game.users[userIdx].icon}
+              isTurn={game.currentUserIdx === userIdx}
+              user={game.users[userIdx]}
+            ></UserInfo>
+          ))}
         </div>
         <div className={styles.leftUser}>
-          <UserInfo
+          {/* <UserInfo
             placement="right"
             imgSrc={game.users[(curUserIndex + 3) % 4].icon}
             isTurn={game.currentUserIdx === (curUserIndex + 3) % 4}
             user={game.users[(curUserIndex + 3) % 4]}
-          ></UserInfo>
+          ></UserInfo> */}
+          {userPartArr[2].map((userIdx: number) => (
+            <UserInfo
+              placement="right"
+              imgSrc={game.users[userIdx].icon}
+              isTurn={game.currentUserIdx === userIdx}
+              user={game.users[userIdx]}
+            ></UserInfo>
+          ))}
         </div>
         <div className={styles.rightUser}>
-          <UserInfo
+          {/* <UserInfo
             placement="left"
             imgSrc={game.users[(curUserIndex + 1) % 4].icon}
             isTurn={game.currentUserIdx === (curUserIndex + 1) % 4}
             user={game.users[(curUserIndex + 1) % 4]}
-          ></UserInfo>
+          ></UserInfo> */}
+          {userPartArr[0].reverse().map((userIdx: number) => (
+            <UserInfo
+              placement="right"
+              imgSrc={game.users[userIdx].icon}
+              isTurn={game.currentUserIdx === userIdx}
+              user={game.users[userIdx]}
+            ></UserInfo>
+          ))}
         </div>
         <div className={styles.CurrentCard}>
           <div>已出牌</div>
           {game.prevCard ? (
             <div className={styles.AlreadyCards}>
-              {game.alreadyCards &&
-                game.alreadyCards
-                  .map((card: Card) => <CardItem key={card.id} card={card} />)
-                  .slice(-4)}
+              {game.alreadyCards?.slice(-4)?.map((card: Card) => (
+                <CardItem key={card.id} card={card} />
+              ))}
             </div>
           ) : (
             <div className={styles.EmptyCard}></div>
@@ -182,7 +244,7 @@ function App() {
         </div>
       ))} */}
       <div>已出牌列表：</div>
-      <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', marginTop: 20 }}>
         {game.alreadyCards &&
           game.alreadyCards.map((card: Card) => (
             <CardItem key={card.id} card={card} />
