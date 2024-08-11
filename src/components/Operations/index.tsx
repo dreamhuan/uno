@@ -134,7 +134,9 @@ export default function Operations({
               onClick={() => {
                 window.socketSend({
                   type: 'restart',
-                  data: {},
+                  data: {
+                    userId: sessionStorage.getItem('userId') || '',
+                  },
                 })
               }}
             >

@@ -64,7 +64,7 @@ export default function UserInfo({ user, isTurn, imgSrc, placement }: UProps) {
         window.socketSend({
           type: 'user',
           data: {
-            id: user.id,
+            userId: user.id,
             name: ref.current?.input?.value,
           },
         })

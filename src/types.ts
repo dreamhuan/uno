@@ -10,7 +10,8 @@ declare global {
 type TMessageSendData = {
   type: 'open' | 'action' | 'user' | 'restart' | 'reset'
   data: {
-    id?: string
+    userId?: string
+    roomId?:string
     name?: string
     icon?: string
     cardIdx?: number // -1表示抽排

@@ -5,6 +5,7 @@ import { Game } from './Game'
 
 export class User {
   id: string
+  roomId?: string
   name: string
   icon: string
   cards: Card[] = []

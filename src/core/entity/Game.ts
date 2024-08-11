@@ -4,6 +4,8 @@ import { Card } from './Card'
 import { User } from './User'
 
 export class Game {
+  roomId!: string // 房间号，仅联机用到
+  isStarted = false // 游戏是否开始，仅联机用到
   userNum!: number // 玩家数量
   cardGroupNum = 1 // 用几组牌，一组108张
   beginNum = 7 // 每个玩家初始手牌数量
@@ -35,10 +37,50 @@ export class Game {
       this.cards.push(...genAGroupOfCard())
     }
   }
+  setUserNum(userNum: number) {
+    this.userNum = userNum
+    return this
+  }
+  setBeginNum(beginNum: number) {
+    this.beginNum = beginNum || 7
+    return this
+  }
+  setCardGroupNum(cardGroupNum: number) {
+    this.cardGroupNum = cardGroupNum || 1
+    this.cards = []
+    for (let i = 0; i < this.cardGroupNum; i++) {
+      this.cards.push(...genAGroupOfCard())
+    }
+    return this
+  }
 
   addUser(user: User) {
     user.game = this
     this.users.push(user)
+  }
+
+  reset() {
+    this.isStarted = false
+    this.users = []
+    this.cards = []
+    this.alreadyCards = []
+    this.currentTurn = ETurn.CCW
+    this.currentColor = undefined
+    this.currentPattern = undefined
+    this.currentNum = undefined
+    this.currentUserIdx = 0
+    this.currentUserId = ''
+    this.userId = ''
+    this.prevUser = undefined
+    this.prevCard = undefined
+    this.needAddCardList = []
+    this.needAddCardNum = 0
+    this.isGetCard = false
+    this.playFirstId = ''
+    this.playFirstCardId = ''
+    for (let i = 0; i < this.cardGroupNum; i++) {
+      this.cards.push(...genAGroupOfCard())
+    }
   }
 
   init() {

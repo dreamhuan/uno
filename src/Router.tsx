@@ -1,5 +1,5 @@
 import React, { lazy, Suspense, useEffect, useState } from 'react'
-import Root from './Root.tsx'
+import Home from './Home.tsx'
 import './index.css'
 
 const AppUI = lazy(() => import('./AppUI.tsx'))
@@ -9,7 +9,7 @@ const Admin = lazy(() => import('./Admin.tsx'))
 const routerMap = {
   '/': {
     path: '/',
-    element: <Root />,
+    element: <Home />,
   },
   '/local': {
     path: '/local',

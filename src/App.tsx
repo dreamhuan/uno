@@ -14,27 +14,37 @@ import { COLOR_MAP, WS_SERVER_URL } from './const.ts'
 import { Game } from './core/entity/Game.ts'
 
 function App() {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, fRender] = useState(0)
   const forceRender = () => fRender((prev) => prev + 1)
   const [game, setGame] = useState<Game>()
   const [nextTurn, setNextTurn] = useState<any>()
   const [currentCard, setCurrentCard] = useState<Card | undefined>()
   const [currentCardIdx, setCurrentCardIdx] = useState<number>(-1)
+  const [roomId, setRoomId] = useState<string>()
 
   useEffect(() => {
     async function main() {
       const ws = new WebSocket(WS_SERVER_URL)
       ws.onopen = function () {
         console.log('ws onopen')
+        window.socketSend = (data) => {
+          const str = JSON.stringify(data)
+          ws.send(str)
+        }
+
         let randomId = sessionStorage.getItem('randomId')
+        const roomId = sessionStorage.getItem('sessionRoomId')
         if (!randomId) {
           randomId = Math.random().toString(36).substring(2, 15)
           sessionStorage.setItem('randomId', randomId)
         }
-        ws.send(JSON.stringify({ type: 'open', id: randomId }))
-        window.socketSend = (data) => {
-          const str = JSON.stringify(data)
-          ws.send(str)
+        if (roomId) {
+          setRoomId(roomId)
+          window.socketSend({
+            type: 'open',
+            data: { userId: randomId, roomId },
+          })
         }
       }
       ws.onmessage = function (e) {
@@ -42,16 +52,14 @@ function App() {
         const data = JSON.parse(e.data)
         console.log(data)
         const nextTurn = (cardIdx?: number, curColor: EColor = EColor.R) => {
-          ws.send(
-            JSON.stringify({
-              type: 'action',
-              data: {
-                userId: sessionStorage.getItem('randomId'),
-                cardIdx,
-                curColor,
-              },
-            })
-          )
+          window.socketSend({
+            type: 'action',
+            data: {
+              userId: sessionStorage.getItem('randomId') || '',
+              cardIdx,
+              curColor,
+            },
+          })
         }
         if (data.type === 'start') {
           setGame?.(data.data)
@@ -64,7 +72,12 @@ function App() {
 
   console.log('game', game)
   if (!game) {
-    return <div>waiting...</div>
+    return (
+      <div>
+        <div>roomId: {roomId}</div>
+        <div>{roomId ? 'waiting...' : '请回到首页加入或创建房间'}</div>
+      </div>
+    )
   }
 
   const colorBgStyle = game.currentColor

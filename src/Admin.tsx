@@ -6,23 +6,32 @@ const ReactJson = lazy(() => import('react-json-view'))
 
 export default function Admin() {
   const [game, setGame] = useState<any>()
+  const [remoteData, setRemoteData] = useState<any>()
   const refNum = useRef<any>()
   const refId = useRef<any>()
+  const refRoomId = useRef<any>()
 
   useEffect(() => {
     async function main() {
       const ws = new WebSocket(WS_SERVER_URL)
       ws.onopen = function () {
         console.log('ws onopen')
+        window.socketSend = (data) => {
+          const str = JSON.stringify(data)
+          ws.send(str)
+        }
+
         let randomId = sessionStorage.getItem('randomId')
         if (!randomId) {
           randomId = Math.random().toString(36).substring(2, 15)
           sessionStorage.setItem('randomId', randomId)
         }
-        ws.send(JSON.stringify({ type: 'open', id: randomId }))
-        window.socketSend = (data) => {
-          const str = JSON.stringify(data)
-          ws.send(str)
+        const roomId = sessionStorage.getItem('sessionRoomId')
+        if (roomId) {
+          window.socketSend({
+            type: 'open',
+            data: { userId: randomId, roomId },
+          })
         }
       }
       ws.onmessage = function (e) {
@@ -33,6 +42,11 @@ export default function Admin() {
           setGame?.(data.data)
         }
       }
+
+      const resp = await fetch(`//${WS_SERVER_HOST}/api/storeData`)
+      const res = await resp.json()
+      console.log(res)
+      setRemoteData(res.data)
     }
     main()
   }, [])
@@ -45,7 +59,9 @@ export default function Admin() {
         onClick={() => {
           window.socketSend({
             type: 'restart',
-            data: {},
+            data: {
+              userId: sessionStorage.getItem('randomId') || '',
+            },
           })
         }}
       >
@@ -104,6 +120,24 @@ export default function Admin() {
       >
         设置用户id
       </Button>
+      <Button
+        size="large"
+        onClick={async () => {
+          Modal.confirm({
+            content: (
+              <div>
+                <Input placeholder="id" ref={refRoomId} />
+              </div>
+            ),
+            onOk: async () => {
+              const value = refRoomId.current?.input?.value
+              sessionStorage.setItem('sessionRoomId', value)
+            },
+          })
+        }}
+      >
+        设置用户roomId
+      </Button>
       <div>
         <div>内部数据</div>
         <div>当前用户id: {sessionStorage.getItem('randomId')}</div>
@@ -111,6 +145,12 @@ export default function Admin() {
           game 内部数据
           <Suspense fallback={<div>加载中...</div>}>
             <ReactJson src={game} />
+          </Suspense>
+        </div>
+        <div>
+          remote store 所有数据
+          <Suspense fallback={<div>加载中...</div>}>
+            <ReactJson src={remoteData} />
           </Suspense>
         </div>
       </div>
