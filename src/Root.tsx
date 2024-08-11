@@ -1,16 +1,13 @@
-import { Button, Input, message, Modal, Segmented } from 'antd'
-import { useRef, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Button, Input, message, Modal } from 'antd'
+import { useRef } from 'react'
 import { WS_SERVER_HOST } from './const.ts'
 import styles from './App.module.scss'
 import cx from 'classnames'
+import { navigate } from './Router.tsx'
 
 export default function Root() {
-  const navigate = useNavigate()
   const ref = useRef<any>()
-  const [type, setType] = useState('create')
 
-  console.log('render',type);
   return (
     <div className={cx(styles.Game, styles.Container)}>
       <h1 className={styles.Title}>Welcome to play UNO.</h1>

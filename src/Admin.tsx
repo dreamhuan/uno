@@ -1,7 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import { Button, Input, message, Modal } from 'antd'
-import ReactJson from 'react-json-view'
 import { WS_SERVER_HOST, WS_SERVER_URL } from './const.ts'
+
+const ReactJson = lazy(() => import('react-json-view'))
 
 export default function Admin() {
   const [game, setGame] = useState<any>()
@@ -108,7 +109,9 @@ export default function Admin() {
         <div>当前用户id: {sessionStorage.getItem('randomId')}</div>
         <div>
           game 内部数据
-          <ReactJson src={game} />
+          <Suspense fallback={<div>加载中...</div>}>
+            <ReactJson src={game} />
+          </Suspense>
         </div>
       </div>
     </div>
