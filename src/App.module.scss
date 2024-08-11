@@ -14,6 +14,18 @@
   color: blue;
 }
 
+.Title {
+  text-align: center;
+  color: rgb(54, 57, 141);
+}
+.ButtonGroup {
+  width: 500px;
+  display: flex;
+  justify-content: space-between;
+  margin: 100px auto;
+}
+
+
 .GameTips {
   display: flex;
   justify-content: space-between;
