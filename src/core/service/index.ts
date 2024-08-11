@@ -91,6 +91,10 @@ export function sortCard(cards: Card[]) {
  * 检查是否可以出牌
  */
 export function checkSendCard(game: Game, card: Card): boolean {
+  // 第一次出牌，还没有设置颜色和图案，只能出数字牌
+  if (!game.currentColor && !game.currentNum && !game.currentPattern) {
+    return card.type === ECardType.Num
+  }
   // 之前是+4，并且需要加牌
   if (game.prevCard?.pattern === EPattern.Four && game.needAddCardNum) {
     return card.pattern === EPattern.Four
@@ -102,10 +106,6 @@ export function checkSendCard(game: Game, card: Card): boolean {
   // 万能牌
   if (card.type === ECardType.King) {
     return true
-  }
-  // 第一次出牌，还没有设置颜色和图案，只能出数字牌
-  if (!game.currentColor && !game.currentNum && !game.currentPattern) {
-    return card.type === ECardType.Num
   }
   // 之前是其他功能牌 或 数字牌 或 已经加过牌了
   return (

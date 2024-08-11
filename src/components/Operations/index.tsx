@@ -30,6 +30,7 @@ export default function Operations({
 }: {
   hiddenNextTurn?: boolean
 }) {
+  const isLocal = location.pathname === '/local'
   const {
     currentCard,
     currentCardIdx,
@@ -65,7 +66,7 @@ export default function Operations({
 
   console.log('currentCard', currentCard)
   const isFinished = game.users.some((p) => p.cards.length === 0) // 游戏结束
-  const isNoGrab = game.playFirstId === '' //是否无抢牌人
+  const isNoGrab = isLocal ? true : game.playFirstId === '' //是否无抢牌人
   const isMyTurn = game.currentUserId === game.userId // 是否轮到我出牌
   const isCanDraw = isMyTurn && isNoGrab && !isFinished // 是否可以抓牌(轮到且无人抢且游戏未结束)
   let isCanPlay = false
@@ -135,7 +136,7 @@ export default function Operations({
                 window.socketSend({
                   type: 'restart',
                   data: {
-                    userId: sessionStorage.getItem('userId') || '',
+                    userId: sessionStorage.getItem('randomId') || '',
                   },
                 })
               }}

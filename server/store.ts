@@ -150,10 +150,11 @@ class Store {
   }
 
   getGameDataByUserId(game: Game | null, userId?: string) {
-    const user = game?.users.find((user) => user.id === userId)
+    if (!game) return null
+    const user = game.users.find((user) => user.id === userId)
     if (!user) return null
     let prevUser
-    if (game?.prevUser) {
+    if (game.prevUser) {
       prevUser = {
         id: game.prevUser.id,
         name: game.prevUser.name,
@@ -164,9 +165,9 @@ class Store {
     return {
       ...game,
       userId: user.id,
-      currentUserId: game?.users[game?.currentUserIdx].id,
+      currentUserId: game.users[game.currentUserIdx].id,
       prevUser,
-      users: game?.users.map((u) => {
+      users: game.users.map((u) => {
         return {
           id: u.id,
           name: u.name,

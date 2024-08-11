@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useContext } from 'react'
 import { User } from '../../core/entity/User'
 import CardItem from '../CardItem'
 import styles from './style.module.scss'
@@ -12,7 +12,6 @@ export default function CardList({ user }: TProps) {
     useContext(GameContext)
 
   const userCards = user.cards
-  const userCardsLength = user.cards.length
   const chunkSize = 18
   const chunks = []
   for (let i = 0; i < userCards.length; i += chunkSize) {
@@ -21,7 +20,7 @@ export default function CardList({ user }: TProps) {
 
   return (
     <div className={styles.CardList}>
-      {chunks.map((chunk, index) => (
+      {chunks.map((chunk) => (
         <div className={styles.CardListChunk}>
           {chunk.map((card, index) => (
             <CardItem

@@ -17,10 +17,10 @@ import user4Img from './assets/user4.jpg'
 import { COLOR_MAP } from './const.ts'
 
 const GAME = new Game(4, 7)
-const user1 = new User('', 'chy', user1Img)
+const user1 = new User('', '花生了什么树', user1Img)
 const user2 = new User('', 'RiverTree', user2Img)
 const user3 = new User('', 'health', user3Img)
-const user4 = new User('', 'fkq', user4Img)
+const user4 = new User('', 'dreamhuan', user4Img)
 
 GAME.addUser(user1)
 GAME.addUser(user2)

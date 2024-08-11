@@ -37,22 +37,6 @@ export class Game {
       this.cards.push(...genAGroupOfCard())
     }
   }
-  setUserNum(userNum: number) {
-    this.userNum = userNum
-    return this
-  }
-  setBeginNum(beginNum: number) {
-    this.beginNum = beginNum || 7
-    return this
-  }
-  setCardGroupNum(cardGroupNum: number) {
-    this.cardGroupNum = cardGroupNum || 1
-    this.cards = []
-    for (let i = 0; i < this.cardGroupNum; i++) {
-      this.cards.push(...genAGroupOfCard())
-    }
-    return this
-  }
 
   addUser(user: User) {
     user.game = this

@@ -37,8 +37,9 @@ export default function Root() {
                 </div>
               ),
               onOk: async () => {
-                const value = userCountRef.current?.input?.value
-                if (!(Number(value) && value >= 2 && value <= 8)) {
+                const valueStr = userCountRef.current?.input?.value
+                const value = Number(valueStr)
+                if (!(value >= 2 && value <= 8)) {
                   message.error('仅支持2-8人参与游戏')
                   return
                 }
