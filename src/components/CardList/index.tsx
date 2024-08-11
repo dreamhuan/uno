@@ -13,7 +13,7 @@ export default function CardList({ user }: TProps) {
 
   const userCards = user.cards
   const userCardsLength = user.cards.length
-  const chunkSize = 16
+  const chunkSize = 18
   const chunks = []
   for (let i = 0; i < userCards.length; i += chunkSize) {
     chunks.push(userCards.slice(i, i + chunkSize))
