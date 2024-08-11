@@ -33,11 +33,16 @@ wss.on('connection', (ws: WebSocket) => {
         if (!userId || !roomId) {
           return
         }
-        store.gameOpen({
+        const flag = store.gameOpen({
           userId,
           roomId,
           client: ws,
         })
+        if (!flag) {
+          ws.send(
+            JSON.stringify({ type: 'error', data: '房间不存在,请退出重进' })
+          )
+        }
         break
       }
       case 'action': {

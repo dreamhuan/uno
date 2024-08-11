@@ -12,6 +12,7 @@ import { Card } from './core/entity/Card'
 import { GameContext } from './AppUI'
 import { COLOR_MAP, WS_SERVER_URL } from './const.ts'
 import { Game } from './core/entity/Game.ts'
+import { message } from 'antd'
 
 function App() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -64,6 +65,8 @@ function App() {
         if (data.type === 'start') {
           setGame?.(data.data)
           setNextTurn(() => nextTurn)
+        } else if (data.type === 'error') {
+          message.error(data.data)
         }
       }
     }
@@ -74,7 +77,7 @@ function App() {
   if (!game) {
     return (
       <div>
-        <div>roomId: {roomId}</div>
+        <div>房间号: {roomId}</div>
         <div>{roomId ? 'waiting...' : '请回到首页加入或创建房间'}</div>
       </div>
     )

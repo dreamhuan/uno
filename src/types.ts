@@ -1,5 +1,4 @@
-import { Card } from './core/entity/Card'
-import { EColor, ENumber, EPattern, ETurn } from './core/entity/common'
+import { EColor } from './core/entity/common'
 
 declare global {
   interface Window {
@@ -11,7 +10,7 @@ type TMessageSendData = {
   type: 'open' | 'action' | 'user' | 'restart' | 'reset'
   data: {
     userId?: string
-    roomId?:string
+    roomId?: string
     name?: string
     icon?: string
     cardIdx?: number // -1表示抽排

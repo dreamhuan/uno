@@ -81,33 +81,6 @@ export default function Admin() {
           Modal.confirm({
             content: (
               <div>
-                <Input placeholder="请输入人数" ref={refNum} />
-              </div>
-            ),
-            onOk: async () => {
-              const value = refNum.current?.input?.value
-              if (!(Number(value) && value >= 2 && value <= 8)) {
-                message.error('人数必须为2-8的数字（包含2,8）')
-                return
-              }
-              const resp = await fetch(`//${WS_SERVER_HOST}/api/userCount`, {
-                method: 'POST',
-                body: JSON.stringify({ userCount: value }),
-              })
-              const res = await resp.json()
-              console.log(res)
-            },
-          })
-        }}
-      >
-        设置人数
-      </Button>
-      <Button
-        size="large"
-        onClick={async () => {
-          Modal.confirm({
-            content: (
-              <div>
                 <Input placeholder="id" ref={refId} />
               </div>
             ),
@@ -141,6 +114,7 @@ export default function Admin() {
       <div>
         <div>内部数据</div>
         <div>当前用户id: {sessionStorage.getItem('randomId')}</div>
+        <div>当前房间id: {sessionStorage.getItem('sessionRoomId')}</div>
         <div>
           game 内部数据
           <Suspense fallback={<div>加载中...</div>}>

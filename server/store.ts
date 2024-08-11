@@ -92,6 +92,7 @@ class Store {
     }
     this.roomIdList.push(roomId)
     const game = new Game(userCount)
+    game.roomId = roomId
     this.roomMap[roomId] = {
       id: roomId,
       userIdList: [userId],
@@ -126,6 +127,7 @@ class Store {
     }
     room.userIdList.forEach((key) => {
       const user = this.userMap[key].user
+      user.cards = []
       game.addUser(user)
     })
     game.init()
@@ -181,7 +183,7 @@ class Store {
       !this.userIdList.includes(userId) ||
       !this.roomIdList.includes(roomId)
     ) {
-      return
+      return false
     }
     this.userMap[userId].client = client
 
@@ -189,6 +191,7 @@ class Store {
     if (isStart) {
       this.pushGameInfo(roomId)
     }
+    return true
   }
   gameAction(data: { userId: string; cardIdx: number; curColor: EColor }) {
     const { userId, cardIdx, curColor } = data
@@ -221,7 +224,7 @@ class Store {
   }
   gameRestart(data: { userId: string }) {
     const { userId } = data
-    const user = this.userMap[userId].user
+    const user = this.userMap[userId]?.user
     const game = user?.game
     if (!game) return
     const roomId = game.roomId
