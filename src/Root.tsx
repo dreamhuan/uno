@@ -40,8 +40,8 @@ export default function Root() {
               ),
               onOk: async () => {
                 const value = ref.current?.input?.value
-                if (!(Number(value) && value >= 4 && value <= 8)) {
-                  message.error('人数必须为4-8的数字（包含4,8）')
+                if (!(Number(value) && value >= 2 && value <= 8)) {
+                  message.error('人数必须为2-8的数字（包含2,8）')
                   return
                 }
                 const resp = await fetch(`//${WS_SERVER_HOST}/api/userCount`, {

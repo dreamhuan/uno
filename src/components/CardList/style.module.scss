@@ -4,6 +4,23 @@
   flex-wrap: wrap;
   justify-content: center;
 
+  
+  & > div {
+    &:not(:first-child) {
+      justify-content: start;
+      position: absolute;
+      top: 65px;
+      left: 170px;
+    }
+  }
+} 
+
+.CardListChunk {
+  width: 740px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+
   & > div {
     & {
       margin-left: -47px;

@@ -76,6 +76,12 @@ function App() {
   // 屏幕右上左三方的用户下标
   let userPartArr = [] as any
   switch (userNum) {
+    case 2:
+      userPartArr = [[], [1], []]
+      break
+    case 3:
+      userPartArr = [[1], [2], []]
+      break
     case 4:
       userPartArr = [[1], [2], [3]]
       break

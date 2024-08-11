@@ -139,7 +139,7 @@ function App() {
         </div>
       </div>
 
-      {game.users.map((user) => (
+      {/* {game.users.map((user) => (
         <div key={user.id}>
           <div
             style={{
@@ -153,7 +153,7 @@ function App() {
           </div>
           <CardList key={user.id} user={user} />
         </div>
-      ))}
+      ))} */}
       <div>已出牌列表：</div>
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         {game.alreadyCards &&
