@@ -161,13 +161,13 @@ function App() {
           <CardList key={user.id} user={user} />
         </div>
       ))} */}
-      <div>已出牌列表：</div>
+      {/* <div>已出牌列表：</div>
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         {game.alreadyCards &&
           game.alreadyCards.map((card) => (
             <CardItem key={card.id} card={card} />
           ))}
-      </div>
+      </div> */}
     </GameContext.Provider>
   )
 }

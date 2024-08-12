@@ -167,6 +167,8 @@ class Store {
       userId: user.id,
       currentUserId: game.users[game.currentUserIdx].id,
       prevUser,
+      cards: [],
+      alreadyCards: game.alreadyCards.slice(-10),
       users: game.users.map((u) => {
         return {
           id: u.id,
