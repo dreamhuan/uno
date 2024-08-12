@@ -43,6 +43,7 @@
     "sass": "^1.77.8",
     "ts-node": "^10.9.2",
     "typescript": "^5.2.2",
-    "vite": "^5.3.4"
+    "vite": "^5.3.4",
+    "vite-plugin-compression": "^0.5.1"
   }
 }
