@@ -13,11 +13,10 @@ import { GameContext } from './AppUI'
 import { COLOR_MAP, WS_SERVER_URL } from './const.ts'
 import { Game } from './core/entity/Game.ts'
 import { message } from 'antd'
+import { useForceRender } from './hooks/useForceRender.ts'
 
 function App() {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [_, fRender] = useState(0)
-  const forceRender = () => fRender((prev) => prev + 1)
+  const forceRender = useForceRender()
   const [game, setGame] = useState<Game>()
   const [nextTurn, setNextTurn] = useState<any>()
   const [currentCard, setCurrentCard] = useState<Card | undefined>()

@@ -15,6 +15,7 @@ import user2Img from './assets/user2.jpg'
 import user3Img from './assets/user3.jpg'
 import user4Img from './assets/user4.jpg'
 import { COLOR_MAP } from './const.ts'
+import { useForceRender } from './hooks/useForceRender.ts'
 
 const GAME = new Game(4, 7)
 const user1 = new User('', '花生了什么树', user1Img)
@@ -40,8 +41,7 @@ export const GameContext = createContext<{
 }>({} as any)
 
 function App() {
-  const [_, fRender] = useState(0)
-  const forceRender = () => fRender((prev) => prev + 1)
+  const forceRender = useForceRender()
   const [game, setGame] = useState(GAME)
   const [currentCard, setCurrentCard] = useState<Card | undefined>()
   const [currentCardIdx, setCurrentCardIdx] = useState<number>(-1)
@@ -49,7 +49,9 @@ function App() {
     const res = game.nextTurn(cardIdx, curColor)
     return res
   }
-  const colorBgStyle = game.currentColor ? { backgroundColor: COLOR_MAP[game.currentColor] } : undefined;
+  const colorBgStyle = game.currentColor
+    ? { backgroundColor: COLOR_MAP[game.currentColor] }
+    : undefined
 
   return (
     <GameContext.Provider
@@ -72,7 +74,12 @@ function App() {
             ) : (
               <RedoOutlined />
             )}
-            <div>当前颜色: <span className={styles.currentColorBlock} style={colorBgStyle}>{game.currentColor}</span></div>
+            <div>
+              当前颜色:{' '}
+              <span className={styles.currentColorBlock} style={colorBgStyle}>
+                {game.currentColor}
+              </span>
+            </div>
             <div>当前用户：{game.users[game.currentUserIdx].name}</div>
           </div>
           {/* <div>

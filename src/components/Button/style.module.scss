@@ -1,0 +1,46 @@
+.Button {
+  outline: none;
+  position: relative;
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  font-weight: 400;
+  white-space: nowrap;
+  text-align: center;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+  user-select: none;
+  touch-action: manipulation;
+  font-size: 14px;
+  line-height: 1.5;
+  height: 32px;
+  padding: 4px 15px;
+  border-radius: 6px;
+  background: #ffffff;
+  border-color: #d9d9d9;
+  color: rgba(0, 0, 0, 0.88);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.02);
+
+  &.large {
+    font-size: 16px;
+    line-height: 1.5;
+    height: 40px;
+    padding: 7px 15px;
+    border-radius: 8px;
+  }
+
+  &.circle {
+    min-width: 32px;
+    padding-inline-start: 0;
+    padding-inline-end: 0;
+    border-radius: 50%;
+  }
+
+  &:hover {
+    color: #4096ff;
+    border-color: #4096ff;
+    background: #ffffff;
+  }
+}

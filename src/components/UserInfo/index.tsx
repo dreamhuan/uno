@@ -1,7 +1,8 @@
 import styles from './style.module.scss'
 import { User } from '../../core/entity/User'
 import cx from 'classnames'
-import { Input, Modal, Popover } from 'antd'
+import Input from '../Input'
+import { Modal, Popover } from 'antd'
 import { useContext, useRef } from 'react'
 import { GameContext } from '../../AppUI'
 import { ECardType, EColor, EPattern } from '../../core/entity/common'
@@ -60,12 +61,11 @@ export default function UserInfo({ user, isTurn, imgSrc, placement }: UProps) {
         </div>
       ),
       onOk: () => {
-        console.log(ref.current?.input?.value)
         window.socketSend({
           type: 'user',
           data: {
             userId: user.id,
-            name: ref.current?.input?.value,
+            name: ref.current?.value,
           },
         })
       },

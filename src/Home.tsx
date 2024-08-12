@@ -1,4 +1,5 @@
-import { Button, Input, message, Modal } from 'antd'
+import Input from './components/Input'
+import { Button, message, Modal } from 'antd'
 import { useEffect, useRef } from 'react'
 import { WS_SERVER_HOST } from './const.ts'
 import styles from './App.module.scss'
@@ -37,7 +38,7 @@ export default function Root() {
                 </div>
               ),
               onOk: async () => {
-                const valueStr = userCountRef.current?.input?.value
+                const valueStr = userCountRef.current?.value
                 const value = Number(valueStr)
                 if (!(value >= 2 && value <= 8)) {
                   message.error('仅支持2-8人参与游戏')
@@ -74,7 +75,7 @@ export default function Root() {
                 </div>
               ),
               onOk: async () => {
-                const value = roomIdRef.current?.input?.value
+                const value = roomIdRef.current?.value
                 if (!/^\d{6}$/.test(value)) {
                   message.error('房间号为6位数字')
                   return

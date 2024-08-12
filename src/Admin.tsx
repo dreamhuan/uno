@@ -1,13 +1,15 @@
 import React, { lazy, Suspense, useEffect, useRef, useState } from 'react'
-import { Button, Input, message, Modal } from 'antd'
+import Input from './components/Input'
+import { Button, Modal } from 'antd'
 import { WS_SERVER_HOST, WS_SERVER_URL } from './const.ts'
+import { useForceRender } from './hooks/useForceRender.ts'
 
 const ReactJson = lazy(() => import('react-json-view'))
 
 export default function Admin() {
   const [game, setGame] = useState<any>()
   const [remoteData, setRemoteData] = useState<any>()
-  const refNum = useRef<any>()
+  const forceRender = useForceRender()
   const refId = useRef<any>()
   const refRoomId = useRef<any>()
 
@@ -85,8 +87,9 @@ export default function Admin() {
               </div>
             ),
             onOk: async () => {
-              const value = refId.current?.input?.value
+              const value = refId.current?.value
               sessionStorage.setItem('randomId', value)
+              forceRender()
             },
           })
         }}
@@ -103,8 +106,9 @@ export default function Admin() {
               </div>
             ),
             onOk: async () => {
-              const value = refRoomId.current?.input?.value
+              const value = refRoomId.current?.value
               sessionStorage.setItem('sessionRoomId', value)
+              forceRender()
             },
           })
         }}

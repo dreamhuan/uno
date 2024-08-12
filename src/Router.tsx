@@ -1,6 +1,7 @@
-import React, { lazy, Suspense, useEffect, useState } from 'react'
+import React, { lazy, Suspense, useEffect } from 'react'
 import Home from './Home.tsx'
 import './index.css'
+import { useForceRender } from './hooks/useForceRender.ts'
 
 const AppUI = lazy(() => import('./AppUI.tsx'))
 const App = lazy(() => import('./App.tsx'))
@@ -44,8 +45,7 @@ export const navigate = (path: string) => {
 }
 
 export const Router = () => {
-  const [_, reRender] = useState(0)
-  forceRender = () => reRender((prev) => prev + 1)
+  forceRender = useForceRender()
   const path = location.pathname
   useEffect(() => {
     // 监听路由变化
