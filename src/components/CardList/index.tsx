@@ -20,7 +20,7 @@ export default function CardList({ user }: TProps) {
 
   return (
     <div className={styles.CardList}>
-      {chunks.map((chunk) => (
+      {chunks.map((chunk, chunkIdx) => (
         <div className={styles.CardListChunk}>
           {chunk.map((card, index) => (
             <CardItem
@@ -29,7 +29,7 @@ export default function CardList({ user }: TProps) {
               card={card}
               onClick={() => {
                 setCurrentCard(card)
-                setCurrentCardIdx(index)
+                setCurrentCardIdx(chunkSize * chunkIdx + index)
               }}
             />
           ))}
