@@ -18,10 +18,10 @@ import { COLOR_MAP } from './const.ts'
 import { useForceRender } from './hooks/useForceRender.ts'
 
 const GAME = new Game(4, 7)
-const user1 = new User('', '花生了什么树', user1Img)
+const user1 = new User('', '花什么树', user1Img)
 const user2 = new User('', 'RiverTree', user2Img)
 const user3 = new User('', 'health', user3Img)
-const user4 = new User('', 'dreamhuan', user4Img)
+const user4 = new User('', 'dream', user4Img)
 
 GAME.addUser(user1)
 GAME.addUser(user2)

@@ -32,7 +32,20 @@ class Store {
     return this.instance
   }
 
-  private createUser(userId: string, game: Game) {
+  private userInUniqueRoom(userId: string, roomId: string) {
+    const otherRoomIdList = this.roomIdList.filter((rId) => rId !== roomId)
+    otherRoomIdList.forEach((rId) => {
+      const room = this.roomMap[rId]
+      if (room.userIdList.includes(userId)) {
+        room.userIdList = room.userIdList.filter((uId) => uId !== userId)
+        room.game.reset()
+        this.startGame(rId)
+        this.pushGameInfo(rId)
+      }
+    })
+  }
+
+  private createUser(userId: string, game: Game, roomId: string) {
     if (!this.userIdList.includes(userId)) {
       const imgIdx = Math.floor(Math.random() * AvatarImgList.length)
       const userName = 'user' + imgIdx
@@ -43,6 +56,9 @@ class Store {
         id: userId,
         user,
       }
+    } else {
+      // 如果用户已经存在，则可能重复创建或者加入房间，保证他在唯一房间
+      this.userInUniqueRoom(userId, roomId)
     }
   }
 
@@ -69,11 +85,11 @@ class Store {
   private pushGameInfo(roomId: string) {
     const room = this.roomMap[roomId]
     const game = room.game
-    game.users.forEach((user) => {
-      this.userMap[user.id]?.client?.send(
+    room.userIdList.forEach((uId) => {
+      this.userMap[uId]?.client?.send(
         JSON.stringify({
           type: 'start',
-          data: this.getGameDataByUserId(game, user.id),
+          data: this.getGameDataByUserId(game, uId),
         })
       )
     })
@@ -166,7 +182,7 @@ class Store {
       game,
       userCount,
     }
-    this.createUser(userId, game)
+    this.createUser(userId, game, roomId)
     return roomId
   }
 
@@ -176,7 +192,7 @@ class Store {
     }
     const room = this.roomMap[roomId]
     const game = room.game
-    this.createUser(userId, game)
+    this.createUser(userId, game, roomId)
     if (!room.userIdList.includes(userId)) {
       room.userIdList.push(userId)
     }

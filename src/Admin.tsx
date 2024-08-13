@@ -122,7 +122,7 @@ export default function Admin() {
         <div>
           game 内部数据
           <Suspense fallback={<div>加载中...</div>}>
-            <ReactJson src={game} />
+            <ReactJson src={game || {}} />
           </Suspense>
         </div>
         <div>
