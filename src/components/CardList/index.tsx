@@ -22,14 +22,14 @@ export default function CardList({ user }: TProps) {
     <div className={styles.CardList}>
       {chunks.map((chunk, chunkIdx) => (
         <div className={styles.CardListChunk}>
-          {chunk.map((card, index) => (
+          {chunk.map((card, cardIdx) => (
             <CardItem
               key={card.id}
               className={currentCard?.id === card.id ? styles.Active : ''}
               card={card}
               onClick={() => {
                 setCurrentCard(card)
-                setCurrentCardIdx(chunkSize * chunkIdx + index)
+                setCurrentCardIdx(chunkSize * chunkIdx + cardIdx)
               }}
             />
           ))}
