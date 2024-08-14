@@ -13,7 +13,7 @@ RUN yarn install
 ENV NODE_ENV production
 
 # Copy the rest of the source files into the image.
-COPY --exclude=node_modules . .
+COPY . .
 
 # Build
 RUN yarn build && \
