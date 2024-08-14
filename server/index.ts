@@ -91,7 +91,7 @@ wss.on('connection', (ws: WebSocket) => {
 })
 
 const SERVER_PORT = 3000
-const HOSTNAME = 'localhost'
+const HOSTNAME = '0.0.0.0'
 
 server.listen(SERVER_PORT, HOSTNAME, () => {
   console.log(`Server is running on http://${HOSTNAME}:${SERVER_PORT}`)
