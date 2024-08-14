@@ -44,6 +44,8 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.2.2",
     "vite": "^5.3.4",
-    "vite-plugin-compression": "^0.5.1"
+    "vite-plugin-cdn-import": "^1.0.1",
+    "vite-plugin-compression": "^0.5.1",
+    "vite-plugin-external": "^4.3.1"
   }
 }
