@@ -43,7 +43,12 @@ function Change() {
   )
 }
 function AddNum({ num }: { num: 2 | 4 }) {
-  return <div>+{num}</div>
+  return (
+    <div className={styles.AddNum}>
+      <span className={styles.AddNumIcon}>+</span>
+      {num}
+    </div>
+  )
 }
 function AddNumCard({ color }: { color: EColor }) {
   return (

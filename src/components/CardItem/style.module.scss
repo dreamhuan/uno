@@ -94,14 +94,15 @@ $Black: black;
 }
 
 .Num {
-  margin: 2px;
+  margin: 1px 6px;
 }
 
 .Big {
   transform: scale(2);
 }
 .Skip {
-  margin: 2px;
+  transform: scale(0.9);
+  margin: 1px 3px;
   background-color: #fff;
   border-radius: 50%;
   width: 20px;
@@ -126,7 +127,7 @@ $Black: black;
   }
 }
 .Turn {
-  margin-top: -2px;
+  margin-top: -5px;
   margin-left: 2px;
   display: flex;
   transform: rotate(45deg);
@@ -157,7 +158,7 @@ $Black: black;
   }
   .Line {
     width: 4px;
-    height: 16px;
+    height: 10px;
     margin-top: -2px;
     margin-left: 4px;
     background-color: #fff;
@@ -166,11 +167,10 @@ $Black: black;
 }
 .ChangeCenter {
   margin-left: -24px;
-  margin-top: -5px;
+  margin-top: 0px;
   transform: scale(5) !important;
 }
 .Change {
-  margin-top: 4px;
   margin-left: 6px;
   $W: 15px;
   $H: $W * 1.5;
@@ -198,6 +198,13 @@ $Black: black;
     background-color: $Blue;
   }
 }
+.AddNum {
+  margin: 1px 0px;
+
+  .AddNumIcon {
+    margin-right: -3px;
+  }
+}
 .AddNumCard {
   width: 20px;
   height: 26px;
@@ -210,7 +217,6 @@ $Black: black;
     height: 20px;
   }
 }
-
 .AddNumCardWrap {
   display: flex;
   flex-wrap: wrap;

@@ -4,7 +4,6 @@
   flex-wrap: wrap;
   justify-content: center;
 
-  
   & > div {
     &:not(:first-child) {
       justify-content: start;
@@ -12,7 +11,7 @@
       margin-left: 7px;
     }
   }
-} 
+}
 
 .CardListChunk {
   width: 800px;
