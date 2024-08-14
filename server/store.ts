@@ -253,7 +253,9 @@ class Store {
     const game = user?.game
     if (!game) return
     const roomId = game.roomId
+    const prevWinUserIdx = game.currentUserIdx
     game.reset()
+    game.currentUserIdx = prevWinUserIdx
     this.startGame(roomId)
     this.pushGameInfo(roomId)
   }

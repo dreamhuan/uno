@@ -80,20 +80,23 @@ export class Game {
     this.users.forEach((user) => user.sortCards())
   }
 
-  // 抽牌，返回还需要抽几张牌（可能剩余不够了）
+  getOneCard() {
+    let card = this.cards.pop()
+    if (!card) {
+      // 牌不够了，重新洗牌
+      shuffleCard(this.alreadyCards)
+      this.cards.push(...this.alreadyCards)
+      this.alreadyCards = []
+      card = this.cards.pop()
+    }
+    return card!
+  }
+  // 惩罚抽牌或者无法出抽一张牌
   userGetCard(num: number) {
     this.isGetCard = true
     const currentUser = this.users[this.currentUserIdx]
     while (--num >= 0) {
-      const card = this.cards.pop()
-      if (!card) {
-        // 牌不够了，重新洗牌
-        shuffleCard(this.alreadyCards)
-        this.cards.push(...this.alreadyCards)
-        const card = this.cards.pop()
-        currentUser.addCard(card!)
-        continue
-      }
+      const card = this.getOneCard()
       currentUser.addCard(card)
     }
     this.needAddCardNum = 0
@@ -174,15 +177,14 @@ export class Game {
           return 'WIN'
         } else {
           // 最后一张不是数字牌要再抓一张
-          this.userGetCard(1)
+          const card = this.getOneCard()
+          currentUser.addCard(card)
+          this.updateUserIdx()
           return 'UNO'
         }
       } else {
         // 更换出牌用户下标
-        this.currentUserIdx =
-          this.currentTurn === ETurn.CCW
-            ? (this.currentUserIdx + 1) % this.userNum
-            : (this.currentUserIdx - 1 + this.userNum) % this.userNum
+        this.updateUserIdx()
         return unoStatus
       }
     }
@@ -233,49 +235,40 @@ export class Game {
       } else if (card.pattern === EPattern.Skip) {
         // 跳过
         skipUser = this.users[this.currentUserIdx]
-        this.currentUserIdx =
-          this.currentTurn === ETurn.CCW
-            ? (this.currentUserIdx + 1) % this.userNum
-            : (this.currentUserIdx - 1 + this.userNum) % this.userNum
+        this.updateUserIdx()
       }
       // 抢牌逻辑判断
       this.checkPlayFirst(card)
       const unoStatus = checkUno(currentUser)
       if (unoStatus === 'WIN') {
-        this.prevUser = this.users[this.currentUserIdx]
+        this.prevUser = skipUser ? skipUser : this.users[this.currentUserIdx]
         if (card.type === ECardType.Num) {
           return 'WIN'
         } else {
           // 最后一张不是数字牌要再抓一张
-          const card = this.cards.pop()
-          if (!card) {
-            // 牌不够了，重新洗牌
-            shuffleCard(this.alreadyCards)
-            this.cards.push(...this.alreadyCards)
-            const card = this.cards.pop()
-            currentUser.addCard(card!)
-          } else {
-            currentUser.addCard(card)
-          }
+          const card = this.getOneCard()
+          currentUser.addCard(card)
+          this.updateUserIdx()
           return 'UNO'
         }
       } else {
         // 更换出牌用户下标
         this.prevUser = skipUser ? skipUser : this.users[this.currentUserIdx]
-        this.currentUserIdx =
-          this.currentTurn === ETurn.CCW
-            ? (this.currentUserIdx + 1) % this.userNum
-            : (this.currentUserIdx - 1 + this.userNum) % this.userNum
+        this.updateUserIdx()
         return unoStatus
       }
     } else {
       this.userGetCard(this.needAddCardNum || 1)
       this.prevUser = this.users[this.currentUserIdx]
-      this.currentUserIdx =
-        this.currentTurn === ETurn.CCW
-          ? (this.currentUserIdx + 1) % this.userNum
-          : (this.currentUserIdx - 1 + this.userNum) % this.userNum
+      this.updateUserIdx()
       return false
     }
+  }
+
+  updateUserIdx() {
+    this.currentUserIdx =
+      this.currentTurn === ETurn.CCW
+        ? (this.currentUserIdx + 1) % this.userNum
+        : (this.currentUserIdx - 1 + this.userNum) % this.userNum
   }
 }
