@@ -69,12 +69,13 @@ wss.on('connection', (ws: WebSocket) => {
         break
       }
       case 'restart': {
-        const { userId } = data?.data || {}
+        const { userId, changeSeats } = data?.data || {}
         if (!userId) {
           return
         }
         store.gameRestart({
           userId,
+          changeSeats,
         })
         break
       }

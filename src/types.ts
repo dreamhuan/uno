@@ -15,5 +15,6 @@ type TMessageSendData = {
     icon?: string
     cardIdx?: number // -1表示抽排
     curColor?: EColor
+    changeSeats?: boolean
   }
 }

@@ -144,6 +144,22 @@ export default function Operations({
               重开
             </Button>
           )}
+          {isFinished && (
+            <Button
+              size="large"
+              onClick={() => {
+                window.socketSend({
+                  type: 'restart',
+                  data: {
+                    userId: sessionStorage.getItem('randomId') || '',
+                    changeSeats: true,
+                  },
+                })
+              }}
+            >
+              换座位
+            </Button>
+          )}
           {!hiddenNextTurn && (
             <Button
               size="large"

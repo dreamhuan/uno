@@ -41,12 +41,12 @@ export function genAGroupOfCard() {
 }
 
 /**
- * 洗牌
+ * 乱序算法（洗牌、换座位）
  */
-export function shuffleCard(cards: Card[]) {
-  for (let i = cards.length - 1; i > 0; i--) {
+export function shuffleCard<T>(arr: T[]) {
+  for (let i = arr.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))
-    ;[cards[i], cards[j]] = [cards[j], cards[i]]
+    ;[arr[i], arr[j]] = [arr[j], arr[i]]
   }
 }
 

@@ -4,6 +4,7 @@ import { User } from '../src/core/entity/User'
 import { AvatarImgList } from '../src/components/UserInfo/AvatarImgList'
 import { EColor } from '../src/core/entity/common'
 import { decycle } from './utils/cycle'
+import { shuffleCard } from '../src/core/service'
 
 type StoreRoom = {
   id: string
@@ -247,16 +248,26 @@ class Store {
     this.pushGameInfo(game.roomId)
   }
 
-  gameRestart(data: { userId: string }) {
-    const { userId } = data
+  gameRestart(data: { userId: string; changeSeats?: boolean }) {
+    const { userId, changeSeats } = data
     const user = this.userMap[userId]?.user
     const game = user?.game
     if (!game) return
     const roomId = game.roomId
-    const prevWinUserIdx = game.currentUserIdx
-    game.reset()
-    game.currentUserIdx = prevWinUserIdx
-    this.startGame(roomId)
+    if (changeSeats) {
+      const room = this.roomMap[roomId]
+      shuffleCard(room.userIdList)
+      game.users = []
+      room.userIdList.forEach((key) => {
+        const user = this.userMap[key].user
+        game.addUser(user)
+      })
+    } else {
+      const prevWinUserIdx = game.currentUserIdx
+      game.reset()
+      game.currentUserIdx = prevWinUserIdx
+      this.startGame(roomId)
+    }
     this.pushGameInfo(roomId)
   }
 
