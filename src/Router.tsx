@@ -6,6 +6,7 @@ import { useForceRender } from './hooks/useForceRender.ts'
 const AppUI = lazy(() => import('./AppUI.tsx'))
 const App = lazy(() => import('./App.tsx'))
 const Admin = lazy(() => import('./Admin.tsx'))
+const Rule = lazy(() => import('./Rule.tsx'))
 
 const routerMap = {
   '/': {
@@ -25,6 +26,14 @@ const routerMap = {
     element: (
       <Suspense fallback={<div>加载中...</div>}>
         <App />
+      </Suspense>
+    ),
+  },
+  '/rule': {
+    path: '/rule',
+    element: (
+      <Suspense fallback={<div>加载中...</div>}>
+        <Rule />
       </Suspense>
     ),
   },

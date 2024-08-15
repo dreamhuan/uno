@@ -1,3 +1,9 @@
+import React from 'react'
+import ReactMarkdown from 'react-markdown'
+import CardItem from './components/CardItem'
+import { Card } from './core/entity/Card'
+import { ECardType, EColor, ENumber, EPattern } from './core/entity/common'
+const contentA = `
 # UNO
 
 ## 概述
@@ -11,9 +17,8 @@ UNO 是一个看谁把牌先出完并且**让其他人疯狂抓牌**的友尽游
 - 万能牌（8 张） ，仅黑色
 
 ## 牌介绍
-
-![所有的牌](./public/all-card.webp)
-
+`
+const contentB = `
 ### 数字牌(4×(9×2+1)=76)
 
 最基础的牌，除了数字"0" 4 色各 1 张外，数字"1-9" 4 色各 2 张
@@ -65,3 +70,34 @@ UNO 是一个看谁把牌先出完并且**让其他人疯狂抓牌**的友尽游
 ## 获胜规则
 
 初始会每人发 7 张牌，然后按出牌规则逆时针顺次出牌，无法出牌的人则抓牌，先出完则获胜，获胜后本局结束。
+
+`
+
+export default function Rule() {
+  return (
+    <div style={{ padding: '20px' }}>
+      <ReactMarkdown>{contentA}</ReactMarkdown>
+      <div style={{ transform: 'scale(0.8)', margin: '10px', display: 'flex' }}>
+        <CardItem
+          card={new Card(ECardType.Num, EColor.R, ENumber._7, undefined)}
+        />
+        <CardItem
+          card={new Card(ECardType.Func, EColor.B, undefined, EPattern.Skip)}
+        />
+        <CardItem
+          card={new Card(ECardType.Func, EColor.G, undefined, EPattern.Turn)}
+        />
+        <CardItem
+          card={new Card(ECardType.Func, EColor.Y, undefined, EPattern.Two)}
+        />
+        <CardItem
+          card={new Card(ECardType.King, EColor.A, undefined, EPattern.Change)}
+        />
+        <CardItem
+          card={new Card(ECardType.King, EColor.A, undefined, EPattern.Four)}
+        />
+      </div>
+      <ReactMarkdown>{contentB}</ReactMarkdown>
+    </div>
+  )
+}

@@ -14,16 +14,42 @@
 }
 
 .Title {
+  margin: 80px 0;
   text-align: center;
   color: rgb(54, 57, 141);
 }
-.ButtonGroup {
+.Content {
+  margin: auto;
   width: 500px;
   display: flex;
-  justify-content: space-between;
-  margin: 100px auto;
-}
+  align-items: center;
+  justify-content: center;
 
+  .Cards {
+    display: flex;
+    & > div {
+      margin-left: -40px;
+
+      &:nth-child(2) {
+        margin-top: 20px;
+      }
+      &:nth-child(3) {
+        margin-top: 40px;
+      }
+    }
+  }
+
+  .ButtonGroup {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-left: 30px;
+
+    & > button {
+      margin-top: 6px;
+    }
+  }
+}
 
 .GameTips {
   display: flex;
@@ -36,7 +62,6 @@
   & > span {
     margin-right: 10px;
   }
-
 }
 
 .currentColorBlock {
@@ -78,7 +103,6 @@
   & > div {
     text-align: center;
     width: 100%;
-
   }
 }
 
