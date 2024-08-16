@@ -14,10 +14,10 @@ export default function Root() {
   const roomIdRef = useRef<any>()
 
   useEffect(() => {
-    let randomId = sessionStorage.getItem('randomId')
+    let randomId = localStorage.getItem('randomId')
     if (!randomId) {
       randomId = Math.random().toString(36).substring(2, 15)
-      sessionStorage.setItem('randomId', randomId)
+      localStorage.setItem('randomId', randomId)
     }
   }, [])
 
@@ -67,7 +67,7 @@ export default function Root() {
                     {
                       method: 'POST',
                       body: JSON.stringify({
-                        userId: sessionStorage.getItem('randomId'),
+                        userId: localStorage.getItem('randomId'),
                         userCount: value,
                       }),
                     }
@@ -76,7 +76,7 @@ export default function Root() {
                   console.log(res)
                   const roomId = res.data.roomId
                   if (roomId) {
-                    sessionStorage.setItem('sessionRoomId', roomId)
+                    localStorage.setItem('sessionRoomId', roomId)
                     navigate('/remote')
                   } else {
                     message.error('创建房间失败')
@@ -104,7 +104,7 @@ export default function Root() {
                   const resp = await fetch(`//${WS_SERVER_HOST}/api/joinRoom`, {
                     method: 'POST',
                     body: JSON.stringify({
-                      userId: sessionStorage.getItem('randomId'),
+                      userId: localStorage.getItem('randomId'),
                       roomId: value,
                     }),
                   })
@@ -112,7 +112,7 @@ export default function Root() {
                   console.log(res)
                   const roomId = res.data.roomId
                   if (roomId) {
-                    sessionStorage.setItem('sessionRoomId', roomId)
+                    localStorage.setItem('sessionRoomId', roomId)
                     navigate('/remote')
                   } else {
                     message.error('房间不存在')

@@ -36,11 +36,11 @@ function App() {
           ws.send(str)
         }
 
-        let randomId = sessionStorage.getItem('randomId')
-        const roomId = sessionStorage.getItem('sessionRoomId')
+        let randomId = localStorage.getItem('randomId')
+        const roomId = localStorage.getItem('sessionRoomId')
         if (!randomId) {
           randomId = Math.random().toString(36).substring(2, 15)
-          sessionStorage.setItem('randomId', randomId)
+          localStorage.setItem('randomId', randomId)
         }
         if (roomId) {
           setRoomId(roomId)
@@ -58,7 +58,7 @@ function App() {
           window.socketSend({
             type: 'action',
             data: {
-              userId: sessionStorage.getItem('randomId') || '',
+              userId: localStorage.getItem('randomId') || '',
               cardIdx,
               curColor,
             },

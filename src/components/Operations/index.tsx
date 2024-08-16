@@ -136,7 +136,7 @@ export default function Operations({
                 window.socketSend({
                   type: 'restart',
                   data: {
-                    userId: sessionStorage.getItem('randomId') || '',
+                    userId: localStorage.getItem('randomId') || '',
                   },
                 })
               }}
@@ -151,7 +151,7 @@ export default function Operations({
                 window.socketSend({
                   type: 'restart',
                   data: {
-                    userId: sessionStorage.getItem('randomId') || '',
+                    userId: localStorage.getItem('randomId') || '',
                     changeSeats: true,
                   },
                 })

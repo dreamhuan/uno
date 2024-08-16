@@ -23,12 +23,12 @@ export default function Admin() {
           ws.send(str)
         }
 
-        let randomId = sessionStorage.getItem('randomId')
+        let randomId = localStorage.getItem('randomId')
         if (!randomId) {
           randomId = Math.random().toString(36).substring(2, 15)
-          sessionStorage.setItem('randomId', randomId)
+          localStorage.setItem('randomId', randomId)
         }
-        const roomId = sessionStorage.getItem('sessionRoomId')
+        const roomId = localStorage.getItem('sessionRoomId')
         if (roomId) {
           window.socketSend({
             type: 'open',
@@ -62,7 +62,7 @@ export default function Admin() {
           window.socketSend({
             type: 'restart',
             data: {
-              userId: sessionStorage.getItem('randomId') || '',
+              userId: localStorage.getItem('randomId') || '',
             },
           })
         }}
@@ -88,7 +88,7 @@ export default function Admin() {
             ),
             onOk: async () => {
               const value = refId.current?.value
-              sessionStorage.setItem('randomId', value)
+              localStorage.setItem('randomId', value)
               forceRender()
             },
           })
@@ -107,7 +107,7 @@ export default function Admin() {
             ),
             onOk: async () => {
               const value = refRoomId.current?.value
-              sessionStorage.setItem('sessionRoomId', value)
+              localStorage.setItem('sessionRoomId', value)
               forceRender()
             },
           })
@@ -117,8 +117,8 @@ export default function Admin() {
       </Button>
       <div>
         <div>内部数据</div>
-        <div>当前用户id: {sessionStorage.getItem('randomId')}</div>
-        <div>当前房间id: {sessionStorage.getItem('sessionRoomId')}</div>
+        <div>当前用户id: {localStorage.getItem('randomId')}</div>
+        <div>当前房间id: {localStorage.getItem('sessionRoomId')}</div>
         <div>
           game 内部数据
           <Suspense fallback={<div>加载中...</div>}>
