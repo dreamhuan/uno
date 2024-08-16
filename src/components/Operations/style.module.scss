@@ -5,6 +5,17 @@
   justify-content: space-between;
   flex-wrap: wrap;
   text-align: center;
+  position: relative;
+}
+
+.GrabBtn {
+  position: absolute;
+  left: 320px;
+  color: red;
+}
+.CancelGrabBtn {
+  position: absolute;
+  left: 400px;
 }
 
 .ColorBtn {

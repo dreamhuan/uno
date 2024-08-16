@@ -78,6 +78,7 @@ export default function Operations({
   if (game.playFirstCardId && game.userId) {
     isShowGrab = game.playFirstId === game.userId && !isFinished // 是否显示抢牌按钮(游戏未结束)
   }
+  const isMyWin = game.userId === game.prevUser?.id
 
   return (
     <div className={styles.Operations}>
@@ -129,7 +130,7 @@ export default function Operations({
               出牌
             </Button>
           </Popover>
-          {isFinished && (
+          {isFinished && isMyWin && (
             <Button
               size="large"
               onClick={() => {
@@ -144,7 +145,7 @@ export default function Operations({
               重开
             </Button>
           )}
-          {isFinished && (
+          {isFinished && isMyWin && (
             <Button
               size="large"
               onClick={() => {
@@ -177,14 +178,11 @@ export default function Operations({
         </div>
       )}
 
-      {isMyTurn && !isNoGrab && !isShowGrab && !isFinished && (
-        <div style={{ width: '100%' }}>存在他人可抢牌情况 请稍候</div>
-      )}
-
       {isShowGrab && (
         <div className={styles.Operations}>
           <Button
             size="large"
+            className={styles.GrabBtn}
             onClick={() => {
               nextTurn(-2)
               setCurrentCardIdx(-1)
@@ -196,6 +194,7 @@ export default function Operations({
           </Button>
           <Button
             size="large"
+            className={styles.CancelGrabBtn}
             onClick={() => {
               nextTurn(-3)
               setCurrentCardIdx(-1)

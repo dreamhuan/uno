@@ -90,6 +90,9 @@ function App() {
     ? { backgroundColor: COLOR_MAP[game.currentColor as EColor] }
     : undefined
   const curUserIndex = game.users.findIndex((u: User) => u.id === game.userId)
+  const isLocal = location.pathname === '/local'
+  const isNoGrab = isLocal ? true : game.playFirstId === '' //是否无抢牌人
+  const isFinished = game.users.some((p) => p.cards.length === 0) // 游戏结束
 
   const userNum = game.users.length
   // 屏幕右上左三方的用户下标
@@ -178,12 +181,14 @@ function App() {
             user={game.users[(curUserIndex + 2) % 4]}
           ></UserInfo> */}
           {userPartArr[1].reverse().map((userIdx: number) => (
-            <UserInfo
-              placement="right"
-              imgSrc={game.users[userIdx].icon}
-              isTurn={game.currentUserIdx === userIdx}
-              user={game.users[userIdx]}
-            ></UserInfo>
+            <div className={styles.UserBox}>
+              <UserInfo
+                placement="right"
+                imgSrc={game.users[userIdx].icon}
+                isTurn={game.currentUserIdx === userIdx}
+                user={game.users[userIdx]}
+              ></UserInfo>
+            </div>
           ))}
         </div>
         <div className={styles.leftUser}>
@@ -194,12 +199,14 @@ function App() {
             user={game.users[(curUserIndex + 3) % 4]}
           ></UserInfo> */}
           {userPartArr[2].map((userIdx: number) => (
-            <UserInfo
-              placement="right"
-              imgSrc={game.users[userIdx].icon}
-              isTurn={game.currentUserIdx === userIdx}
-              user={game.users[userIdx]}
-            ></UserInfo>
+            <div className={styles.UserBox}>
+              <UserInfo
+                placement="right"
+                imgSrc={game.users[userIdx].icon}
+                isTurn={game.currentUserIdx === userIdx}
+                user={game.users[userIdx]}
+              ></UserInfo>
+            </div>
           ))}
         </div>
         <div className={styles.rightUser}>
@@ -210,12 +217,14 @@ function App() {
             user={game.users[(curUserIndex + 1) % 4]}
           ></UserInfo> */}
           {userPartArr[0].reverse().map((userIdx: number) => (
-            <UserInfo
-              placement="right"
-              imgSrc={game.users[userIdx].icon}
-              isTurn={game.currentUserIdx === userIdx}
-              user={game.users[userIdx]}
-            ></UserInfo>
+            <div className={styles.UserBox}>
+              <UserInfo
+                placement="right"
+                imgSrc={game.users[userIdx].icon}
+                isTurn={game.currentUserIdx === userIdx}
+                user={game.users[userIdx]}
+              ></UserInfo>
+            </div>
           ))}
         </div>
         <div className={styles.CurrentCard}>
@@ -232,6 +241,11 @@ function App() {
           <div>
             <span>累计惩罚抓牌数：{game.needAddCardNum}</span>
           </div>
+          {!isNoGrab && !isFinished && (
+            <div style={{ width: '100%', color: 'red' }}>
+              有人抢牌 请等待...
+            </div>
+          )}
         </div>
 
         <div className={styles.OperateBtns}>

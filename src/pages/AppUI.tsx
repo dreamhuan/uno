@@ -18,7 +18,7 @@ import { COLOR_MAP, GameContext } from '../common.ts'
 import { useForceRender } from '../hooks/useForceRender.ts'
 import { useAdaptMobile } from '../hooks/useAdaptMobile.ts'
 
-const GAME = new Game(4, 7)
+const GAME = new Game(4, 18)
 const user1 = new User('', '花什么树', user1Img)
 const user2 = new User('', 'RiverTree', user2Img)
 const user3 = new User('', 'health', user3Img)
