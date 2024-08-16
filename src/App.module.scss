@@ -1,15 +1,15 @@
 .Game {
   width: 1000px;
   height: 550px;
-  border: 1px solid #aaa;
-  border-radius: 4px;
-  background-color: #f0f0f0;
 }
 
 .Container {
   position: relative;
-  margin: 0 12px;
+  box-sizing: border-box;
   padding: 12px;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+  background-color: #f0f0f0;
   color: blue;
 }
 

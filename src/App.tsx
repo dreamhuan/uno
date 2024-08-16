@@ -14,6 +14,7 @@ import { COLOR_MAP, WS_SERVER_URL } from './const.ts'
 import { Game } from './core/entity/Game.ts'
 import { message } from 'antd'
 import { useForceRender } from './hooks/useForceRender.ts'
+import { useAdaptMobile } from './hooks/useAdaptMobile.ts'
 
 function App() {
   const forceRender = useForceRender()
@@ -22,6 +23,8 @@ function App() {
   const [currentCard, setCurrentCard] = useState<Card | undefined>()
   const [currentCardIdx, setCurrentCardIdx] = useState<number>(-1)
   const [roomId, setRoomId] = useState<string>()
+
+  const { adaptStyle } = useAdaptMobile(1000, 550)
 
   useEffect(() => {
     async function main() {
@@ -144,7 +147,7 @@ function App() {
         nextTurn,
       }}
     >
-      <div className={cx(styles.Game, styles.Container)}>
+      <div className={cx(styles.Game, styles.Container)} style={adaptStyle}>
         <div className={styles.GameTips}>
           <div className={styles.CardsOrder}>
             <span>出牌顺序</span>
