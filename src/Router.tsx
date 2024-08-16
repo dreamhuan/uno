@@ -2,6 +2,7 @@ import React, { lazy, Suspense, useEffect } from 'react'
 import Home from './pages/Home.tsx'
 import './index.css'
 import { useForceRender } from './hooks/useForceRender.ts'
+import My from './pages/My.tsx'
 
 const AppUI = lazy(() => import('./pages/AppUI.tsx'))
 const App = lazy(() => import('./pages/App.tsx'))
@@ -34,6 +35,14 @@ const routerMap = {
     element: (
       <Suspense fallback={<div>加载中...</div>}>
         <Rule />
+      </Suspense>
+    ),
+  },
+  '/my': {
+    path: '/my',
+    element: (
+      <Suspense fallback={<div>加载中...</div>}>
+        <My />
       </Suspense>
     ),
   },

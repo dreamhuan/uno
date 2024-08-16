@@ -16,6 +16,7 @@ import user3Img from '../assets/user3.jpg'
 import user4Img from '../assets/user4.jpg'
 import { COLOR_MAP, GameContext } from '../common.ts'
 import { useForceRender } from '../hooks/useForceRender.ts'
+import { useAdaptMobile } from '../hooks/useAdaptMobile.ts'
 
 const GAME = new Game(4, 7)
 const user1 = new User('', '花什么树', user1Img)
@@ -36,6 +37,8 @@ function App() {
   const [game, setGame] = useState(GAME)
   const [currentCard, setCurrentCard] = useState<Card | undefined>()
   const [currentCardIdx, setCurrentCardIdx] = useState<number>(-1)
+  const { adaptStyle } = useAdaptMobile()
+
   const nextTurn = (cardIdx?: number, curColor?: EColor) => {
     const res = game.nextTurn(cardIdx, curColor)
     return res
@@ -56,7 +59,7 @@ function App() {
         nextTurn,
       }}
     >
-      <div className={cx(styles.Game, styles.Container)}>
+      <div className={cx(styles.Game, styles.Container)} style={adaptStyle}>
         <div className={styles.GameTips}>
           <div className={styles.CardsOrder}>
             <span>出牌顺序</span>

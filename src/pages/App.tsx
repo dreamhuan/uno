@@ -24,7 +24,7 @@ function App() {
   const [currentCardIdx, setCurrentCardIdx] = useState<number>(-1)
   const [roomId, setRoomId] = useState<string>()
 
-  const { adaptStyle } = useAdaptMobile(1000, 550)
+  const { adaptStyle } = useAdaptMobile()
 
   useEffect(() => {
     async function main() {
@@ -80,6 +80,7 @@ function App() {
     return (
       <div>
         <div>房间号: {roomId}</div>
+        <div>邀请链接: {`${location.host}?roomId=${roomId}`}</div>
         <div>{roomId ? 'waiting...' : '请回到首页加入或创建房间'}</div>
       </div>
     )

@@ -2,7 +2,10 @@ import React from 'react'
 import ReactMarkdown from 'react-markdown'
 import CardItem from '../components/CardItem'
 import { Card } from '../core/entity/Card'
+import cx from 'classnames'
+import styles from './style.module.scss'
 import { ECardType, EColor, ENumber, EPattern } from '../core/entity/common'
+import { useAdaptMobile } from '../hooks/useAdaptMobile'
 const contentA = `
 # UNO
 
@@ -74,8 +77,12 @@ const contentB = `
 `
 
 export default function Rule() {
+  const { adaptStyle } = useAdaptMobile()
   return (
-    <div style={{ padding: '20px' }}>
+    <div
+      className={cx(styles.Game, styles.Container)}
+      style={{ ...adaptStyle, overflow: 'scroll' }}
+    >
       <ReactMarkdown>{contentA}</ReactMarkdown>
       <div style={{ transform: 'scale(0.8)', margin: '10px', display: 'flex' }}>
         <CardItem

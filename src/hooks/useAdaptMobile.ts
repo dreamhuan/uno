@@ -1,21 +1,23 @@
 import { useLayoutEffect, useState } from 'react'
+import { MyStorage } from '../common'
 
-export function useAdaptMobile(width: number, height: number) {
+export function useAdaptMobile(WIDTH = 1000, HEIGHT = 550) {
   const [scale, setScale] = useState(1)
   const [rotate, setRotate] = useState(0)
   const [left, setLeft] = useState(0)
   const [top, setTop] = useState(0)
 
   useLayoutEffect(() => {
+    const isAdapt = MyStorage.getItem('isAdapt') === '1'
     console.log('userAgent', navigator.userAgent)
     const isMobile =
       /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
         navigator.userAgent
       )
-    if (isMobile) {
+    if (isMobile && isAdapt) {
       console.log('mobile')
-      const boxW = width
-      const boxH = height
+      const boxW = WIDTH
+      const boxH = HEIGHT
       const boxAspectRatio = boxW / boxH
       // 手机横过来，w h要交换，默认长方形盒子横为长竖为宽
       const pageW = document.body.clientHeight

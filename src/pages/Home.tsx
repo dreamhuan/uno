@@ -8,10 +8,13 @@ import { navigate } from '../Router.tsx'
 import CardItem from '../components/CardItem/index.tsx'
 import { Card } from '../core/entity/Card.ts'
 import { ECardType, EColor, ENumber, EPattern } from '../core/entity/common.ts'
+import { useAdaptMobile } from '../hooks/useAdaptMobile.ts'
 
 export default function Root() {
   const userCountRef = useRef<any>()
   const roomIdRef = useRef<any>()
+
+  const { adaptStyle } = useAdaptMobile()
 
   useEffect(() => {
     let randomId = MyStorage.getItem('randomId')
@@ -19,10 +22,65 @@ export default function Root() {
       randomId = Math.random().toString(36).substring(2, 15)
       MyStorage.setItem('randomId', randomId)
     }
+    setTimeout(async () => {
+      console.log(location.search) // ?roomId=268677
+      const roomId = new URLSearchParams(location.search).get('roomId')
+      console.log('roomId', roomId)
+      history.replaceState(null, '', '/')
+      if (roomId) {
+        await joinRoom(roomId)
+      }
+    }, 1000)
   }, [])
 
+  const createRoom = async (valueStr: string) => {
+    const value = Number(valueStr)
+    if (!(value >= 2 && value <= 8)) {
+      message.error('仅支持2-8人参与游戏')
+      return
+    }
+    const resp = await fetch(`//${WS_SERVER_HOST}/api/createRoom`, {
+      method: 'POST',
+      body: JSON.stringify({
+        userId: MyStorage.getItem('randomId'),
+        userCount: value,
+      }),
+    })
+    const res = await resp.json()
+    console.log(res)
+    const roomId = res.data.roomId
+    if (roomId) {
+      MyStorage.setItem('sessionRoomId', roomId)
+      navigate('/remote')
+    } else {
+      message.error('创建房间失败')
+    }
+  }
+
+  const joinRoom = async (value: string) => {
+    if (!/^\d{6}$/.test(value)) {
+      message.error('房间号为6位数字')
+      return
+    }
+    const resp = await fetch(`//${WS_SERVER_HOST}/api/joinRoom`, {
+      method: 'POST',
+      body: JSON.stringify({
+        userId: MyStorage.getItem('randomId'),
+        roomId: value,
+      }),
+    })
+    const res = await resp.json()
+    console.log(res)
+    const roomId = res.data.roomId
+    if (roomId) {
+      MyStorage.setItem('sessionRoomId', roomId)
+      navigate('/remote')
+    } else {
+      message.error('房间不存在')
+    }
+  }
   return (
-    <div className={cx(styles.Game, styles.Container)}>
+    <div className={cx(styles.Game, styles.Container)} style={adaptStyle}>
       <h1 className={styles.Title}>
         Infinite UNO
         <div style={{ fontSize: 12 }}>为保证游戏体验，请将手机开启横屏</div>
@@ -57,30 +115,7 @@ export default function Root() {
                 ),
                 onOk: async () => {
                   const valueStr = userCountRef.current?.value
-                  const value = Number(valueStr)
-                  if (!(value >= 2 && value <= 8)) {
-                    message.error('仅支持2-8人参与游戏')
-                    return
-                  }
-                  const resp = await fetch(
-                    `//${WS_SERVER_HOST}/api/createRoom`,
-                    {
-                      method: 'POST',
-                      body: JSON.stringify({
-                        userId: MyStorage.getItem('randomId'),
-                        userCount: value,
-                      }),
-                    }
-                  )
-                  const res = await resp.json()
-                  console.log(res)
-                  const roomId = res.data.roomId
-                  if (roomId) {
-                    MyStorage.setItem('sessionRoomId', roomId)
-                    navigate('/remote')
-                  } else {
-                    message.error('创建房间失败')
-                  }
+                  await createRoom(valueStr)
                 },
               })
             }}
@@ -97,26 +132,7 @@ export default function Root() {
                 ),
                 onOk: async () => {
                   const value = roomIdRef.current?.value
-                  if (!/^\d{6}$/.test(value)) {
-                    message.error('房间号为6位数字')
-                    return
-                  }
-                  const resp = await fetch(`//${WS_SERVER_HOST}/api/joinRoom`, {
-                    method: 'POST',
-                    body: JSON.stringify({
-                      userId: MyStorage.getItem('randomId'),
-                      roomId: value,
-                    }),
-                  })
-                  const res = await resp.json()
-                  console.log(res)
-                  const roomId = res.data.roomId
-                  if (roomId) {
-                    MyStorage.setItem('sessionRoomId', roomId)
-                    navigate('/remote')
-                  } else {
-                    message.error('房间不存在')
-                  }
+                  await joinRoom(value)
                 },
               })
             }}
@@ -129,6 +145,13 @@ export default function Root() {
             }}
           >
             查看规则
+          </Button>
+          <Button
+            onClick={() => {
+              navigate('/my')
+            }}
+          >
+            个人中心
           </Button>
         </div>
       </div>
