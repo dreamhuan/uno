@@ -255,13 +255,19 @@ class Store {
     if (!game) return
     const roomId = game.roomId
     if (changeSeats) {
+      const prevWinUserId = game.users[game.currentUserIdx].id
+      let prevWinUserIdx = 0
       const room = this.roomMap[roomId]
       shuffleCard(room.userIdList)
       game.users = []
-      room.userIdList.forEach((key) => {
+      room.userIdList.forEach((key, idx) => {
         const user = this.userMap[key].user
         game.addUser(user)
+        if (prevWinUserId === key) {
+          prevWinUserIdx = idx
+        }
       })
+      game.currentUserIdx = prevWinUserIdx
     } else {
       const prevWinUserIdx = game.currentUserIdx
       game.reset()
