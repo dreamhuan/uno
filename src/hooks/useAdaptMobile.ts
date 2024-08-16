@@ -20,8 +20,9 @@ export function useAdaptMobile(WIDTH = 1000, HEIGHT = 550) {
       const boxH = HEIGHT
       const boxAspectRatio = boxW / boxH
       // 手机横过来，w h要交换，默认长方形盒子横为长竖为宽
-      const pageW = document.body.clientHeight
-      const pageH = document.body.clientWidth
+      const pageW = window.innerHeight || document.documentElement.clientHeight
+      const pageH = window.innerWidth || document.documentElement.clientWidth
+
       const pageAspectRatio = pageW / pageH
       let scaleRatio = 1
       if (boxAspectRatio >= pageAspectRatio) {

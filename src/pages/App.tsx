@@ -238,12 +238,13 @@ function App() {
           ) : (
             <div className={styles.EmptyCard}></div>
           )}
-          <div>
-            <span>累计惩罚抓牌数：{game.needAddCardNum}</span>
-          </div>
-          {!isNoGrab && !isFinished && (
+          {!isNoGrab && !isFinished ? (
             <div style={{ width: '100%', color: 'red' }}>
               有人抢牌 请等待...
+            </div>
+          ) : (
+            <div>
+              <span>累计惩罚抓牌数：{game.needAddCardNum}</span>
             </div>
           )}
         </div>
