@@ -1,5 +1,5 @@
 import styles from './style.module.scss'
-import { useCountDown } from './useCountDown'
+import { useCountDown } from '../../hooks/useCountDown'
 
 export default function Time() {
   const time = useCountDown(10, () => {

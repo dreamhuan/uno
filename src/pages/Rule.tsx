@@ -1,8 +1,8 @@
 import React from 'react'
 import ReactMarkdown from 'react-markdown'
-import CardItem from './components/CardItem'
-import { Card } from './core/entity/Card'
-import { ECardType, EColor, ENumber, EPattern } from './core/entity/common'
+import CardItem from '../components/CardItem'
+import { Card } from '../core/entity/Card'
+import { ECardType, EColor, ENumber, EPattern } from '../core/entity/common'
 const contentA = `
 # UNO
 

@@ -1,21 +1,21 @@
-import { createContext, useState } from 'react'
+import { useState } from 'react'
 import cx from 'classnames'
 import { RedoOutlined, UndoOutlined } from '@ant-design/icons'
-import CardList from './components/CardList'
-import CardItem from './components/CardItem'
-import Operations from './components/Operations'
-import UserInfo from './components/UserInfo'
-import { Game } from './core/entity/Game'
-import { User } from './core/entity/User'
+import CardList from '../components/CardList'
+import CardItem from '../components/CardItem'
+import Operations from '../components/Operations'
+import UserInfo from '../components/UserInfo'
+import { Game } from '../core/entity/Game'
+import { User } from '../core/entity/User'
 import styles from './App.module.scss'
-import { EColor, ETurn } from './core/entity/common'
-import { Card } from './core/entity/Card'
-import user1Img from './assets/user1.jpg'
-import user2Img from './assets/user2.jpg'
-import user3Img from './assets/user3.jpg'
-import user4Img from './assets/user4.jpg'
-import { COLOR_MAP } from './const.ts'
-import { useForceRender } from './hooks/useForceRender.ts'
+import { EColor, ETurn } from '../core/entity/common'
+import { Card } from '../core/entity/Card'
+import user1Img from '../assets/user1.jpg'
+import user2Img from '../assets/user2.jpg'
+import user3Img from '../assets/user3.jpg'
+import user4Img from '../assets/user4.jpg'
+import { COLOR_MAP, GameContext } from '../common.ts'
+import { useForceRender } from '../hooks/useForceRender.ts'
 
 const GAME = new Game(4, 7)
 const user1 = new User('', '花什么树', user1Img)
@@ -30,18 +30,9 @@ GAME.addUser(user4)
 GAME.init()
 console.log(GAME)
 
-export const GameContext = createContext<{
-  game: Game
-  currentCard?: Card
-  setCurrentCard: (card?: Card) => void
-  currentCardIdx?: number
-  setCurrentCardIdx: (idx: number) => void
-  forceRender: () => void
-  nextTurn: (cardIdx?: number, curColor?: EColor) => false | 'WIN' | 'UNO'
-}>({} as any)
-
 function App() {
   const forceRender = useForceRender()
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [game, setGame] = useState(GAME)
   const [currentCard, setCurrentCard] = useState<Card | undefined>()
   const [currentCardIdx, setCurrentCardIdx] = useState<number>(-1)

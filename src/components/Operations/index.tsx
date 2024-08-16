@@ -2,7 +2,7 @@ import cx from 'classnames'
 import { Button, message, Popover } from 'antd'
 import styles from './style.module.scss'
 import { useContext, useState } from 'react'
-import { GameContext } from '../../AppUI'
+import { GameContext, MyStorage } from '../../common'
 import { ECardType, EColor } from '../../core/entity/common'
 import { checkSendCard } from '../../core/service'
 
@@ -136,7 +136,7 @@ export default function Operations({
                 window.socketSend({
                   type: 'restart',
                   data: {
-                    userId: localStorage.getItem('randomId') || '',
+                    userId: MyStorage.getItem('randomId') || '',
                   },
                 })
               }}
@@ -151,7 +151,7 @@ export default function Operations({
                 window.socketSend({
                   type: 'restart',
                   data: {
-                    userId: localStorage.getItem('randomId') || '',
+                    userId: MyStorage.getItem('randomId') || '',
                     changeSeats: true,
                   },
                 })

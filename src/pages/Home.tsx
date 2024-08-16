@@ -1,23 +1,23 @@
-import Input from './components/Input'
+import Input from '../components/Input/index.tsx'
 import { Button, message, Modal } from 'antd'
 import { useEffect, useRef } from 'react'
-import { WS_SERVER_HOST } from './const.ts'
+import { MyStorage, WS_SERVER_HOST } from '../common.ts'
 import styles from './App.module.scss'
 import cx from 'classnames'
-import { navigate } from './Router.tsx'
-import CardItem from './components/CardItem/index.tsx'
-import { Card } from './core/entity/Card.ts'
-import { ECardType, EColor, ENumber, EPattern } from './core/entity/common.ts'
+import { navigate } from '../Router.tsx'
+import CardItem from '../components/CardItem/index.tsx'
+import { Card } from '../core/entity/Card.ts'
+import { ECardType, EColor, ENumber, EPattern } from '../core/entity/common.ts'
 
 export default function Root() {
   const userCountRef = useRef<any>()
   const roomIdRef = useRef<any>()
 
   useEffect(() => {
-    let randomId = localStorage.getItem('randomId')
+    let randomId = MyStorage.getItem('randomId')
     if (!randomId) {
       randomId = Math.random().toString(36).substring(2, 15)
-      localStorage.setItem('randomId', randomId)
+      MyStorage.setItem('randomId', randomId)
     }
   }, [])
 
@@ -67,7 +67,7 @@ export default function Root() {
                     {
                       method: 'POST',
                       body: JSON.stringify({
-                        userId: localStorage.getItem('randomId'),
+                        userId: MyStorage.getItem('randomId'),
                         userCount: value,
                       }),
                     }
@@ -76,7 +76,7 @@ export default function Root() {
                   console.log(res)
                   const roomId = res.data.roomId
                   if (roomId) {
-                    localStorage.setItem('sessionRoomId', roomId)
+                    MyStorage.setItem('sessionRoomId', roomId)
                     navigate('/remote')
                   } else {
                     message.error('创建房间失败')
@@ -104,7 +104,7 @@ export default function Root() {
                   const resp = await fetch(`//${WS_SERVER_HOST}/api/joinRoom`, {
                     method: 'POST',
                     body: JSON.stringify({
-                      userId: localStorage.getItem('randomId'),
+                      userId: MyStorage.getItem('randomId'),
                       roomId: value,
                     }),
                   })
@@ -112,7 +112,7 @@ export default function Root() {
                   console.log(res)
                   const roomId = res.data.roomId
                   if (roomId) {
-                    localStorage.setItem('sessionRoomId', roomId)
+                    MyStorage.setItem('sessionRoomId', roomId)
                     navigate('/remote')
                   } else {
                     message.error('房间不存在')

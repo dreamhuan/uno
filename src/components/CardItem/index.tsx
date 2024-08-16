@@ -1,5 +1,5 @@
 import { Card } from '../../core/entity/Card'
-import { ECardType, EColor, ENumber } from '../../core/entity/common'
+import { ECardType } from '../../core/entity/common'
 import { PatternCenter, PatternTop } from './Pattern'
 import cx from 'classnames'
 import styles from './style.module.scss'
@@ -15,9 +15,12 @@ export default function CardItem(props: IProps) {
   const { type, color, num, pattern } = card
 
   return (
-    <div className={cx(styles.CardItem, ColorMapBgc[color], props.className)} onClick={() => {
-      props.onClick?.()
-    }}>
+    <div
+      className={cx(styles.CardItem, ColorMapBgc[color], props.className)}
+      onClick={() => {
+        props.onClick?.()
+      }}
+    >
       <div className={styles.Top}>
         {type === ECardType.Num ? (
           <div className={styles.Num}>{num}</div>

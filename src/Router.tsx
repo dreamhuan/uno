@@ -1,12 +1,12 @@
 import React, { lazy, Suspense, useEffect } from 'react'
-import Home from './Home.tsx'
+import Home from './pages/Home.tsx'
 import './index.css'
 import { useForceRender } from './hooks/useForceRender.ts'
 
-const AppUI = lazy(() => import('./AppUI.tsx'))
-const App = lazy(() => import('./App.tsx'))
-const Admin = lazy(() => import('./Admin.tsx'))
-const Rule = lazy(() => import('./Rule.tsx'))
+const AppUI = lazy(() => import('./pages/AppUI.tsx'))
+const App = lazy(() => import('./pages/App.tsx'))
+const Admin = lazy(() => import('./pages/Admin.tsx'))
+const Rule = lazy(() => import('./pages/Rule.tsx'))
 
 const routerMap = {
   '/': {

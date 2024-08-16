@@ -1,8 +1,8 @@
 import React, { lazy, Suspense, useEffect, useRef, useState } from 'react'
-import Input from './components/Input'
+import Input from '../components/Input/index.tsx'
 import { Button, Modal } from 'antd'
-import { WS_SERVER_HOST, WS_SERVER_URL } from './const.ts'
-import { useForceRender } from './hooks/useForceRender.ts'
+import { MyStorage, WS_SERVER_HOST, WS_SERVER_URL } from '../common.ts'
+import { useForceRender } from '../hooks/useForceRender.ts'
 
 const ReactJson = lazy(() => import('react-json-view'))
 
@@ -23,12 +23,12 @@ export default function Admin() {
           ws.send(str)
         }
 
-        let randomId = localStorage.getItem('randomId')
+        let randomId = MyStorage.getItem('randomId')
         if (!randomId) {
           randomId = Math.random().toString(36).substring(2, 15)
-          localStorage.setItem('randomId', randomId)
+          MyStorage.setItem('randomId', randomId)
         }
-        const roomId = localStorage.getItem('sessionRoomId')
+        const roomId = MyStorage.getItem('sessionRoomId')
         if (roomId) {
           window.socketSend({
             type: 'open',
@@ -62,7 +62,7 @@ export default function Admin() {
           window.socketSend({
             type: 'restart',
             data: {
-              userId: localStorage.getItem('randomId') || '',
+              userId: MyStorage.getItem('randomId') || '',
             },
           })
         }}
@@ -88,7 +88,7 @@ export default function Admin() {
             ),
             onOk: async () => {
               const value = refId.current?.value
-              localStorage.setItem('randomId', value)
+              MyStorage.setItem('randomId', value)
               forceRender()
             },
           })
@@ -107,7 +107,7 @@ export default function Admin() {
             ),
             onOk: async () => {
               const value = refRoomId.current?.value
-              localStorage.setItem('sessionRoomId', value)
+              MyStorage.setItem('sessionRoomId', value)
               forceRender()
             },
           })
@@ -117,8 +117,8 @@ export default function Admin() {
       </Button>
       <div>
         <div>内部数据</div>
-        <div>当前用户id: {localStorage.getItem('randomId')}</div>
-        <div>当前房间id: {localStorage.getItem('sessionRoomId')}</div>
+        <div>当前用户id: {MyStorage.getItem('randomId')}</div>
+        <div>当前房间id: {MyStorage.getItem('sessionRoomId')}</div>
         <div>
           game 内部数据
           <Suspense fallback={<div>加载中...</div>}>

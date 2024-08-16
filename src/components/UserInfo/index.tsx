@@ -4,7 +4,7 @@ import cx from 'classnames'
 import Input from '../Input'
 import { Modal, Popover } from 'antd'
 import { useContext, useRef } from 'react'
-import { GameContext } from '../../AppUI'
+import { GameContext } from '../../common'
 import { ECardType, EColor, EPattern } from '../../core/entity/common'
 
 type UProps = {

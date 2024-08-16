@@ -2,7 +2,7 @@ import { useContext } from 'react'
 import { User } from '../../core/entity/User'
 import CardItem from '../CardItem'
 import styles from './style.module.scss'
-import { GameContext } from '../../AppUI'
+import { GameContext } from '../../common'
 
 type TProps = {
   user: User

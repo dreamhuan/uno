@@ -1,20 +1,20 @@
 import { useEffect, useState } from 'react'
 import cx from 'classnames'
 import { RedoOutlined, UndoOutlined } from '@ant-design/icons'
-import CardList from './components/CardList'
-import CardItem from './components/CardItem'
-import Operations from './components/Operations'
-import UserInfo from './components/UserInfo'
-import { User } from './core/entity/User'
+import CardList from '../components/CardList'
+import CardItem from '../components/CardItem'
+import Operations from '../components/Operations'
+import UserInfo from '../components/UserInfo'
+import { User } from '../core/entity/User'
 import styles from './App.module.scss'
-import { EColor, ETurn } from './core/entity/common'
-import { Card } from './core/entity/Card'
-import { GameContext } from './AppUI'
-import { COLOR_MAP, WS_SERVER_URL } from './const.ts'
-import { Game } from './core/entity/Game.ts'
+import { EColor, ETurn } from '../core/entity/common'
+import { Card } from '../core/entity/Card'
+import { GameContext, MyStorage } from '../common.ts'
+import { COLOR_MAP, WS_SERVER_URL } from '../common.ts'
+import { Game } from '../core/entity/Game.ts'
 import { message } from 'antd'
-import { useForceRender } from './hooks/useForceRender.ts'
-import { useAdaptMobile } from './hooks/useAdaptMobile.ts'
+import { useForceRender } from '../hooks/useForceRender.ts'
+import { useAdaptMobile } from '../hooks/useAdaptMobile.ts'
 
 function App() {
   const forceRender = useForceRender()
@@ -36,11 +36,11 @@ function App() {
           ws.send(str)
         }
 
-        let randomId = localStorage.getItem('randomId')
-        const roomId = localStorage.getItem('sessionRoomId')
+        let randomId = MyStorage.getItem('randomId')
+        const roomId = MyStorage.getItem('sessionRoomId')
         if (!randomId) {
           randomId = Math.random().toString(36).substring(2, 15)
-          localStorage.setItem('randomId', randomId)
+          MyStorage.setItem('randomId', randomId)
         }
         if (roomId) {
           setRoomId(roomId)
@@ -58,7 +58,7 @@ function App() {
           window.socketSend({
             type: 'action',
             data: {
-              userId: localStorage.getItem('randomId') || '',
+              userId: MyStorage.getItem('randomId') || '',
               cardIdx,
               curColor,
             },
