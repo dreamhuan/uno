@@ -14,32 +14,57 @@ export function useAdaptMobile(WIDTH = 1000, HEIGHT = 550) {
       /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
         navigator.userAgent
       )
-    if (isMobile && isAdapt) {
+
+    if (isMobile) {
       console.log('mobile')
       const boxW = WIDTH
       const boxH = HEIGHT
       const boxAspectRatio = boxW / boxH
-      // 手机横过来，w h要交换，默认长方形盒子横为长竖为宽
-      const pageW = window.innerHeight || document.documentElement.clientHeight
-      const pageH = window.innerWidth || document.documentElement.clientWidth
 
-      const pageAspectRatio = pageW / pageH
-      let scaleRatio = 1
-      if (boxAspectRatio >= pageAspectRatio) {
-        console.log('www')
-        // 盒子宽高比大说明盒子比屏幕宽，以宽度来缩放，上下留白
-        scaleRatio = pageW / boxW
-        setLeft(boxH * scaleRatio + (pageH - boxH * scaleRatio) / 2)
+      let pageW = window.innerWidth || document.documentElement.clientWidth
+      let pageH = window.innerHeight || document.documentElement.clientHeight
+      if (isAdapt) {
+        setRotate(90)
+        // 手机横过来，w h要交换，默认长方形盒子横为长竖为宽
+        // eslint-disable-next-line no-extra-semi
+        ;[pageW, pageH] = [pageH, pageW]
+
+        const pageAspectRatio = pageW / pageH
+        let scaleRatio = 1
+        if (boxAspectRatio >= pageAspectRatio) {
+          console.log('www')
+          // 盒子宽高比大说明盒子比屏幕宽，以宽度来缩放，上下留白
+          scaleRatio = pageW / boxW
+          // 旋转90后变成left了，又因为以(0,0)转会转到屏幕外，要再加一段
+          setLeft(boxH * scaleRatio + (pageH - boxH * scaleRatio) / 2)
+        } else {
+          console.log('hhh')
+          // 否则以高度来缩放，左右留白
+          scaleRatio = pageH / boxH
+          // 旋转90后变成left了
+          setTop((pageW - boxW * scaleRatio) / 2)
+          // 转到屏幕外了挪进来
+          setLeft(pageH)
+        }
+        console.log({ pageW, pageH })
+        setScale(scaleRatio)
       } else {
-        console.log('hhh')
-        // 否则以高度来缩放，左右留白
-        scaleRatio = pageH / boxH
-        setLeft(pageH)
-        setTop((pageW - boxW * scaleRatio) / 2)
+        const pageAspectRatio = pageW / pageH
+        let scaleRatio = 1
+        if (boxAspectRatio >= pageAspectRatio) {
+          console.log('www')
+          // 盒子宽高比大说明盒子比屏幕宽，以宽度来缩放，上下留白
+          scaleRatio = pageW / boxW
+          setTop((pageH - boxH * scaleRatio) / 2)
+        } else {
+          console.log('hhh')
+          // 否则以高度来缩放，左右留白
+          scaleRatio = pageH / boxH
+          setLeft((pageW - boxW * scaleRatio) / 2)
+        }
+        console.log({ pageW, pageH })
+        setScale(scaleRatio)
       }
-      console.log({ pageW, pageH })
-      setScale(scaleRatio)
-      setRotate(90)
     } else {
       setLeft(10)
       setTop(10)

@@ -108,7 +108,7 @@ export default function My() {
             fontSize: '12px',
           }}
         >
-          是否适配手机：(操作后刷新)
+          适配手机旋转：(操作后刷新)
         </span>
         <Switch
           checkedChildren="开启"
