@@ -3,7 +3,7 @@ services:
     image: ghcr.io/dreamhuan/uno
     container_name: uno
     ports:
-      - 3000:3000
+      - "3000:3000"
     labels:
       - com.centurylinklabs.watchtower.scope=uno
   watchtower:
@@ -11,7 +11,7 @@ services:
     container_name: uno_watchtower
     environment:
       - WATCHTOWER_CLEANUP=TRUE
-      - WATCHTOWER_SCHEDULE=*/15 * * * * # every 15 minutes
+      - WATCHTOWER_SCHEDULE=0 */15 * * * * # every 15 minutes
       - WATCHTOWER_SCOPE=uno # update "uno" scope only
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
