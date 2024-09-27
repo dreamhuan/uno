@@ -6,8 +6,9 @@ FROM node:${NODE_VERSION}-alpine
 WORKDIR /usr/src/app
 
 # Install app dependencies
-COPY package.json yarn.lock ./
-RUN yarn install
+COPY package.json pnpm-lock.yaml ./
+RUN npm i -g pnpm
+RUN pnpm i
 
 # Use production node environment by default.
 ENV NODE_ENV production
