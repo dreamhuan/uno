@@ -7,7 +7,7 @@ export function useAdaptMobile(WIDTH = 1000, HEIGHT = 550) {
   const [left, setLeft] = useState(0)
   const [top, setTop] = useState(0)
 
-  useLayoutEffect(() => {
+  const onResize = () => {
     const isAdapt = MyStorage.getItem('isAdapt') === '1'
     console.log('userAgent', navigator.userAgent)
     const isMobile =
@@ -15,6 +15,10 @@ export function useAdaptMobile(WIDTH = 1000, HEIGHT = 550) {
         navigator.userAgent
       )
 
+    setScale(1)
+    setRotate(0)
+    setLeft(0)
+    setTop(0)
     if (isMobile) {
       console.log('mobile')
       const boxW = WIDTH
@@ -23,6 +27,7 @@ export function useAdaptMobile(WIDTH = 1000, HEIGHT = 550) {
 
       let pageW = window.innerWidth || document.documentElement.clientWidth
       let pageH = window.innerHeight || document.documentElement.clientHeight
+      console.log('pageW', pageW, 'pageH', pageH)
       if (isAdapt) {
         setRotate(90)
         // 手机横过来，w h要交换，默认长方形盒子横为长竖为宽
@@ -69,8 +74,28 @@ export function useAdaptMobile(WIDTH = 1000, HEIGHT = 550) {
       setLeft(10)
       setTop(10)
     }
+  }
+
+  useLayoutEffect(() => {
+    window.addEventListener('resize', onResize)
+    onResize()
+    return () => {
+      window.removeEventListener('resize', onResize)
+    }
   }, [])
 
+  console.log({
+    scale,
+    rotate,
+    left,
+    top,
+    adaptStyle: {
+      transformOrigin: '0 0',
+      transform: `scale(${scale}) rotate(${rotate}deg)`,
+      top,
+      left,
+    },
+  })
   return {
     scale,
     rotate,

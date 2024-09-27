@@ -77,10 +77,25 @@ function App() {
 
   console.log('game', game)
   if (!game) {
+    const link = `${location.origin}?roomId=${roomId}`
     return (
       <div>
         <div>房间号: {roomId}</div>
-        <div>邀请链接: {`${location.host}?roomId=${roomId}`}</div>
+        <div>
+          邀请链接: {link}{' '}
+          <span
+            style={{
+              color: 'blue',
+              cursor: 'pointer',
+            }}
+            onClick={async () => {
+              await navigator.clipboard?.writeText?.(link)
+              message.success('复制成功')
+            }}
+          >
+            复制
+          </span>
+        </div>
         <div>{roomId ? 'waiting...' : '请回到首页加入或创建房间'}</div>
       </div>
     )
